@@ -138,19 +138,7 @@
             if (_txtFileName)
                 _txtFileName.className = "";
 
-            //DWTObject.MaxInternetTransferThreads = 5;
-           /* strHTTPServer = location.hostname;
-            DWTObject.IfSSL = Dynamsoft.Lib.detect.ssl;
-            var _strPort = location.port== "" ? 80 : location.port;
-            if (Dynamsoft.Lib.detect.ssl == true)
-                _strPort = location.port == "" ? 443 : location.port;
-            DWTObject.HTTPPort = _strPort;*/
-
-
-            //var CurrentPathName = unescape(location.pathname); // get current PathName in plain ASCII	
-            //var CurrentPath = CurrentPathName.substring(0, CurrentPathName.lastIndexOf("/") + 1);
-            strActionPage = "SaveToFileEx.aspx";//CurrentPath + "SaveToFileEx.aspx";
-            //strActionPage = "https://192.168.8.139:4433/web-twain/SaveToFileExWithoutSession.aspx";//CurrentPath + "SaveToFileEx.aspx";
+            strActionPage = "SaveToFileEx.aspx";
             var fileType = document.getElementById("fileType");
             var strPageType = fileType.value;
             switch (strPageType) {
@@ -187,34 +175,10 @@
             var imgAry = [];
             var allPages = document.getElementById("AllPages");
             if (allPages.checked == true) {
-                /*if (strPageType == "tif") {
-                    DWTObject.HTTPUploadAllThroughPostAsMultiPageTIFF(
-                        strHTTPServer,
-                        strActionPage,
-                        uploadfilename,
-                        OnSuccess, OnFailure
-                    );
-                }
-                else if (strPageType == "pdf") {
-                    DWTObject.HTTPUploadAllThroughPostAsPDF(
-                        strHTTPServer,
-                        strActionPage,
-                        uploadfilename,
-                        OnSuccess, OnFailure
-                    );
-                }*/
                 for(var i= 0; i< DWTObject.HowManyImagesInBuffer; i++){
                     imgAry.push(i);
                 }
             } else {
-                /*DWTObject.HTTPUploadThroughPostEx(
-                    strHTTPServer,
-                    DWTObject.CurrentImageIndexInBuffer,
-                    strActionPage,
-                    uploadfilename,
-                    strImageType,
-                    OnSuccess, OnFailure
-                );*/
                 imgAry = [DWTObject.CurrentImageIndexInBuffer];
             }
 
@@ -272,9 +236,6 @@
                 try {
                     var realfileName1 = realfileName.replace("\\", "\\\\");
                     var newDiv = document.createElement('div');
-                   // var uploadeddetail = "<div class='info'><span class='title'>File Name:</span><span class='content'>" + strImageName + "</span><br/>" +
-                   // "<span class='title'>Custom Info:</span><span class='content'>" + strCustomInfo + "</span><br/>" +
-                   // "<a onclick='onClickDel(this, \"" + realfileName1 + "\");'>Del</a><span> | </span><a  target='_blank' href = 'online_demo_download.aspx?ImageName=" + realfileName + "&ImageExtName=" + strImageExtName + "'>Download</a></div>";
                    var uploadeddetail = "<div class='info'><span class='title'>File Name:</span><span class='content'>" + strImageName + "</span><br/>" +
                     "<span class='title'>Custom Info:</span><span class='content'>" + strCustomInfo + "</span><br/>" +
                     "<a onclick='onClickDel(this, \"" + realfileName1 + "\");'>Del</a><span> | </span><a  target='_blank' href = 'Download.aspx?ImageName=" + realfileName + "&ImageExtName=" + strImageExtName + "'>Download</a></div>"; 
