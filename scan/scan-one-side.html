@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Duplex Scanner Scanning One Side Only</title>
+	<link rel="stylesheet" href="../css/global.css" />
+	<link rel="stylesheet" href="../css/scan.css" />
+    <script src="https://cdn.jsdelivr.net/npm/dwt@latest/dist/dynamsoft.webtwain.min.js"></script>
+    <script type="text/javascript" src="../Resources/dynamsoft.webtwain.config_autoload.js"></script>
+</head>
+<body>
+	<div class="ds-div-scanPageHeader">
+		<div class="ds-div-title">Duplex Scanner Scanning One Side Only</div>
+		<p>The demo requires a scanner capable of duplex scanning.</p>
+	</div>
+	<div class="ds-div-scanPageDemo" >
+		<div class="ds-div-scanPage-column ds-div-scanPage-column0">
+			<div><span>Select Source:</span><select size="1" id="source"></select></div>
+			<div><input type="radio" id="scanBottom" name ="scanOneSide" checked><label for="scanBottom">scan bottom (rear) only</label></div>
+			<div><input type="radio" id="scanTop" name ="scanOneSide"><label for="scanTop">scan top (front) only</label></div>
+			<div><input type="button" style = "margin-bottom: 20px;" value="Scan" onclick="AcquireImage();" /></div>
+		</div>
+		<div class="ds-div-scanPage-column ds-div-scanPage-column1">
+			<div id="dwtcontrolContainer" style="width: 100%; height: 100%;"></div>
+		</div>
+	</div>
+	<style>
+		.ds-div-scanPage-column0 span {
+			width: 120px;
+			display: inline-block;
+		}
+		.ds-div-scanPage-column0>div {
+			margin: 5px 0;
+		}
+	</style>
+  <script type="text/javascript">
+    var DWTObject, deviceList;
+    Dynamsoft.DWT.RegisterEvent("OnWebTwainReady", function () {
+		DWTObject = Dynamsoft.DWT.GetWebTwain('dwtcontrolContainer'); // Get the Dynamic Web TWAIN object that is embeded in the div with id 'dwtcontrolContainer'
+		if (DWTObject) {
+			deviceList=[];
+			DWTObject.GetDevicesAsync().then(function(devices){
+				for (var i = 0; i < devices.length; i++) { // Get how many sources are installed in the system
+					document.getElementById('source').options.add(new Option(devices[i].displayName, i)); // Add the sources in a drop-down list
+					deviceList.push(devices[i]);
+				}
+			}).catch(function (exp) {
+				alert(exp.message);
+			});
+		}
+    });
+	
+    function AcquireImage() {
+      if (DWTObject) {	
+		var ddlSource = document.getElementById("source");
+        DWTObject.SelectDeviceAsync(deviceList[ddlSource.selectedIndex]).then(function () {
+			var scanBottom = document.getElementById('scanBottom');
+			setCapabilitiesForDWT(scanBottom.checked, function(){
+				return DWTObject.AcquireImageAsync({
+					IfCloseSourceAfterAcquire: true // Scanner source will be closed automatically after the scan.
+				});
+			}, function(errorData){
+				console.log(errorData); 
+				for(var i= 0; i< errorData.capabilities.length; i++){
+					var capability = errorData.capabilities[i];
+					if(capability && capability.errorString && capability.errorString.length > 0){
+						alert(capability.errorString);
+						break;
+					}
+				}	
+			});
+        }).catch(function (exp) {
+			alert(exp.message);
+        });
+      }
+    }
+	
+	function setCapabilitiesForDWT(bScanBottom, successCallback, failureCallback){
+		if(DWTObject) {
+			if(bScanBottom){
+				//scan bottom(rear) only
+				DWTObject.setCapabilities({
+					exception: "fail",
+					capabilities: [{
+						capability: Dynamsoft.DWT.EnumDWT_Cap.CAP_CAMERASIDE,
+						curValue: 2, // TWCS_BOTTOM
+					},
+					{
+						capability: Dynamsoft.DWT.EnumDWT_Cap.CAP_CAMERAENABLED,
+						curValue: true,
+					}],
+				}, function (successData) {
+					console.log("set camera to bottom done, and then set camera to top");
+					DWTObject.setCapabilities({
+						exception: "fail",
+						capabilities: [{
+							capability: Dynamsoft.DWT.EnumDWT_Cap.CAP_CAMERASIDE,
+							curValue: 1, // TWCS_TOP
+						},     
+						{
+							capability: Dynamsoft.DWT.EnumDWT_Cap.CAP_CAMERAENABLED, // your own capability
+							curValue: false, // your own curValue
+						}],
+					}, function (successData) {
+						console.log("set camera to top done, now scanner will scan from rear");
+						successCallback();
+						
+					}, function (errorData) {
+						failureCallback(errorData);
+					});
+				}, function (errorData) {
+					failureCallback(errorData);
+				});  
+			} else {
+				//scan top(front) only
+				DWTObject.setCapabilities({
+					exception: "fail",
+					capabilities: [{
+						capability: Dynamsoft.DWT.EnumDWT_Cap.CAP_CAMERASIDE,
+						curValue: 1, // TWCS_TOP
+					},     
+					{
+						capability: Dynamsoft.DWT.EnumDWT_Cap.CAP_CAMERAENABLED, // your own capability
+						curValue: true, // your own curValue
+					}],
+				}, function (successData) {
+					console.log("set camera to top done, and then set camera to bottom");
+					DWTObject.setCapabilities({
+						exception: "fail",
+						capabilities: [{
+							capability: Dynamsoft.DWT.EnumDWT_Cap.CAP_CAMERASIDE,
+							curValue: 2, // TWCS_BOTTOM
+						},
+						{
+							capability: Dynamsoft.DWT.EnumDWT_Cap.CAP_CAMERAENABLED,
+							curValue: false,
+						}],
+					}, function (successData) {
+						console.log("set camera to bottom done, and then set camera to top");
+						DWTObject.setCapabilities({
+							exception: "fail",
+							capabilities: [{
+								capability: Dynamsoft.DWT.EnumDWT_Cap.CAP_CAMERASIDE,
+								curValue: 1, // TWCS_TOP
+							}],
+						}, function (successData) {
+							console.log("set camera to top done, now scanner will scan from front");
+							successCallback();
+						}, function (errorData) {
+							failureCallback(errorData);
+						});
+					}, function (errorData) {
+						failureCallback(errorData);
+					});
+				}, function (errorData) {
+					failureCallback(errorData);
+				});
+			}
+		}
+	}
+  </script>
+  
+</body>
+</html>

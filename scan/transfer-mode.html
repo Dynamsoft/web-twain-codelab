@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Transfer Image to Specified File Directly</title>
+	<link rel="stylesheet" href="../css/global.css" />
+	<link rel="stylesheet" href="../css/scan.css" />
+    <script src="https://cdn.jsdelivr.net/npm/dwt@latest/dist/dynamsoft.webtwain.min.js"></script>
+    <script type="text/javascript" src="../Resources/dynamsoft.webtwain.config_autoload.js"></script>
+</head>
+
+<body>
+	<div class="ds-div-scanPageHeader">
+		<div class="ds-div-title">Transfer Image to Specified File Directly</div>
+		<p>The demo only supports TWAIN drivers for Windows, WIN drivers, and ICA drivers. It allows the image to be directly transferred to a specified file through settings.</p>
+	</div>
+	<div class="ds-div-scanPageDemo" >
+		<div class="ds-div-scanPage-column ds-div-scanPage-column0">
+			<div><span>Select Source:</span><select size="1" id="source"></select></div>
+			<div><input type="checkbox" id="chkFileMode" checked="checked" />Transfer the image to a specified file on the disk directly</label></div>
+			<div><span>File Format:</span><select size="1" id="fileFormat">
+				<option value="2">bmp</option>
+				<option value="14">dejavu</option>
+				<option value="9">exif</option>
+				<option value="5">fpx</option>
+				<option value="4">jfif</option>
+				<option value="11">jp2</option>
+				<option value="12">jpn</option>
+				<option value="13">jpx</option>
+				<option value="10">pdf</option>
+				<option value="15">pdfa</option>
+				<option value="16">pdfa2</option>
+				<option value="1">pict</option>
+				<option value="7">png</option>
+				<option value="8">spiff</option>
+				<option value="0">tiff</option>
+				<option value="6">tiffmulti</option>
+				<option value="3">xbm</option>
+			</select></div>
+			<div><span>File Path:</span><input type="text" id="filePath" value="C:\\Temp\\WebTWAIN<%06d>.bmp" ></div>
+			<div><input type="button" value="Scan" onclick="AcquireImage();" /></div>
+		</div>
+		<div class="ds-div-scanPage-column ds-div-scanPage-column1">
+			<div id="dwtcontrolContainer" style="width: 100%; height: 100%;"></div>
+		</div>
+	</div>
+	<style>
+		.ds-div-scanPage-column0 span {
+			width: 120px;
+			display: inline-block;
+		}
+		.ds-div-scanPage-column0>div {
+			margin: 5px 0;
+		}
+	</style>
+    <script type="text/javascript">
+		var DWTObject, deviceList;
+		Dynamsoft.DWT.RegisterEvent("OnWebTwainReady", function () {
+			DWTObject = Dynamsoft.DWT.GetWebTwain('dwtcontrolContainer'); // Get the Dynamic Web TWAIN object that is embeded in the div with id 'dwtcontrolContainer'
+            if (DWTObject) {
+                deviceList=[];
+				DWTObject.GetDevicesAsync().then(function(devices){
+					for (var i = 0; i < devices.length; i++) { // Get how many sources are installed in the system
+						document.getElementById('source').options.add(new Option(devices[i].displayName, i)); // Add the sources in a drop-down list
+						deviceList.push(devices[i]);
+                    }
+				}).catch(function (exp) {
+					alert(exp.message);
+				});
+            }
+		}); 
+
+		function AcquireImage() {
+            if (DWTObject) {
+				var ddlSource = document.getElementById('source');
+				DWTObject.SelectDeviceAsync(deviceList[ddlSource.selectedIndex]).then(function () {
+					return DWTObject.OpenSourceAsync();
+				}).then(function () {
+					var chkFileMode = document.getElementById('chkFileMode');
+					if(chkFileMode.checked) {
+						var filePath = document.getElementById('filePath');
+						var fileFormat = document.getElementById('fileFormat');
+						DWTObject.TransferMode = Dynamsoft.DWT.EnumDWT_TransferMode.TWSX_FILE; 
+						if (DWTObject.TransferMode === Dynamsoft.DWT.EnumDWT_TransferMode.TWSX_FILE) {
+							if (
+								DWTObject.SetFileXferInfo(
+									filePath.value,
+									parseInt(fileFormat.value)
+								)
+							) 
+							{
+								return DWTObject.AcquireImageAsync({
+									IfCloseSourceAfterAcquire: true // Scanner source will be disabled/closed automatically after the scan.
+								});
+							} else {
+								console.log(DWTObject.ErrorString);
+							}
+						}
+					} else {
+						return DWTObject.AcquireImageAsync({
+							IfShowUI: false,
+							IfCloseSourceAfterAcquire: true // Scanner source will be disabled/closed automatically after the scan.
+						});
+					}
+				}).then(function(){
+					if(DWTObject.ErrorCode == 0)
+						alert("successful");
+				}).catch(function (exp) {
+					console.error(exp);
+				});
+            }
+        }
+		
+    </script>
+  	
+</body>
+
+</html>

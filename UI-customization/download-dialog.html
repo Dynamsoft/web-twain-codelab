@@ -1,0 +1,119 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Download Dialog</title>
+	<link rel="stylesheet" href="../css/global.css" />
+	<link rel="stylesheet" href="../css/scan.css" />
+	<link rel="stylesheet" href="Download_Resources/src/dynamsoft.webtwain.css?t=20241010102903" />
+    <script src="https://cdn.jsdelivr.net/npm/dwt@latest/dist/dynamsoft.webtwain.min.js"></script>
+    <script type="text/javascript" src="../Resources/dynamsoft.webtwain.config_frame.js"></script>
+</head>
+<body>
+	<div class="ds-div-scanPageHeader">
+		<div class="ds-div-title">Download Dialog</div>
+	</div>
+	<div class="ds-div-scanPageDemo">
+		<div class="ds-div-scanPage-column ds-div-scanPage-column0">
+			<div class="ds-div-tips">
+				<span>The Dynamsoft Service already installed, you can click the button to simulate popup download dialog.</span>
+				<div><button class="ds-button" onclick="showDownloadDialog()">Show Download Dialog</button></div>
+			</div>
+		</div>
+		<div class="ds-div-scanPage-column ds-div-scanPage-column1">
+			<div id="dwtcontrolContainer" style="width: 100%; height: 100%;"></div>
+		</div>
+	</div>
+	<style>
+		.ds-div-scanPage-column0{background-color: transparent;border: 0;width:1200px}
+		.ds-button {cursor: pointer;}
+	</style>
+	<style>
+		.dynamsoft-dialog2{background-color: #FFF;padding:30px;}
+		.dynamsoft-dwt-dlg-header {display: none;}
+		.dynamsoft-dwt-dlg-title{font-family:Oswald;font-size: 20px;padding:0;text-align: left;}
+		.dwt-dlg-StepInfo {
+			display: flex;
+			height: 100px;
+			background: #F5F5F5;
+			margin-top: 20px;
+			margin-bottom: 30px;
+		}
+		.dwt-dlg-Step {
+			width: 100px;
+			height: 100px;
+			background: #DDDDDD;
+			text-align: center;
+			font: normal normal normal 20px/30px;
+			color: #323234;
+			padding-top: 35px;
+			margin:0;
+		}
+		.dwt-dlg-StepDetail1, .dwt-dlg-StepDetail2 {
+			flex: 1;
+			margin:0;
+			padding: 20px 0 0 20px;
+		}
+		.dwt-dlg-StepDetail1 {
+			padding-top: 35px;
+		}
+		.dynamsoft-dwt-dlg-button {
+			width: 140px;
+			height: 46px;
+			font: normal normal normal 15px/24px Oswald;
+			color: #FFFFFF;
+			text-transform: uppercase;
+			padding: 10px 15px;
+			margin: 0 0 0 20px;
+		}
+		@keyframes fade { 50% { opacity: 0.6; } }
+		#connecting {
+			float: left;
+			color: #666;
+			font-weight: 600;
+			animation: fade 999ms infinite;
+			text-transform: uppercase;
+			margin: -10px 0 0 160px;
+		}
+
+		.dynamsoft-dwt-dlg-close {
+			float: right;
+			cursor: pointer;
+		}
+
+		.ds-div-tips {
+			display: none;
+		}
+	</style>
+	<script>
+		Dynamsoft.DWT.Containers = [{ ContainerId: 'dwtcontrolContainer'}];
+
+		Dynamsoft.DWT.CreateDWTObjectEx({
+				WebTwainId: 'dwtId2'
+		},function (object) {
+			var tips = document.querySelector('.ds-div-tips');
+			tips.style.display = 'block';
+		}, function (error) {
+			console.log(error);
+		});
+
+		function showDownloadDialog() {
+
+			// This code is only for testing the download dialog.
+			Dynamsoft.DWT.Port = 10;
+			Dynamsoft.DWT.SSLPort = 11;
+			Dynamsoft.Lib.product.bDWTChecked = false;
+			Dynamsoft._dwt_Reconnect = function(){}
+
+			Dynamsoft.DWT.CreateDWTObjectEx({
+				WebTwainId: 'dwtId3'
+			},function (object) {
+			}, function (error) {
+				console.log(error);
+			});
+		}
+
+	</script>
+    
+</body>
+</html>

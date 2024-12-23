@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Remove Blank Page</title>
+	<link rel="stylesheet" href="../css/global.css" />
+	<link rel="stylesheet" href="../css/scan.css" />
+    <script src="https://cdn.jsdelivr.net/npm/dwt@latest/dist/dynamsoft.webtwain.min.js"></script>
+    <script type="text/javascript" src="../Resources/dynamsoft.webtwain.config_autoload.js"></script>
+</head>
+<body>
+	<div class="ds-div-scanPageHeader">
+		<div class="ds-div-title">Remove Blank Page</div>
+	</div>
+	<div class="ds-div-scanPageDemo" >
+		<div class="ds-div-scanPage-column ds-div-scanPage-column0">
+			<input type="checkbox" id="RemoveBlankPage">Auto Remove Blank Page<br/>
+			<input type="button" value="Scan" onclick="AcquireImage();" />
+		</div>
+		<div class="ds-div-scanPage-column ds-div-scanPage-column1">
+			<div id="dwtcontrolContainer" style="width: 100%; height: 100%;"></div>
+		</div>
+	</div>
+  <script type="text/javascript">
+    var DWTObject;
+    Dynamsoft.DWT.RegisterEvent("OnWebTwainReady", function () {
+		DWTObject = Dynamsoft.DWT.GetWebTwain('dwtcontrolContainer'); // Get the Dynamic Web TWAIN object that is embeded in the div with id 'dwtcontrolContainer'
+		DWTObject.RegisterEvent("OnPostTransferAsync", function () {
+			var index = DWTObject.CurrentImageIndexInBuffer;
+			if (document.getElementById('RemoveBlankPage').checked) {
+				if(Dynamsoft.navInfoSync.bWin){
+					DWTObject.IsBlankImageAsync(index).then(function(bBlankImage){
+						if(bBlankImage)
+							DWTObject.RemoveImage(index);
+					});
+				} else {
+					if(DWTObject.IsBlankImage(index))
+						DWTObject.RemoveImage(index);
+				}
+			} 
+		});
+    });
+
+    function AcquireImage() {
+      if (DWTObject) {	
+        DWTObject.SelectSourceAsync().then(function(){
+          return DWTObject.AcquireImageAsync({
+            IfAutoDiscardBlankpages: document.getElementById('RemoveBlankPage').checked,
+            IfCloseSourceAfterAcquire: true // Scanner source will be closed automatically after the scan.
+          });
+        }).catch(function (exp) {
+          alert(exp.message);
+        });
+      }
+    }
+  </script>
+  
+</body>
+</html>

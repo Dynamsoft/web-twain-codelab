@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Save to Local Drive</title>
+	<link rel="stylesheet" href="../css/global.css" />
+	<link rel="stylesheet" href="../css/scan.css" />
+    <script src="https://cdn.jsdelivr.net/npm/dwt@latest/dist/dynamsoft.webtwain.min.js"></script>
+    <script type="text/javascript" src="../Resources/dynamsoft.webtwain.config_autoload.js"></script>
+</head>
+<body>
+	<div class="ds-div-scanPageHeader">
+		<div class="ds-div-title">Save to Local Drive</div>
+	</div>
+	<div class="ds-div-scanPageDemo" >
+		<div class="ds-div-scanPage-column ds-div-scanPage-column0">
+            <div><label for="left" >Select Source:</label><select size="1" id="source"></select></div>	
+            <input type="button" value="Scan" onclick="AcquireImage();" />
+            <br />
+            <div id="divSaveDetail" class="ds-PT40">
+                <ul style="list-style: none; padding-left: 0px;">
+                    <li>
+                        <p style="margin: 0;">File Name:</p>
+                        <input type="text" size="20" id="txt_fileName" value="WebTWAINImage"><span> . </span>
+                        <select size="1" id="fileType" onchange="fileType_onchange();">     
+                        <option value="pdf">pdf</option>
+                        <option value="tif">tif</option>
+                        <option value="jpg">jpg</option>
+                        <option value="png">png</option>
+                        <option value="bmp">bmp</option></select>
+                    </li>
+                        <li>
+                        Pages:
+                        <label for="CurrentPage" style="margin-left:5px;"><input type="radio" id="CurrentPage" name="Pages">Current Page </label>
+                        <label for="AllPages"><input type="radio" id="AllPages" name="Pages" checked>All Pages</label>
+                    </li>
+                    <li>
+                        <input type="button" value="Save" onclick="SaveWithFileDialog();" />
+                    </li>
+                </ul>
+            </div>
+		</div>
+		<div class="ds-div-scanPage-column ds-div-scanPage-column1">
+			<div id="dwtcontrolContainer" style="width: 100%; height: 100%;"></div>
+		</div>
+	</div>
+    <script type="text/javascript">
+        var DWTObject;
+        Dynamsoft.DWT.RegisterEvent("OnWebTwainReady", function () {
+            DWTObject = Dynamsoft.DWT.GetWebTwain('dwtcontrolContainer'); // Get the Dynamic Web TWAIN object that is embeded in the div with id 'dwtcontrolContainer'
+			if (DWTObject) {
+                deviceList=[];
+				DWTObject.GetDevicesAsync().then(function(devices){
+					for (var i = 0; i < devices.length; i++) { // Get how many sources are installed in the system
+						document.getElementById('source').options.add(new Option(devices[i].displayName, i)); // Add the sources in a drop-down list
+						deviceList.push(devices[i]);
+                    }
+				}).catch(function (exp) {
+					alert(exp.message);
+				});
+            }
+        });
+
+        function AcquireImage() {
+            if (DWTObject) {
+                var ddlSource = document.getElementById('source');
+				DWTObject.SelectDeviceAsync(deviceList[ddlSource.selectedIndex]).then(function () {
+						return DWTObject.AcquireImageAsync({
+						    IfCloseSourceAfterAcquire: true // Scanner source will be closed automatically after the scan.
+						});
+					}).catch(function (exp) {
+						alert(exp.message);
+				});
+            }
+        }
+
+        function SaveWithFileDialog() {
+            if (DWTObject.HowManyImagesInBuffer == 0) {
+                alert("There is no image in the buffer.")
+                return;
+            }
+
+            var fileType = document.getElementById("fileType");
+            var strPageType_save = fileType.value;
+
+            DWTObject.IfShowFileDialog = true;
+            var _txtFileNameforSave = document.getElementById("txt_fileName");
+            if (_txtFileNameforSave)
+                _txtFileNameforSave.className = "";
+
+            var strFilePath = _txtFileNameforSave.value + "." + strPageType_save;
+
+            var OnSuccess = function () {
+                console.log('successful');
+            };
+
+            var OnFailure = function (errorCode, errorString) {
+                alert(errorString);
+            };
+
+            var allPages = document.getElementById("AllPages");
+            if (allPages && allPages.checked == true) {
+                if (strPageType_save == "tif") {  //tiff
+                        DWTObject.SaveAllAsMultiPageTIFF(strFilePath, OnSuccess, OnFailure);
+                    }
+                    else if (strPageType_save == "pdf") { //pdf
+                        DWTObject.SaveAllAsPDF(strFilePath, OnSuccess, OnFailure);
+                    }
+            }  else {
+                switch (strPageType_save) {
+                    case "bmp": DWTObject.SaveAsBMP(strFilePath, DWTObject.CurrentImageIndexInBuffer); break;
+                    case "jpg": DWTObject.SaveAsJPEG(strFilePath, DWTObject.CurrentImageIndexInBuffer); break;
+                    case "tif": DWTObject.SaveAsTIFF(strFilePath, DWTObject.CurrentImageIndexInBuffer); break;
+                    case "png": DWTObject.SaveAsPNG(strFilePath, DWTObject.CurrentImageIndexInBuffer); break;
+                    case "pdf": DWTObject.SaveAsPDF(strFilePath, DWTObject.CurrentImageIndexInBuffer); break;
+                }
+
+                if (DWTObject.ErrorCode == 0) {
+                    console.log('successful');
+                } else {
+                    alert(DWTObject.ErrorString);
+                }  
+            }
+        }
+
+        function fileType_onchange() {
+            var currentPage = document.getElementById("CurrentPage");
+            var allPages = document.getElementById("AllPages");
+            var fileType = document.getElementById("fileType");
+            var strPageType = fileType.value;
+            if (strPageType == "pdf" || strPageType == "tif") {
+                if (currentPage)
+                    currentPage.disabled = false;
+                if (allPages)
+                    allPages.disabled = false;
+                if (strPageType == "pdf") {
+                    if (allPages)
+                        allPages.checked = true;
+                }
+                if (strPageType == "tif") {
+                    if (currentPage)
+                        currentPage.checked = true;
+                }
+
+            } else {
+                if (currentPage) {
+                    currentPage.disabled = true;
+                    currentPage.checked = true;
+                }      
+                if (allPages)
+                    allPages.disabled = true;
+            }
+        }
+    </script>
+	
+</body>
+</html>

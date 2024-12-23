@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Read MagData during scanning</title>
+	<link rel="stylesheet" href="../css/global.css" />
+	<link rel="stylesheet" href="../css/scan.css" />
+    <script src="https://cdn.jsdelivr.net/npm/dwt@latest/dist/dynamsoft.webtwain.min.js"></script>
+    <script type="text/javascript" src="../Resources/dynamsoft.webtwain.config_autoload.js"></script>
+</head>
+
+<body>
+	<div class="ds-div-scanPageHeader">
+		<div class="ds-div-title">Read MagData during scanning</div>
+		<p>The demo requires a scanner capable of reading MagData.</p>
+	</div>
+	<div class="ds-div-scanPageDemo" >
+		<div class="ds-div-scanPage-column ds-div-scanPage-column0">
+			<input type="button" value="Scan" onclick="AcquireImage();" />
+			<div id="MagData" class="clearfix"><span class="lblMagData">MagData Info:</span><br>
+				<div id="DWTMagData"></div>
+			</div>						
+		</div>
+		<div class="ds-div-scanPage-column ds-div-scanPage-column1">
+			<div id="dwtcontrolContainer" style="width: 100%; height: 100%;"></div>
+		</div>
+	</div>
+	<style>
+		#DWTMagData {
+			width: 400px;
+			height: 200px;
+			border: 1px solid #c3c3c3;
+			margin-bottom: 20px;
+		}
+	</style>
+    <script type="text/javascript">
+		var DWTObject;
+		Dynamsoft.DWT.RegisterEvent("OnWebTwainReady", function () {
+			DWTObject = Dynamsoft.DWT.GetWebTwain('dwtcontrolContainer'); // Get the Dynamic Web TWAIN object that is embeded in the div with id 'dwtcontrolContainer'
+			DWTObject.RegisterEvent("OnPostTransferAsync", function (outputInfo) {
+			  console.log(outputInfo);  
+			  var magData = {};
+			  var dwtMagData = document.getElementById("DWTMagData");
+			  if(outputInfo && outputInfo.extendedImageInfo && outputInfo.extendedImageInfo.others && outputInfo.extendedImageInfo.others.TWEI_MAGDATA) {
+					magData.TWEI_MAGTYPE = outputInfo.extendedImageInfo.others.TWEI_MAGTYPE;
+					magData.TWEI_MAGDATA = outputInfo.extendedImageInfo.others.TWEI_MAGDATA;
+					dwtMagData.innerText = JSON.stringify(magData);
+			  }
+			});
+		}); 
+
+		function AcquireImage() {
+            if (DWTObject) {
+				DWTObject.SelectSourceAsync().then(function(){
+					return DWTObject.AcquireImageAsync({
+							IfShowUI: false,
+					        IfCloseSourceAfterAcquire: true, // Scanner source will be closed automatically after the scan.
+							IfGetExtImageInfo: true,
+							extendedImageInfoQueryLevel:0
+						});
+				}).catch(function (exp) {
+					alert(exp.message);
+				});
+            }
+        }
+    </script>
+  	
+</body>
+
+</html>

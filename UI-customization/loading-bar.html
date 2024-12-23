@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Loading Bar</title>
+	<link rel="stylesheet" href="../css/global.css" />
+	<link rel="stylesheet" href="../css/scan.css" />
+    <script src="https://cdn.jsdelivr.net/npm/dwt@latest/dist/dynamsoft.webtwain.min.js"></script>
+    <script type="text/javascript" src="../Resources/dynamsoft.webtwain.config_frame.js"></script>
+</head>
+
+<body>
+	
+	<div class="ds-div-scanPageHeader">
+		<div class="ds-div-title">Loading Bar</div>
+	</div>
+	<div class="ds-div-scanPageDemo" >
+		<div class="ds-div-scanPage-column ds-div-scanPage-column0">
+			<div id="initializeDiv">
+				<input type="checkbox" id="chkShowLoadingbar" onchange="ShowLoadingBar();" checked><label for="chkShowLoadingbar">Show Loading Bar</label>
+				<ul style="list-style: none; margin-top: 0;">
+				<li><div>Icon:</div>
+				<input type="radio" id="radDefault" name="Loadingbar" onchange="SetIfDefaultIcon();" checked><label for="radDefault">Default</label><br/>
+				<input type="radio" id="radCustom" name="Loadingbar" onchange="SetIfDefaultIcon();"><label for="radCustom">Custom</label> <input type="button" id="btnFile" value="Select File" onclick="SetLoadingBar();" disabled><br/>
+				</li>
+				<li><div>The position of the icon display:</div>
+				<input type="radio" id="radCenterPage" name="LoadingbarPosition" checked onchange="changeIconPosition();"><label for="radCenterPage">Center of the page</label><br/>
+				<input type="radio" id="radCenterControl" name="LoadingbarPosition" onchange="changeIconPosition();"><label for="radCenterControl">Center of the control</label><br/>
+				</li>
+				</ul>
+				<input type="button" style="margin-bottom: 20px;" value="Initialize the control" onclick="Initialize();" /><br/>
+			</div>
+			<input id="btnScan" type="button" style="display: none;" value="Scan" onclick="AcquireImage();" />
+		</div>
+		<div class="ds-div-scanPage-column ds-div-scanPage-column1">
+			<div id="dwtcontrolContainer" style="width: 100%; height: 100%;"></div>
+		</div>
+	</div>
+    <script type="text/javascript">
+		Dynamsoft.DWT.IfConfineMaskWithinTheViewer = false;
+		function ShowLoadingBar(){
+			var showLoadingbar = document.getElementById("chkShowLoadingbar");
+			if(showLoadingbar.checked) {
+				SettingsEnableOrNot(true);
+			} else {
+				SettingsEnableOrNot(false);
+				Dynamsoft.DWT.OnWebTwainPreExecute = function() {
+					// Show your own progress indicator
+					console.log('An operation starts!');
+				};
+				Dynamsoft.DWT.OnWebTwainPostExecute = function() {
+					// Hide the progress indicator
+					console.log('An operation ends!');
+				};
+			}
+		}
+
+		function SettingsEnableOrNot(bEnalbe){
+			var radDefault = document.getElementById("radDefault");
+			var radCustom = document.getElementById("radCustom");
+			var radCenterPage = document.getElementById("radCenterPage");
+			var radCenterControl = document.getElementById("radCenterControl");
+			var btnFile = document.getElementById("btnFile");
+			if(bEnalbe){
+				radDefault.disabled = false;
+				radCustom.disabled = false;
+				radCenterPage.disabled = false;
+				radCenterControl.disabled = false;
+				SetIfDefaultIcon();
+			} else {
+				radDefault.disabled = true;
+				radCustom.disabled = true;
+				radCenterPage.disabled = true;
+				radCenterControl.disabled = true;
+				btnFile.disabled = true;
+			}
+		}
+		
+		var input = document.createElement("input");
+		input.accept = "image/png,image/jpeg,image/bmp";
+		input.type = "file";
+		input.multiple = true;
+
+		input.addEventListener("change", async () => {
+			var { files } = input;	
+			Dynamsoft.DWT.CustomizableDisplayInfo.loaderBarSource =  URL.createObjectURL(new Blob([files[0]], {
+						type: files[0].type,
+					}));
+			input.value = null;
+			input.files = null;
+		},true);
+		
+		function SetLoadingBar(){
+			input.click();
+		}
+
+		function SetIfDefaultIcon(){
+			var btnFile = document.getElementById('btnFile');
+			var radDefault = document.getElementById('radDefault');
+			if(radDefault.checked){
+				btnFile.disabled = true;
+			} else {
+				btnFile.disabled = false;
+			}
+		}
+		
+		function changeIconPosition(){
+			var centerPage = document.getElementById("centerPage");
+			if(centerPage.checked) {
+				Dynamsoft.DWT.IfConfineMaskWithinTheViewer = false;
+			} else {
+				Dynamsoft.DWT.Containers = [{ WebTwainId: '', ContainerId: 'dwtcontrolContainer', Width: '100%', Height: '100%' }];
+				Dynamsoft.DWT.IfConfineMaskWithinTheViewer = true;
+			}
+		}
+		
+		var DWTObject;
+		function Initialize() {
+			Dynamsoft.DWT.CreateDWTObject(
+				'dwtcontrolContainer'
+				, function (object) {
+					DWTObject = object;
+					var initializeDiv = document.getElementById("initializeDiv");
+					initializeDiv.style.display = "none";
+					var btnScan = document.getElementById("btnScan");
+					btnScan.style.display = "";
+				}, function (exp) {
+					console.error(exp)
+				});
+		}
+			
+		function AcquireImage() {
+            if (DWTObject) {
+				DWTObject.SelectSourceAsync().then(function(){
+					return DWTObject.AcquireImageAsync({
+					        IfCloseSourceAfterAcquire: true // Scanner source will be closed automatically after the scan.
+						});
+				}).catch(function (exp) {
+					alert(exp.message);
+				});
+            }
+        }
+		
+	
+    </script>
+    
+</body>
+
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Without UI</title>
+	<link rel="stylesheet" href="../css/global.css" />
+	<link rel="stylesheet" href="../css/scan.css" />
+    <script src="https://cdn.jsdelivr.net/npm/dwt@latest/dist/dynamsoft.webtwain.min.js"></script>
+    <script type="text/javascript" src="../Resources/dynamsoft.webtwain.config_frame.js"></script>
+</head>
+
+<body>
+	<div class="ds-div-scanPageHeader">
+		<div class="ds-div-title">Without UI</div>
+	</div>
+	<div class="ds-div-scanPageDemo" >
+		<div class="ds-div-scanPage-column ds-div-scanPage-column0">
+			<div><label for="left" >Select Source:</label><select size="1" id="source"></select></div>	
+			<div><input type="button" value="Scan" onclick="AcquireImage();" /></div>
+		</div>
+		<div class="ds-div-scanPage-column ds-div-scanPage-column1">
+			<div id="dwtcontrolContainer" style="width: 100%; height: 100%; border: 1px solid rgb(204, 204, 204);"></div>
+		</div>
+	</div>
+    <script type="text/javascript">
+		Dynamsoft.DWT.UseDefaultViewer = false;
+		Dynamsoft.DWT.IfConfineMaskWithinTheViewer = false;
+		var DWTObject, deviceList;
+		Dynamsoft.DWT.CreateDWTObjectEx({
+			  WebTwainId: 'dwtId',
+		  },function (object) {
+			  DWTObject = object;
+			  if (DWTObject) {
+                deviceList=[];
+				DWTObject.GetDevicesAsync().then(function(devices){
+					for (var i = 0; i < devices.length; i++) { // Get how many sources are installed in the system
+						document.getElementById('source').options.add(new Option(devices[i].displayName, i)); // Add the sources in a drop-down list
+						deviceList.push(devices[i]);
+                    }
+				}).catch(function (exp) {
+					alert(exp.message);
+				});
+			
+				DWTObject.RegisterEvent("OnPostTransferAsync", function (outputInfo) {
+					console.log(DWTObject.CurrentImageIndexInBuffer);
+					DWTObject.ConvertToBlob(
+						[DWTObject.CurrentImageIndexInBuffer],
+						Dynamsoft.DWT.EnumDWT_ImageType.IT_PNG,
+						function (result, indices, type) {
+							console.log(result);
+							const blobUrl = URL.createObjectURL(result);
+							const img = document.createElement('img');
+							img.style.width = "100px";
+							img.src = blobUrl;
+
+							const imageContainer = document.getElementById('dwtcontrolContainer');
+							imageContainer.appendChild(img);
+						},
+						function (errorCode, errorString) {
+							console.log(errorString);
+						}
+					);
+					console.log(outputInfo);  //Check the MagData to see if it contains the information needed by the user.
+				});
+			}
+		  }, function (error) {
+			  console.log(error);
+		});
+		
+		function AcquireImage() {
+			if (DWTObject) {
+				var ddlSource = document.getElementById('source');
+				DWTObject.SelectDeviceAsync(deviceList[ddlSource.selectedIndex]).then(function () {
+					return DWTObject.AcquireImageAsync({
+							IfShowUI: false,
+					        IfCloseSourceAfterAcquire: true // Scanner source will be closed automatically after the scan.
+						});
+				}).catch(function (exp) {
+					alert(exp.message);
+				});
+            }
+        }
+    </script>
+    
+</body>
+
+</html>

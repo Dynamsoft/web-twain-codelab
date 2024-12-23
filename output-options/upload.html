@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Save Documents to HTTP Server</title>
+	<link rel="stylesheet" href="../css/global.css" />
+	<link rel="stylesheet" href="../css/scan.css" />
+    <script src="https://cdn.jsdelivr.net/npm/dwt@latest/dist/dynamsoft.webtwain.min.js"></script>
+    <script type="text/javascript" src="../Resources/dynamsoft.webtwain.config_autoload.js"></script>
+<script src="Scripts/jquery.js?t=20240926"></script> 
+</head>
+<body>
+
+	<div class="ds-div-scanPageHeader">
+		<div class="ds-div-title">Save Documents to HTTP Server</div>
+	</div>
+	<div class="ds-div-scanPageDemo" >
+		<div class="ds-div-scanPage-column ds-div-scanPage-column0">
+            <div class="content clearfix">
+                <div class="section">
+                    <input type="button" value="Scan" onclick="AcquireImage();" class="btn mr20" />
+                    <input type="button" value="Open a local file" onclick="LoadImages();" class="btn" />
+                    <div id="divSaveDetail" class="ds-PT40">
+                        <ul>
+                            <li>
+                                <p style="margin: 0;">File Name:</p>
+                                <input type="text" size="20" id="txt_fileName" value="WebTWAINImage" /><span> . </span>
+                                <select size="1" id="fileType" onchange="fileType_onchange();">     
+                                <option value="pdf">pdf</option>
+                                <option value="tif">tif</option>
+                                <option value="jpg">jpg</option>
+                                <option value="png">png</option>
+                                <option value="bmp">bmp</option></select>
+                            </li>
+                                <li>
+                                Pages:
+                                <label for="CurrentPage" style="margin-left:5px;"><input type="radio" id="CurrentPage" name="Pages">Current Page </label>
+                                <label for="AllPages"><input type="radio" id="AllPages" name="Pages" checked>All Pages</label>
+                            </li>
+                            <li>
+                                <div>
+                                    <span class="customInfo" onmouseover="showCustomInfo();" onmouseout="hideCustomInfo();">Optional Custom Info: <i class="fa fa-download"></i></span>
+                                    <span style="display: none;" id="customDetail">You can input any custom info to be uploaded with your images.</span>
+                                </div>
+                                <input type="text" id="txt_CustomInfo" />
+                            </li>
+                            <li>
+                                <input type="button" value="Upload" onclick="HTTPUpload();" />
+                            </li>
+                        </ul>
+                    </div> 
+                </div>
+                <div id="divUploadedFiles">
+                    <div id='resultWrap'></div>                    
+                </div>
+            </div>
+		</div>
+		<div class="ds-div-scanPage-column ds-div-scanPage-column1">
+			<div id="dwtcontrolContainer" style="width: 100%; height: 100%;"></div>
+		</div>
+	</div>
+    <style>
+        #txt_fileName {
+            width: 270px
+        }
+        #customDetail {
+            float: left;
+            position: absolute;
+            background: white;
+            border: 1px solid #ccc;
+            padding: 0 5px;
+            margin: -2px 4px;
+            z-index: 99;
+            font-family: OpenSans;
+            font-size: 12px;
+            font-weight: 400;
+        }
+        #txt_CustomInfo{
+            width: 365px;
+        }
+        .ds-PT40 ul>li{
+            margin: 0 0 10px 0;
+        }
+        #resultWrap {
+            width: 100%;
+            height: 245px;
+            overflow-y: scroll;
+        }
+        #resultWrap a {
+            cursor: pointer;
+            font-size: 12px;
+            line-height: 17px;
+            letter-spacing: 0px;
+            color: #FE8E14;
+        }
+        input[type=button] {
+            margin: 0 6px 10px 6px;
+        }
+	</style>
+    <script type="text/javascript">
+        var DWTObject, extrFieldsCount = 0;
+
+        Dynamsoft.DWT.RegisterEvent("OnWebTwainReady", function () {
+            DWTObject = Dynamsoft.DWT.GetWebTwain('dwtcontrolContainer'); // Get the Dynamic Web TWAIN object that is embeded in the div with id 'dwtcontrolContainer'
+        });
+
+        function AcquireImage() {
+            if (DWTObject) {
+				DWTObject.SelectSourceAsync().then(function () {
+						return DWTObject.AcquireImageAsync({
+						    IfCloseSourceAfterAcquire: true // Scanner source will be closed automatically after the scan.
+						});
+					}).catch(function (exp) {
+						alert(exp.message);
+				});
+            }
+        }
+        
+        function LoadImages() {
+            if (DWTObject) {			
+				// Load images in all supported formats (.bmp, .jpg, .tif, .png, .pdf). OnSuccess or OnFailure will be called after the operation
+                DWTObject.LoadImageEx("", Dynamsoft.DWT.EnumDWT_ImageType.IT_ALL, function(){
+					console.log('successful');
+				}, function(errorCode, errorString){
+					 alert(errorString);
+				}); 
+            }
+        }
+
+        function HTTPUpload() {
+            if (DWTObject.HowManyImagesInBuffer == 0) {
+                alert("There is no image in the buffer.")
+                return;
+            }
+
+            var i, strHTTPServer, strActionPage, strImageType;
+
+            var _txtFileName = document.getElementById("txt_fileName");
+            if (_txtFileName)
+                _txtFileName.className = "";
+
+            //DWTObject.MaxInternetTransferThreads = 5;
+           /* strHTTPServer = location.hostname;
+            DWTObject.IfSSL = Dynamsoft.Lib.detect.ssl;
+            var _strPort = location.port== "" ? 80 : location.port;
+            if (Dynamsoft.Lib.detect.ssl == true)
+                _strPort = location.port == "" ? 443 : location.port;
+            DWTObject.HTTPPort = _strPort;*/
+
+
+            //var CurrentPathName = unescape(location.pathname); // get current PathName in plain ASCII	
+            //var CurrentPath = CurrentPathName.substring(0, CurrentPathName.lastIndexOf("/") + 1);
+            strActionPage = "SaveToFileEx.aspx";//CurrentPath + "SaveToFileEx.aspx";
+            //strActionPage = "https://192.168.8.139:4433/web-twain/SaveToFileExWithoutSession.aspx";//CurrentPath + "SaveToFileEx.aspx";
+            var fileType = document.getElementById("fileType");
+            var strPageType = fileType.value;
+            switch (strPageType) {
+                case "bmp": strImageType = 0; break;
+                case "jpg": strImageType = 1; break;
+                case "tif": strImageType = 2; break;
+                case "png": strImageType = 3; break;
+                case "pdf": strImageType = 4; break;
+            }
+
+            var fileName = _txtFileName.value;
+            var replaceStr = "<";
+            fileName = fileName.replace(new RegExp(replaceStr, 'gm'), '&lt;');
+            var uploadfilename = fileName + "." + strPageType;
+
+            var OnSuccess = function (httpResponse) {
+                console.log("Successful.");
+            };
+
+            var OnFailure = function (errorCode, errorString, httpResponse) {
+                if (errorCode != 0 && errorCode != -2003) {
+                    alert(errorString);
+                } else {
+                    var textFromServer = httpResponse;
+                    __printUploadedFiles(textFromServer);
+                    console.log("Successful.");
+                }
+
+            };
+
+            var customInfo = document.getElementById("txt_CustomInfo");
+            DWTObject.SetHTTPFormField("CustomInfo", customInfo.value);
+
+            var imgAry = [];
+            var allPages = document.getElementById("AllPages");
+            if (allPages.checked == true) {
+                /*if (strPageType == "tif") {
+                    DWTObject.HTTPUploadAllThroughPostAsMultiPageTIFF(
+                        strHTTPServer,
+                        strActionPage,
+                        uploadfilename,
+                        OnSuccess, OnFailure
+                    );
+                }
+                else if (strPageType == "pdf") {
+                    DWTObject.HTTPUploadAllThroughPostAsPDF(
+                        strHTTPServer,
+                        strActionPage,
+                        uploadfilename,
+                        OnSuccess, OnFailure
+                    );
+                }*/
+                for(var i= 0; i< DWTObject.HowManyImagesInBuffer; i++){
+                    imgAry.push(i);
+                }
+            } else {
+                /*DWTObject.HTTPUploadThroughPostEx(
+                    strHTTPServer,
+                    DWTObject.CurrentImageIndexInBuffer,
+                    strActionPage,
+                    uploadfilename,
+                    strImageType,
+                    OnSuccess, OnFailure
+                );*/
+                imgAry = [DWTObject.CurrentImageIndexInBuffer];
+            }
+
+            DWTObject.HTTPUpload(
+                strActionPage, 
+                imgAry, 
+                strImageType,
+                Dynamsoft.DWT.EnumDWT_UploadDataFormat.Binary, 
+                uploadfilename, 
+                OnSuccess, 
+                OnFailure
+            );
+        }
+
+        function __printUploadedFiles(info) {
+            if (info.indexOf('DWTUploadFileName') != -1) {
+                var url, _strPort;
+                DWTObject.IfSSL = Dynamsoft.Lib.detect.ssl;
+                _strPort = location.port == "" ? 80 : location.port;
+                url = 'http://' + location.hostname + ':' + location.port;
+                if (Dynamsoft.Lib.detect.ssl == true) {
+                    _strPort = location.port == "" ? 443 : location.port;
+                    url = 'https://' + location.hostname + ':' + location.port;
+                }
+
+
+                var CurrentPathName = unescape(location.pathname); // get current PathName in plain ASCII	
+                var CurrentPath = CurrentPathName.substring(0, CurrentPathName.lastIndexOf("/") + 1);
+
+                var customInfo = info.substring(info.indexOf('FieldsTrue') + 11, info.indexOf('DWTUploadFileName'));
+                var fileName = info.substring(info.indexOf('DWTUploadFileName') + 18, info.indexOf('UploadedRealFileName'));
+                var realfileName = info.substr(info.indexOf('UploadedRealFileName') + 21);
+                url += CurrentPath + '../UploadedImages/' + encodeURI(fileName);
+
+                var strImageName, strImageExtName, strCustomInfo;
+                if (fileName.length > 25) {
+                    strImageName = fileName.substring(0, 10) + "..." + fileName.substring(fileName.length - 14, fileName.length);
+                } else
+                    strImageName = fileName;
+
+                if (customInfo.length > 25) {
+                    strCustomInfo = customInfo.substring(0, 10) + "..." + customInfo.substring(customInfo.length - 14, customInfo.length);
+                } else
+                    strCustomInfo = customInfo;
+
+                strImageExtName = "";
+
+                if (fileName.length > 3) {
+                    strImageExtName = fileName.substring(fileName.length - 3, fileName.length);
+                }
+                else {
+                    strImageExtName = "tif";
+                }
+
+                try {
+                    var realfileName1 = realfileName.replace("\\", "\\\\");
+                    var newDiv = document.createElement('div');
+                   // var uploadeddetail = "<div class='info'><span class='title'>File Name:</span><span class='content'>" + strImageName + "</span><br/>" +
+                   // "<span class='title'>Custom Info:</span><span class='content'>" + strCustomInfo + "</span><br/>" +
+                   // "<a onclick='onClickDel(this, \"" + realfileName1 + "\");'>Del</a><span> | </span><a  target='_blank' href = 'online_demo_download.aspx?ImageName=" + realfileName + "&ImageExtName=" + strImageExtName + "'>Download</a></div>";
+                   var uploadeddetail = "<div class='info'><span class='title'>File Name:</span><span class='content'>" + strImageName + "</span><br/>" +
+                    "<span class='title'>Custom Info:</span><span class='content'>" + strCustomInfo + "</span><br/>" +
+                    "<a onclick='onClickDel(this, \"" + realfileName1 + "\");'>Del</a><span> | </span><a  target='_blank' href = 'Download.aspx?ImageName=" + realfileName + "&ImageExtName=" + strImageExtName + "'>Download</a></div>"; 
+                   newDiv.innerHTML = uploadeddetail;
+                    newDiv.style.borderBottom = "solid 1px #ccc";
+                    document.getElementById('resultWrap').appendChild(newDiv);
+
+                    var resultWrap = document.getElementById("resultWrap");
+                    resultWrap.scrollTop = resultWrap.scrollHeight;
+
+                } catch (exp) {
+                    console.log(exp.message);
+                }
+            }
+        }
+
+        function onClickDel(Obj, fileName) {
+            Obj.parentNode.parentNode.parentNode.removeChild(Obj.parentNode.parentNode);
+            $.ajax({
+                url: "DeleteFile.aspx?ImageName=" + fileName, success: function () { }
+            });
+        }
+
+        function fileType_onchange() {
+            var currentPage = document.getElementById("CurrentPage");
+            var allPages = document.getElementById("AllPages");
+            var fileType = document.getElementById("fileType");
+            var strPageType = fileType.value;
+            if (strPageType == "pdf" || strPageType == "tif") {
+                if (currentPage)
+                    currentPage.disabled = false;
+                if (allPages)
+                    allPages.disabled = false;
+                if (strPageType == "pdf") {
+                    if (allPages)
+                        allPages.checked = true;
+                }
+                if (strPageType == "tif") {
+                    if (currentPage)
+                        currentPage.checked = true;
+                }
+
+            } else {
+                if (currentPage) {
+                    currentPage.disabled = true;
+                    currentPage.checked = true;
+                }      
+                if (allPages)
+                    allPages.disabled = true;
+            }
+        }
+        
+        function showCustomInfo() {
+            var customDetail = document.getElementById("customDetail");
+            customDetail.style.display = "";
+        }
+
+        function hideCustomInfo() {
+            var customDetail = document.getElementById("customDetail");
+            customDetail.style.display = "none";
+        }
+
+        function onResize() {
+            var column = document.querySelector(".ds-div-scanPageDemo");
+
+            var resultWrap = document.getElementById("resultWrap");
+
+            if(column.offsetHeight < 594) {
+                resultWrap.style.height = (column.offsetHeight - 280) + 'px';
+            } else {
+                resultWrap.style.height = (column.offsetHeight - 290) + 'px';
+            }
+        }
+
+        window.addEventListener('resize', onResize);
+        onResize();
+    </script>
+	
+</body>
+</html>

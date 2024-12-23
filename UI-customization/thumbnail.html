@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Viewer and Thumbnail Navigator</title>
+	<link rel="stylesheet" href="../css/global.css" />
+	<link rel="stylesheet" href="../css/scan.css" />
+    <script src="https://cdn.jsdelivr.net/npm/dwt@latest/dist/dynamsoft.webtwain.min.js"></script>
+    <script type="text/javascript" src="../Resources/dynamsoft.webtwain.config_autoload.js"></script>
+</head>
+<body>
+<div class="ds-div-scanPage">
+	<div class="ds-div-scanPageHeader">
+		<div class="ds-div-title">Viewer and Thumbnail Navigator</div>
+	</div>
+	<div class="ds-div-scanPageDemo" >
+		<div class="ds-div-scanPage-column ds-div-scanPage-column0">
+			<div><span><input type="button" value="Scan" onclick="AcquireImage();" /></span><span style="margin-left: 10px;"><input type="button" value="Open a local file" onclick="LoadImage();" /></span></div>
+			<div>
+				<div><label >Thumbnail Settings:</label></div>
+				<ul class="ds-ul-1">
+					<li><label><input type="checkbox" id="chkShowThumbnail" onchange="ShowThumbnail();">Show Thumbnail</label></li>
+					<li><label><input type="checkbox" id="chkShowCheckbox" onchange="ShowCheckbox();" disabled>Show Checkbox</label></li>
+					<li><label><input type="checkbox" id="chkShowPageNumber" onchange="ShowPageNumber();" disabled>Show Page Number</label></li>
+				</ul>
+				<ul class="ds-ul-2">
+					<li><label id="lblLocation" for="location">Location:</label><select size="1" id="ddlLocation" onchange="SetLocation();" disabled>
+							<option value="left">Left</option>
+							<option value="top">Top</option>
+							<option value="right">Right</option>
+							<option value="bottom">Bottom</option>
+						</select>
+					</li>
+					<li><label id="lblRows" for="Rows">Rows: </label><input type="text" id="txtRows" value='3' onchange="SetViewMode();" disabled></li>
+					<li><label id="lblColumns" for="Columns">Columns: </label><input type="text" id="txtColumns" value='1' onchange="SetViewMode();" disabled></li>
+				<ul class="ds-ul-3">
+					<li><label id="lblSelectedPageBackground" for="selectedPageBackground">Select Page Background: </label><input type="color" id="colSelectedPageBackground" value='#c7defc' onchange="SetSelectedPageBackground();" disabled></li>
+					<li><label id="lblSelectedPageBorder" for="selectedPageBorder">Select Page Border Color: </label><input type="color" id="colSelectedPageBorder" value='#7da2ce' onchange="SetSelectedPageBorder();" disabled></li>
+					<li><label id="lblHoverPageBackground" for="hoverPageBackground">Hover Page Background: </label><input type="color" id="colHoverPageBackground" value='#EFF6FD' onchange="SetHoverPageBackground();" disabled></li>
+					<li><label id="lblHoverPageBorder" for="hoverPageBorder">Hover Page Border Color: </label><input type="color" id="colHoverPageBorder" value='#EEEEEE' onchange="SetHoverPageBorder();" disabled></li>
+				</ul>
+				<div><label id="lblSinglePageMode" for="chkSinglePageMode"><input type="checkbox" id="chkSinglePageMode" onchange="singlePageMode();" disabled checked>Use single page mode in the main viewer</label></div>
+			</div>
+		</div>
+		<div class="ds-div-scanPage-column ds-div-scanPage-column1">
+			<div id="dwtcontrolContainer" style="width: 100%; height: 100%;"></div>
+		</div>
+	</div>
+</div>
+<style>
+	.ds-div-scanPage-column0 {
+		padding: 0 20px;
+	}
+	.ds-ul-1>li, .ds-ul-2>li, .ds-ul-3>li {
+		margin-top: 10px;
+	}
+	.ds-ul-3 {
+		margin-bottom: 10px;
+	}
+	.ds-ul-2>li>label {
+		width: 90px;
+		display: inline-block;
+	}
+	#ddlLocation {
+		width: 160px;
+		height: 30px;
+		display: inline-block;
+	}
+	#txtRows, #txtColumns {
+		width: 160px;
+	}
+	.ds-ul-3>li>label {
+		width: 200px;
+		display: inline-block;
+	}
+	input[type="checkbox"] {
+		margin-right: 10px;
+	}
+</style>
+    <script type="text/javascript">
+        var DWTObject, objThumbnailViewer;
+
+        Dynamsoft.DWT.RegisterEvent("OnWebTwainReady", function () {
+            DWTObject = Dynamsoft.DWT.GetWebTwain('dwtcontrolContainer'); // Get the Dynamic Web TWAIN object that is embeded in the div with id 'dwtcontrolContainer'
+			if (DWTObject) {
+                objThumbnailViewer = DWTObject.Viewer.createThumbnailViewer();		
+			}
+        });
+
+        function AcquireImage() {
+            if (DWTObject) {
+				DWTObject.SelectSourceAsync().then(function () {
+					return DWTObject.AcquireImageAsync({
+							IfCloseSourceAfterAcquire: true // Scanner source will be closed automatically after the scan.
+						});
+				}).catch(function (exp) {
+					alert(exp.message);
+				});
+            }
+        }
+
+        function LoadImage() {
+            if (DWTObject) {			
+				// Load images in all supported formats (.bmp, .jpg, .tif, .png, .pdf). OnSuccess or OnFailure will be called after the operation
+                DWTObject.LoadImageEx("", Dynamsoft.DWT.EnumDWT_ImageType.IT_ALL, function(){
+					console.log('successful');
+				}, function(errorCode, errorString){
+					 alert(errorString);
+				}); 
+            }
+        }
+		
+		function ShowThumbnail(){
+			if (DWTObject) {
+               var showThumbnail = document.getElementById("chkShowThumbnail");
+			   if(showThumbnail.checked){
+					objThumbnailViewer.show();
+					SettingsEnableOrNot(true);
+			   } else {
+					objThumbnailViewer.hide();
+					SettingsEnableOrNot(false);
+			   }
+			}
+		}
+
+		function SettingsEnableOrNot(bEnalbe){
+			var showCheckbox = document.getElementById("chkShowCheckbox");
+			var chkShowPageNumber = document.getElementById("chkShowPageNumber");
+			var chkSinglePageMode = document.getElementById("chkSinglePageMode");
+			var ddlLocation = document.getElementById("ddlLocation");
+			var txtRows = document.getElementById("txtRows");
+			var txtColumns = document.getElementById("txtColumns");
+			var colSelectedPageBackground = document.getElementById("colSelectedPageBackground");
+			var colSelectedPageBorder = document.getElementById("colSelectedPageBorder");
+			var colHoverPageBackground = document.getElementById("colHoverPageBackground");
+			var colHoverPageBorder = document.getElementById("colHoverPageBorder");
+			if(bEnalbe){
+				showCheckbox.disabled = false;
+				chkShowPageNumber.disabled = false;
+				chkSinglePageMode.disabled = false;
+				ddlLocation.disabled = false;
+				txtRows.disabled = false;
+				txtColumns.disabled = false;
+				colSelectedPageBackground.disabled = false;
+				colSelectedPageBorder.disabled = false;
+				colHoverPageBackground.disabled = false;
+				colHoverPageBorder.disabled = false;
+			} else {
+				showCheckbox.disabled = true;
+				chkShowPageNumber.disabled = true;
+				chkSinglePageMode.disabled = true;
+				ddlLocation.disabled = true;
+				txtRows.disabled = true;
+				txtColumns.disabled = true;
+				colSelectedPageBackground.disabled = true;
+				colSelectedPageBorder.disabled = true;
+				colHoverPageBackground.disabled = true;
+				colHoverPageBorder.disabled = true;
+			}
+		}
+		
+		function ShowCheckbox(){
+			if (DWTObject) {
+               var showCheckbox = document.getElementById("chkShowCheckbox");
+			   if(showCheckbox.checked){
+					objThumbnailViewer.updateCheckboxStyle({visibility:"visible"});
+					DWTObject.Viewer.selectionMode = Dynamsoft.DWT.EnumDWT_SelectionMode.Multiple;
+			   } else {
+					objThumbnailViewer.updateCheckboxStyle({visibility:"hidden"});
+					DWTObject.Viewer.selectionMode = Dynamsoft.DWT.EnumDWT_SelectionMode.Single;
+			   }
+			}
+		}
+		
+		function ShowPageNumber(){
+			if (DWTObject) {
+               var showPageNumber = document.getElementById("chkShowPageNumber");
+			   if(showPageNumber.checked){
+					objThumbnailViewer.updatePageNumberStyle({visibility:"visible"});
+			   } else {
+					objThumbnailViewer.updatePageNumberStyle({visibility:"hidden"});
+			   }
+			}
+		}
+		
+		function SetLocation(){
+			var location = document.getElementById("ddlLocation");
+			objThumbnailViewer.location=location.value;
+			SetViewMode();
+		}
+		
+		function SetViewMode(){
+			var rows = document.getElementById("txtRows");
+			var columns = document.getElementById("txtColumns");
+			var location = document.getElementById("ddlLocation");
+			var strScrollDirection = "vertical";
+			if(location.value == "top" || location.value == "bottom")
+				strScrollDirection = "horizontal";
+			objThumbnailViewer.updateViewMode({ columns: parseInt(columns.value), rows: parseInt(rows.value), scrollDirection:strScrollDirection});
+		}
+		
+		function SetSelectedPageBackground(){
+			if (DWTObject) {
+               var selectedPageBackground = document.getElementById("colSelectedPageBackground");
+			   objThumbnailViewer.selectedPageBackground = selectedPageBackground.value;
+			}
+		}
+		
+		function SetSelectedPageBorder(){
+			if (DWTObject) {
+               var selectedPageBorder = document.getElementById("colSelectedPageBorder");
+			   objThumbnailViewer.selectedPageBorder = '1px solid ' + selectedPageBorder.value;
+			}
+		}
+		
+		function SetHoverPageBackground(){
+			if (DWTObject) {
+               var hoverPageBackground = document.getElementById("colHoverPageBackground");
+			   objThumbnailViewer.hoverPageBackground = hoverPageBackground.value;
+			}
+		}
+		
+		function SetHoverPageBorder(){
+			if (DWTObject) {
+               var hoverPageBorder = document.getElementById("colHoverPageBorder");
+			   objThumbnailViewer.hoverPageBorder = '1px solid ' + hoverPageBorder.value;
+			}
+		}
+		
+		function singlePageMode(){
+			if (DWTObject) {
+               var singlePageMode = document.getElementById("chkSinglePageMode");
+			   if(singlePageMode.checked)
+				DWTObject.Viewer.singlePageMode = true;
+			  else 
+				DWTObject.Viewer.singlePageMode = false;
+			}
+		}
+    </script>
+    
+</body>
+</html>

@@ -1,0 +1,71 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Set Custom Data for Scanning</title>
+	<link rel="stylesheet" href="../css/global.css" />
+	<link rel="stylesheet" href="../css/scan.css" />
+    <script src="https://cdn.jsdelivr.net/npm/dwt@latest/dist/dynamsoft.webtwain.min.js"></script>
+    <script type="text/javascript" src="../Resources/dynamsoft.webtwain.config_autoload.js"></script>
+</head>
+
+<body>
+	<div class="ds-div-scanPageHeader">
+		<div class="ds-div-title">Set Custom Data for Scanning</div>
+		<p>This demo only supports TWAIN drivers on Windows or Mac, and primarily achieves specific scanning operations by setting predefined scanning configuration profiles.</p>
+	</div>
+	<div class="ds-div-scanPageDemo" >
+		<div class="ds-div-scanPage-column ds-div-scanPage-column0">
+			<div><label for="left" >Select Source:</label><select size="1" id="source"></select></div>	
+			<div><label for="message">Custom DS Data:</label></div>
+			<div><textarea id="message" name="message" rows="7" cols="50" placeholder="Enter Custom DS Data here..."></textarea></div>
+			<div><label for="message">Note: If you don't have the base64 string of the custom DS data yet, please click <a class="bluelink" href="get-custom-data.html">here</a> to retrieve it.</label></div>
+			<div><input type="button" style="margin-bottom: 20px;" value="Set Custom DS Data and Scan" onclick="SetCustomDSDataAndAcquireImage();" /></div>
+		</div>
+		<div class="ds-div-scanPage-column ds-div-scanPage-column1">
+			<div id="dwtcontrolContainer" style="width: 100%; height: 100%;"></div>
+		</div>
+	</div>
+	<style>
+		.ds-div-scanPage-column0>div {
+			margin: 7px;
+		}
+		.ds-div-scanPage-column0>div textarea {
+			width: 385px;
+		}
+	</style>
+    <script type="text/javascript">
+		var DWTObject, deviceList;
+		Dynamsoft.DWT.RegisterEvent("OnWebTwainReady", function () {
+			DWTObject = Dynamsoft.DWT.GetWebTwain('dwtcontrolContainer'); // Get the Dynamic Web TWAIN object that is embeded in the div with id 'dwtcontrolContainer'
+			if (DWTObject) {
+                deviceList=[];
+				DWTObject.GetDevicesAsync().then(function(devices){
+					for (var i = 0; i < devices.length; i++) { // Get how many sources are installed in the system
+						document.getElementById('source').options.add(new Option(devices[i].displayName, i)); // Add the sources in a drop-down list
+						deviceList.push(devices[i]);
+                    }
+				}).catch(function (exp) {
+					alert(exp.message);
+				});
+            }
+		}); 
+		
+		function SetCustomDSDataAndAcquireImage(){
+			var cIndex = document.getElementById('source').selectedIndex;
+			DWTObject.SelectDeviceAsync(deviceList[cIndex]).then(function () {
+				var customDSData = document.getElementById("message");
+				DWTObject.SetCustomDSDataEx(customDSData.value);
+				return DWTObject.AcquireImageAsync({
+					IfCloseSourceAfterAcquire: true // Scanner source will be closed automatically after the scan.
+				});
+			}).catch(function (exp) {
+				alert(exp.message);
+				DWTObject.CloseSourceAsync();
+			});
+		}
+    </script>
+  	
+</body>
+
+</html>

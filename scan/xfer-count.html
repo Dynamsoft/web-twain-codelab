@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Set Maximum Number of Images per Scan(TWAIN & SANE)</title>
+	<link rel="stylesheet" href="../css/global.css" />
+	<link rel="stylesheet" href="../css/scan.css" />
+    <script src="https://cdn.jsdelivr.net/npm/dwt@latest/dist/dynamsoft.webtwain.min.js"></script>
+    <script type="text/javascript" src="../Resources/dynamsoft.webtwain.config_autoload.js"></script>
+</head>
+
+<body>
+	<div class="ds-div-scanPageHeader">
+		<div class="ds-div-title">Set Maximum Number of Images per Scan</div>
+		<p>The demo only supports TWAIN drivers for Windows or Mac, and SANE drivers. It primarily controls the number of pages per scan operation by setting the number of images the web application is willing to accept for each scan.</p>
+	</div>
+	<div class="ds-div-scanPageDemo" >
+		<div class="ds-div-scanPage-column ds-div-scanPage-column0">
+			<div><span>Select Source:</span><select size="1" id="source"></select></div>
+			<div><span>Accepted Image Count:</span><input type="text" id="txt_XferCount" value="-1"></div>
+			<input type="button" value="Scan" onclick="AcquireImage();" />
+		</div>
+		<div class="ds-div-scanPage-column ds-div-scanPage-column1">
+			<div id="dwtcontrolContainer" style="width: 100%; height: 100%;"></div>
+		</div>
+	</div>
+	<style>
+		.ds-div-scanPage-column0 span {
+			width: 180px;
+			display: inline-block;
+		}
+		.ds-div-scanPage-column0>div {
+			margin: 5px 0;
+		}
+		.ds-div-title {
+			width: 750px;
+		}
+		.ds-div-scanPageHeader p {
+			height: 36px;
+		}
+		.ds-div-download {
+			top: 60px;
+		}
+	</style>
+    <script type="text/javascript">
+		var DWTObject, deviceList;
+		Dynamsoft.DWT.RegisterEvent("OnWebTwainReady", function () {
+			DWTObject = Dynamsoft.DWT.GetWebTwain('dwtcontrolContainer'); // Get the Dynamic Web TWAIN object that is embeded in the div with id 'dwtcontrolContainer'
+            if (DWTObject) {
+                deviceList=[];
+				DWTObject.GetDevicesAsync().then(function(devices){
+					for (var i = 0; i < devices.length; i++) { // Get how many sources are installed in the system
+						document.getElementById('source').options.add(new Option(devices[i].displayName, i)); // Add the sources in a drop-down list
+						deviceList.push(devices[i]);
+                    }
+				}).catch(function (exp) {
+					alert(exp.message);
+				});
+            }
+		}); 
+
+		function AcquireImage() {
+            if (DWTObject) {
+				var ddlSource = document.getElementById('source');
+				DWTObject.SelectDeviceAsync(deviceList[ddlSource.selectedIndex]).then(function () {
+					return DWTObject.AcquireImageAsync({
+							IfShowUI: false,
+							XferCount: parseInt(document.getElementById("txt_XferCount").value),
+					        IfCloseSourceAfterAcquire: true // Scanner source will be closed automatically after the scan.
+						});
+				}).catch(function (exp) {
+					alert(exp.message);
+				});
+            }
+        }
+    </script>
+  	
+</body>
+
+</html>

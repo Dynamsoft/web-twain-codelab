@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Download from HTTP Server</title>
+    <link rel="stylesheet" href="../css/global.css" />
+	<link rel="stylesheet" href="../css/scan.css" />
+    <script type="text/javascript" src="../Resources/dynamsoft.webtwain.initiate.js"> </script>
+    <script type="text/javascript" src="../Resources/dynamsoft.webtwain.config_autoload.js"> </script>
+</head>
+
+<body>
+    <div class="ds-div-scanPageHeader">
+		<div class="ds-div-title">Load from Local Drive</div>
+		<p>A frame of the data source's scanning area to be acquired.</p>
+	</div>
+	<div class="ds-div-scanPageDemo" >
+		<div class="ds-div-scanPage-column ds-div-scanPage-column0">
+	        <div>URL: <input type="text" id="txtURL" style="width: 100%;" value="https://demo.dynamsoft.com/Samples/DWT/Download-from-HTTP-Server/DynamsoftSample.pdf" /></div>
+            <div><input type="button" value="Download" onclick="DownloadImage();" /></div>
+        </div>
+        <div class="ds-div-scanPage-column ds-div-scanPage-column1">
+            <div id="dwtcontrolContainer" style="width: 100%; height: 100%;"></div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        var DWTObject;
+        Dynamsoft.DWT.RegisterEvent("OnWebTwainReady", function () {
+            DWTObject = Dynamsoft.DWT.GetWebTwain('dwtcontrolContainer'); // Get the Dynamic Web TWAIN object that is embeded in the div with id 'dwtcontrolContainer'
+        });
+
+        //Callback functions for async APIs
+        function OnSuccess() {
+            console.log('successful');
+        }
+
+        function OnFailure(errorCode, errorString) {
+            alert(errorString);
+        }
+
+        function DownloadImage() {
+            if (DWTObject) {
+                var strHTTPServer, downloadfilename;
+                var txtURL = document.getElementById('txtURL');
+                if(txtURL.value.indexOf('https://') != -1){
+                    DWTObject.IfSSL = true; 
+                } else {
+                    DWTObject.IfSSL = false; 
+                }
+                var index = txtURL.value.indexOf('://');
+                if(index != -1) {
+                    var iStart = index + '://'.length;
+                    var iEnd = txtURL.value.indexOf(':', iStart);
+                    if(iEnd == -1) {
+                        iEnd = txtURL.value.indexOf('/', iStart);
+                        DWTObject.HTTPPort = DWTObject.IfSSL ? 443 : 80; 
+                        strHTTPServer = txtURL.value.substr(iStart, iEnd-iStart);
+                        downloadfilename = txtURL.value.substr(iEnd, txtURL.value.length-iEnd);
+                    } else {
+                        strHTTPServer = txtURL.value.substr(iStart, iEnd-iStart);
+                        var iTemp = iEnd + 1;
+                        iEnd = txtURL.value.indexOf('/', iStart);
+                        DWTObject.HTTPPort = txtURL.value.substr(iTemp, iEnd-iTemp);
+                        downloadfilename = txtURL.value.substr(iEnd, txtURL.value.length-iEnd);
+                    }
+                        
+                }
+
+                DWTObject.HTTPDownload(strHTTPServer, downloadfilename, OnSuccess, OnFailure);
+            }
+        }
+    </script>
+    
+</body>
+
+</html>

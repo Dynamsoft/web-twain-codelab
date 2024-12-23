@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Set Image Layout Rectangle</title>
+    <link rel="stylesheet" href="../css/global.css" />
+	<link rel="stylesheet" href="../css/scan.css" />
+    <script src="https://cdn.jsdelivr.net/npm/dwt@latest/dist/dynamsoft.webtwain.min.js"></script>
+    <script type="text/javascript" src="../Resources/dynamsoft.webtwain.config_autoload.js"></script>
+</head>
+<body>
+	<div class="ds-div-scanPageHeader">
+		<div class="ds-div-title">Set Image Layout Rectangle</div>
+		<p>This demo only supports TWAIN drivers on Windows or Mac, and primarily sets the image layout rectangle for the current data source by specifying the left, top, right, and bottom boundaries, thereby defining a frame of the data source’s scanning area to be acquired.</p>
+	</div>
+	<div class="ds-div-scanPageDemo" >
+		<div class="ds-div-scanPage-column ds-div-scanPage-column0">
+			<div><label for="left" >Select Source:</label><select size="1" id="source"></select></div>	
+			<div><label for="left">Unit:</label><select size="1" id="unitType">
+				<option value="0">inches</option>
+				<option value="1">centimeters</option>
+				<option value="2">picas</option>
+				<option value="3">points</option>
+				<option value="4">twips</option>
+				<option value="5" selected>Pixels</option>
+				<option value="6">millimeters</option></select>
+			</div>
+			<div><label for="left">Left:</label><input type="text" id='left' value='0'></div>
+			<div><label for="top">Top:</label><input type="text" id='top' value='0'></div>
+			<div><label for="right">Right:</label><input type="text" id='right' value='1700'></div>
+			<div><label for="bottom">Bottom:</label><input type="text" id='bottom' value='2200'></div>
+			<input type="button" value="Scan" style ="margin-bottom: 20px;" onclick="AcquireImage();" />
+		</div>
+		<div class="ds-div-scanPage-column ds-div-scanPage-column1">
+			<div id="dwtcontrolContainer" style="width: 100%; height: 100%;"></div>
+		</div>
+	</div>
+	<style>
+		.ds-div-scanPage-column0>div {
+			margin: 7px;
+		}
+		.ds-div-scanPage-column0 label {
+			width: 120px;
+			display: inline-block;
+		}
+		#unitType, #source, input[type="text"] {
+			width: 280px;
+		}
+		.ds-div-scanPageHeader p {
+			height: 36px;
+		}
+		.ds-div-download {
+			top: 60px;
+		}
+	</style>
+  <script type="text/javascript">
+    var DWTObject, deviceList;
+    Dynamsoft.DWT.RegisterEvent("OnWebTwainReady", function () {
+		DWTObject = Dynamsoft.DWT.GetWebTwain('dwtcontrolContainer'); // Get the Dynamic Web TWAIN object that is embeded in the div with id 'dwtcontrolContainer'
+		 if (DWTObject) {
+			deviceList=[];
+			DWTObject.GetDevicesAsync().then(function(devices){
+				for (var i = 0; i < devices.length; i++) { // Get how many sources are installed in the system
+					document.getElementById('source').options.add(new Option(devices[i].displayName, i)); // Add the sources in a drop-down list
+					deviceList.push(devices[i]);
+				}
+			}).catch(function (exp) {
+				alert(exp.message);
+			});
+			
+			DWTObject.Viewer.on("pageAreaSelected", function (sImageIndex, rect) {
+			  console.log(rect);
+			  document.getElementById('left').value = rect[0].x;
+			  document.getElementById('top').value = rect[0].y;
+			  document.getElementById('right').value = rect[0].x + rect[0].width;
+			  document.getElementById('bottom').value = rect[0].y + rect[0].height;
+			});
+		}
+    });
+
+    function AcquireImage() {
+      if (DWTObject) {
+		var ddlSource = document.getElementById('source');
+		DWTObject.SelectDeviceAsync(deviceList[ddlSource.selectedIndex]).then(function () {
+			return DWTObject.OpenSourceAsync();
+		}).then(function () {
+			DWTObject.Unit = document.getElementById('unitType').value;
+			DWTObject.SetImageLayout(parseInt(document.getElementById('left').value), parseInt(document.getElementById('top').value),
+				parseInt(document.getElementById('right').value), parseInt(document.getElementById('bottom').value));
+			return DWTObject.AcquireImageAsync({
+				IfShowUI: false,
+				IfCloseSourceAfterAcquire: true // Scanner source will be disabled/closed automatically after the scan.
+			});
+		}).catch(function (exp) {
+			console.error(exp);
+		});
+      }
+    }
+  </script>
+  
+</body>
+</html>

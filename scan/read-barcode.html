@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Use the scanner's built-in barcode detection.</title>
+	<link rel="stylesheet" href="../css/global.css" />
+	<link rel="stylesheet" href="../css/scan.css" />
+    <script src="https://cdn.jsdelivr.net/npm/dwt@latest/dist/dynamsoft.webtwain.min.js"></script>
+    <script type="text/javascript" src="../Resources/dynamsoft.webtwain.config_autoload.js"></script>
+</head>
+
+<body>
+	<div class="ds-div-scanPageHeader">
+		<div class="ds-div-title">Use the scanner's built-in barcode detection.</div>
+		<p>The demo requires a scanner capable of reading barcodes.</p>
+	</div>
+	<div class="ds-div-scanPageDemo" >
+		<div class="ds-div-scanPage-column ds-div-scanPage-column0">
+			<input type="button" value="Scan" onclick="AcquireImage();" />
+			<div id="barcode" class="clearfix"><span class="lblMagData">Barcode Info:</span><br>
+				<div id="DWTBarcode"></div>
+			</div>						
+		</div>
+		<div class="ds-div-scanPage-column ds-div-scanPage-column1">
+			<div id="dwtcontrolContainer" style="width: 100%; height: 100%;"></div>
+		</div>
+	</div>
+	<style>
+		#DWTBarcode {
+			width: 400px;
+			height: 350px;
+			border: 1px solid #c3c3c3;
+		}
+	</style>
+    <script type="text/javascript">
+		var DWTObject;
+		Dynamsoft.DWT.RegisterEvent("OnWebTwainReady", function () {
+			DWTObject = Dynamsoft.DWT.GetWebTwain('dwtcontrolContainer'); // Get the Dynamic Web TWAIN object that is embeded in the div with id 'dwtcontrolContainer'
+			DWTObject.RegisterEvent("OnPostTransferAsync", function (outputInfo) {
+			  console.log(outputInfo);  
+			  var dwtBarcode = document.getElementById("DWTBarcode");
+			  if(outputInfo && outputInfo.extendedImageInfo && outputInfo.extendedImageInfo.barcode && outputInfo.extendedImageInfo.barcode.length > 0){
+				dwtBarcode.innerText = JSON.stringify(outputInfo.extendedImageInfo.barcode[0]);
+			  }
+			});
+		}); 
+
+		function AcquireImage() {
+            if (DWTObject) {
+				DWTObject.SelectSourceAsync().then(function(){
+					DWTObject.setCapabilities({exception:"fail",capabilities:[{
+                        capability:Dynamsoft.DWT.EnumDWT_Cap.ICAP_BARCODEDETECTIONENABLED,
+                        curValue:true
+                    }]},function(c){
+						return DWTObject.AcquireImageAsync({
+							IfShowUI: false,
+					        IfCloseSourceAfterAcquire: true, // Scanner source will be closed automatically after the scan.
+							IfGetExtImageInfo: true,
+							extendedImageInfoQueryLevel:0
+						});
+				  	},function (errorData) {
+						if(errorData.capabilities && errorData.capabilities.length > 0)
+							if(errorData.capabilities[0].errorString)
+								alert(errorData.capabilities[0].errorString);
+						}
+					);
+				}).catch(function (exp) {
+					alert(exp.message);
+				});
+            }
+        }
+    </script>
+  	
+</body>
+
+</html>

@@ -1,0 +1,417 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Edit Image</title>
+	<link rel="stylesheet" href="css/global.css" />
+	<link rel="stylesheet" href="css/scan.css" />
+    <script src="https://cdn.jsdelivr.net/npm/dwt@latest/dist/dynamsoft.webtwain.min.js"></script>
+    <script src="Resources/dynamsoft.webtwain.config_autoload.js"></script>
+</head>
+<body>
+    <div class="ds-div-scanPageHeader">
+		<div class="ds-div-title">Edit Image</div>
+	</div>
+	<div class="ds-div-scanPageDemo" >
+		<div class="ds-div-scanPage-column ds-div-scanPage-column0">
+			<div><label for="left" >Select Source:</label><select size="1" id="source"></select></div>	
+			<input type="button" value="Scan" style ="margin-bottom: 20px;" onclick="AcquireImage();" />
+            <div id="editDiv">
+                <div>
+                    <input onclick="btnCrop_onclick()" type="button" value="Crop" />
+                    <input onclick="btnCut_onclick()" type="button" value="Cut" />
+                </div>
+                <div>
+                    <input onclick="btnRotateLeft_onclick()" type="button" value="Rotate Left" />
+                    <input onclick="btnRotate_onclick()" type="button" value="Rotate" />
+                    <input onclick="btnRotateRight_onclick()" type="button" value="Rotate Right" />
+                </div>
+                <div>
+                    <input onclick="btnFlip_onclick()" type="button" value="Flip" />
+                    <input onclick="btnMirror_onclick()" type="button" value="Mirror" />
+                    <input onclick="btnChangeImageSize_onclick()" type="button" value="Change Image Size" />
+                </div>
+                <div>
+                    <input onclick="btnRemoveSelectedImages_onclick()" type="button" value="Remove Selected Images" />
+                    <input onclick="btnRemoveAllImages_onclick()" type="button" value="Remove All Images" />
+                </div>
+                <div class="dvs-rotateBox" id="dvsRotateBox" style="left: 110px; top: -80px; position: relative;display: none;">
+                    <div>
+                        <span>Angle :</span><input id="dvsRotateAngle" type="number" value="45">
+                    </div>
+                    <div style="display: flex;">
+                        <span>Interpolation:</span><select size="1" id="dvsRotateInterpolation">
+                            <option value="1">NearestNeighbor</option><option value="2">Bilinear</option>
+                            <option value="3">Bicubic</option></select>
+                    </div>
+                    <div>
+                        <label><input type="checkbox" id="dvsKeepSize"><span>Keep size</span></label>
+                    </div>
+                    <div>
+                        <input id="dvsRotateOk" type="button" value="  OK  " onclick="btnRotateOK_onclick();">
+                        <input id="dvsRotateCancel" type="button" value="Cancel" onclick="btnRotateCancel_onclick();">
+                    </div>
+                </div>
+                <div class="dvs-changeSizeBox" id="dvsChangeSizeBox" style="left: 150px;top: -40px;position: relative;display: none;">
+                    <div>
+                        <span>New Height :</span>
+                        <div>
+                            <input id="dvsChangeH" type="number" value="2200">
+                            <span>pixel</span>
+                        </div>
+                    </div>
+                    <div style="margin-top: 10px;">
+                        <span>New Width :</span>
+                        <div>
+                            <input id="dvsChangeW" type="number" value="1700">
+                            <span>pixel</span>
+                        </div>
+                    </div>
+                    <div style="display: flex;">
+                        <span>Interpolation:</span>
+                        <select size="1" id="dvsChangeSizeInterpolation">
+                            <option value="1">NearestNeighbor</option>
+                            <option value="2">Bilinear</option>
+                            <option value="3">Bicubic</option>
+                        </select>
+                    </div>
+                    <div>
+                        <input id="dvsChangeSizeOk" type="button" value="  OK  " onclick="btnChangeSizeOk_onclick();">
+                        <input id="dvsChangeSizeCancel" type="button" value="Cancel" onclick="btnChangeSizeCancel_onclick();">
+                    </div>
+                </div>
+            </div>
+		</div>
+		<div class="ds-div-scanPage-column ds-div-scanPage-column1">
+			<div id="dwtcontrolContainer" style="width: 100%; height: 100%;"></div>
+		</div>
+	</div>
+	<style>
+		.ds-div-scanPage-column0>div {
+			margin: 7px;
+		}
+		.ds-div-scanPage-column0 label {
+			width: 120px;
+			display: inline-block;
+		}
+        #editDiv {
+            margin: 0px;
+        }
+        #editDiv input[type=button]{
+            margin: 5px 0;
+        }
+        .dvs-changeSizeBox,.dvs-rotateBox {
+            background-color: #f0f0f0;
+            border: 2px solid #ce5e04;
+            box-sizing: border-box;
+            color: #000;
+            font-family: OpenSans,Segoe UI,SegoeUI,Helvetica Neue,Helvetica,Arial,sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 15px;
+            position: absolute;
+            width: 280px;
+            z-index: 9999
+        }
+
+        .dvs-rotateBox>div:first-child input {
+            box-sizing: border-box;
+            height: 22px;
+            margin-left: 5px;
+            width: 155px
+        }
+
+        .dvs-rotateBox>div:nth-child(2) {
+            align-items: center;
+            margin-top: 10px
+        }
+
+        .dvs-rotateBox>div:nth-child(2) select {
+            box-sizing: border-box;
+            height: 22px;
+            margin-left: 5px
+        }
+
+        .dvs-rotateBox div:nth-child(3) {
+            align-items: center;
+            display: flex;
+            height: 22px;
+            margin-top: 8px
+        }
+
+        .dvs-rotateBox>div:nth-child(3) input {
+            box-sizing: content-box;
+            height: 15px;
+            margin: 0 5px 0 0;
+            width: 15px
+        }
+
+        .dvs-rotateBox div:nth-child(4) {
+            margin-top: 8px
+        }
+
+        .dvs-rotateBox>div:nth-child(4) input {
+            box-sizing: content-box;
+            font-size: 12px;
+            height: 24px;
+            margin-right: 30px;
+            width: 60px
+        }
+
+        .dvs-changeSizeBox>div {
+            align-items: center;
+            display: flex;
+            justify-content: space-between
+        }
+
+        .dvs-changeSizeBox input {
+            box-sizing: border-box;
+            height: 22px;
+            margin-left: 5px;
+            width: 108px
+        }
+
+        .dvs-changeSizeBox>div:nth-child(3) {
+            margin-top: 10px
+        }
+
+        .dvs-changeSizeBox>div:nth-child(3) select {
+            box-sizing: border-box;
+            height: 22px;
+            margin-right: 10px
+        }
+
+        .dvs-changeSizeBox>div:nth-child(4) {
+            justify-content: space-around;
+            margin-top: 10px
+        }
+
+        .dvs-changeSizeBox>div:nth-child(4) input {
+            box-sizing: content-box;
+            font-size: 12px;
+            height: 24px;
+            width: 60px;
+        }
+
+	</style>
+  <script type="text/javascript">
+    var DWTObject, deviceList, _iLeft, _iTop, _iRight, _iBottom;
+    Dynamsoft.DWT.RegisterEvent("OnWebTwainReady", function () {
+		DWTObject = Dynamsoft.DWT.GetWebTwain('dwtcontrolContainer'); // Get the Dynamic Web TWAIN object that is embeded in the div with id 'dwtcontrolContainer'
+		 if (DWTObject) {
+			deviceList=[];
+			DWTObject.GetDevicesAsync().then(function(devices){
+				for (var i = 0; i < devices.length; i++) { // Get how many sources are installed in the system
+					document.getElementById('source').options.add(new Option(devices[i].displayName, i)); // Add the sources in a drop-down list
+					deviceList.push(devices[i]);
+				}
+			}).catch(function (exp) {
+				alert(exp.message);
+			});
+			
+            DWTObject.Viewer.on("pageAreaSelected", function (index, rect) {
+                if (rect.length > 0) {
+                    var currentRect = rect[rect.length - 1];
+                    _iLeft = currentRect.x;
+                    _iTop = currentRect.y;
+                    _iRight = currentRect.x + currentRect.width;
+                    _iBottom = currentRect.y + currentRect.height;
+                }
+            });
+            
+            DWTObject.Viewer.on("pageAreaUnselected", function (index) {
+                _iLeft = 0;
+                _iTop = 0;
+                _iRight = 0;
+                _iBottom = 0;
+            });
+            
+            _iLeft = 0;
+            _iTop = 0;
+            _iRight = 0;
+            _iBottom = 0;
+		}
+    });
+
+    function AcquireImage() {
+      if (DWTObject) {
+		var ddlSource = document.getElementById('source');
+		DWTObject.SelectDeviceAsync(deviceList[ddlSource.selectedIndex]).then(function () {
+			return DWTObject.AcquireImageAsync({
+				IfShowUI: false,
+				IfCloseSourceAfterAcquire: true // Scanner source will be disabled/closed automatically after the scan.
+			});
+		}).catch(function (exp) {
+			console.error(exp);
+		});
+      }
+    }
+
+    function btnCrop_onclick() {
+        if (DWTObject){
+            if (!checkIfImagesInBuffer()) {
+                return;
+            }
+            if (_iLeft != 0 || _iTop != 0 || _iRight != 0 || _iBottom != 0) {
+                DWTObject.Crop(
+                    DWTObject.CurrentImageIndexInBuffer,
+                    _iLeft, _iTop, _iRight, _iBottom
+                );
+                _iLeft = 0;
+                _iTop = 0;
+                _iRight = 0;
+                _iBottom = 0;
+                return;
+            } else {
+                alert("Crop: failed. Please first select the area you'd like to crop.");
+            }
+        }
+    }
+
+    function btnCut_onclick() {
+        if (DWTObject){
+            if (!checkIfImagesInBuffer()) {
+                return;
+            }
+            if (_iLeft != 0 || _iTop != 0 || _iRight != 0 || _iBottom != 0) {
+                DWTObject.Erase(
+                    DWTObject.CurrentImageIndexInBuffer,
+                    _iLeft, _iTop, _iRight, _iBottom
+                );
+                _iLeft = 0;
+                _iTop = 0;
+                _iRight = 0;
+                _iBottom = 0;
+                return;
+            } else {
+                alert("Erase: failed. Please first select the area you'd like to crop.");
+            }
+        }
+    }
+
+    function btnRotateLeft_onclick() {
+        if (DWTObject){
+            if (!checkIfImagesInBuffer()) {
+                return;
+            }
+            
+            DWTObject.RotateLeft(DWTObject.CurrentImageIndexInBuffer);
+        }
+    }
+
+    function btnRotate_onclick() {
+        if (DWTObject){
+            if (!checkIfImagesInBuffer()) {
+                return;
+            }
+            
+            btnChangeSizeCancel_onclick();
+           var dvsRotateBox = document.getElementById('dvsRotateBox');
+           dvsRotateBox.style.display = "";
+        }
+    }
+
+    function btnRotateOK_onclick(){
+        var dvsRotateAngle = document.getElementById("dvsRotateAngle");
+        var dvsKeepSize = document.getElementById("dvsKeepSize");
+        var dvsRotateInterpolation = document.getElementById("dvsRotateInterpolation");
+        DWTObject.RotateEx(
+            DWTObject.CurrentImageIndexInBuffer,
+            parseInt(dvsRotateAngle.value),
+            dvsKeepSize.checked,
+            parseInt(dvsRotateInterpolation.value)
+        );
+    
+        btnRotateCancel_onclick();
+    }
+
+    function btnRotateCancel_onclick(){
+        var dvsRotateBox = document.getElementById('dvsRotateBox');
+        dvsRotateBox.style.display = "none";
+    }
+
+    function btnRotateRight_onclick() {
+        if (DWTObject){
+            if (!checkIfImagesInBuffer()) {
+                return;
+            }
+            
+            DWTObject.RotateRight(DWTObject.CurrentImageIndexInBuffer);
+        }
+    }
+
+    function btnFlip_onclick() {
+        if (DWTObject){
+            if (!checkIfImagesInBuffer()) {
+                return;
+            }
+            
+            DWTObject.Flip(DWTObject.CurrentImageIndexInBuffer);
+        }
+    }
+
+    function btnMirror_onclick() {
+        if (DWTObject){
+            if (!checkIfImagesInBuffer()) {
+                return;
+            }
+            
+            DWTObject.Mirror(DWTObject.CurrentImageIndexInBuffer);
+        }
+    }
+
+    function btnChangeImageSize_onclick() {
+        if (DWTObject){
+            if (!checkIfImagesInBuffer()) {
+                return;
+            }
+            
+            btnRotateCancel_onclick();
+
+            var dvsChangeSizeBox = document.getElementById('dvsChangeSizeBox');
+            dvsChangeSizeBox.style.display = "";
+        }
+    }
+
+    function btnChangeSizeOk_onclick(){
+        var dvsChangeW = document.getElementById("dvsChangeW");
+        var dvsChangeH = document.getElementById("dvsChangeH");
+        var dvsChangeSizeInterpolation = document.getElementById("dvsChangeSizeInterpolation");
+        DWTObject.ChangeImageSize(
+            DWTObject.CurrentImageIndexInBuffer,
+            parseInt(dvsChangeW.value),
+            parseInt(dvsChangeH.value),
+            parseInt(dvsChangeSizeInterpolation.value)
+        );
+    
+        btnChangeSizeCancel_onclick();
+    }
+
+    function btnChangeSizeCancel_onclick(){
+        var dvsChangeSizeBox = document.getElementById('dvsChangeSizeBox');
+            dvsChangeSizeBox.style.display = "none";
+    }
+
+    function btnRemoveSelectedImages_onclick() {
+        if (DWTObject) {
+            DWTObject.RemoveImage(DWTObject.CurrentImageIndexInBuffer);
+        }
+    }
+
+    function btnRemoveAllImages_onclick() {
+        if (DWTObject) {
+            DWTObject.RemoveAllImages();
+        }
+    }
+
+    function checkIfImagesInBuffer() {
+        if (DWTObject.HowManyImagesInBuffer == 0) {
+            alert("There is no image in buffer.")
+            return false;
+        }
+        else
+            return true;
+    }
+  </script>
+</body>
+</html>
