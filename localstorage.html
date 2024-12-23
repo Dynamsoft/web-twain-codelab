@@ -11,12 +11,13 @@
 <body>
     <div class="ds-div-scanPageHeader">
 		<div class="ds-div-title">Localstorage</div>
+		<p>The Local Storage feature automatically restores scanned images from your last session when you reopen the web page. This is especially useful if your computer goes to sleep or shuts down unexpectedly during a large scan. To test this feature, enable Local Storage, close the page after scanning, and then reopen it to see how it works.</p>
 	</div>
 	<div class="ds-div-scanPageDemo" >
 		<div class="ds-div-scanPage-column ds-div-scanPage-column0">
 			<div><span>Select Source:</span><select size="1" id="source"></select></div>
 			<div>
-				<label for="chkAutoSaveToStorage"><input type="checkbox" id="chkAutoSaveToStorage" onchange="checkBoxChanged_AutoSaveStorage();">Auto Save to Storage</label>
+				<label for="chkAutoSaveToStorage"><input type="checkbox" id="chkAutoSaveToStorage" onchange="checkBoxChanged_AutoSaveStorage();" checked>Auto Save to Storage</label>
 			</div>
 			<div><input type="button" value="Scan" style ="margin-bottom: 20px;" onclick="AcquireImage();" /></div>
 		</div>
@@ -25,6 +26,9 @@
 		</div>
 	</div>
 	<style>
+		.ds-div-scanPageHeader p {
+			height: 60px;
+		}
 		.ds-div-scanPage-column0>div {
 			margin: 7px;
 		}
@@ -45,6 +49,7 @@
 		} else {
 			chkAutoSaveToStorage.checked = true;
 			localStoreUid = localStorage[storeName];
+			localStorage[storeName_EnableAutoSaveStorage] = "true";
 		}
 	})();
 
