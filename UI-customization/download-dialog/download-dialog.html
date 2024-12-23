@@ -3,11 +3,11 @@
 
 <head>
     <title>Download Dialog</title>
-	<link rel="stylesheet" href="../css/global.css" />
-	<link rel="stylesheet" href="../css/scan.css" />
+	<link rel="stylesheet" href="../../css/global.css" />
+	<link rel="stylesheet" href="../../css/scan.css" />
 	<link rel="stylesheet" href="Download_Resources/src/dynamsoft.webtwain.css?t=20241010102903" />
     <script src="https://cdn.jsdelivr.net/npm/dwt@latest/dist/dynamsoft.webtwain.min.js"></script>
-    <script type="text/javascript" src="../Resources/dynamsoft.webtwain.config_frame.js"></script>
+    <script type="text/javascript" src="../../Resources/dynamsoft.webtwain.config_frame.js"></script>
 </head>
 <body>
 	<div class="ds-div-scanPageHeader">
@@ -87,6 +87,7 @@
 	</style>
 	<script>
 		Dynamsoft.DWT.Containers = [{ ContainerId: 'dwtcontrolContainer'}];
+		Dynamsoft.DWT.ResourcesPath = 'Download_Resources';
 
 		Dynamsoft.DWT.CreateDWTObjectEx({
 				WebTwainId: 'dwtId2'
