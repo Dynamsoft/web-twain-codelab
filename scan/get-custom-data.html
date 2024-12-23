@@ -59,8 +59,8 @@
 					var customDSData = document.getElementById("message");
 					customDSData.innerHTML  = DWTObject.GetCustomDSDataEx();
 					DWTObject.CloseSourceAsync();
-				}, function(ec, es){
-					alert(es);
+				}, function(errorString){
+					alert(errorString);
 				});
 			}).catch(function (exp) {
 				alert(exp.message);

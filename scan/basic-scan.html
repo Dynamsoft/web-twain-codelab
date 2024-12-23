@@ -106,7 +106,7 @@
 								IfShowUI: document.getElementById('ShowUI').checked, 
 								PixelType: iPixelType,
 								Resolution: document.getElementById('Resolution').value,
-								IfFeederEnabled: document.getElementById('ADF').checked,
+								IfFeederEnabled: document.getElementById('ADF').checked, //Set whether or not a data source’s Automatic Document Feeder (ADF) is enabled for scanning.
 								IfCloseSourceAfterAcquire: true // Scanner source will be closed automatically after the scan.
 							});
 					}).catch(function (exp) {
