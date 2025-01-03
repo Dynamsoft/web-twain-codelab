@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Converting between Image and Base64</title>
+	<link rel="stylesheet" href="../css/global.css" />
+	<link rel="stylesheet" href="../css/scan.css" />
+    <script src="https://cdn.jsdelivr.net/npm/dwt@latest/dist/dynamsoft.webtwain.min.js"></script>
+    <script type="text/javascript" src="../Resources/dynamsoft.webtwain.config_autoload.js"></script>
+</head>
+<body>
+	<div class="ds-div-scanPageHeader">
+		<div class="ds-div-title">Converting between Image and Base64</div>
+	</div>
+	<div class="ds-div-scanPageDemo-button">
+        <input type="button" value="Scan" class="ds-button-bg-black" onclick="AcquireImage();" />
+        <input type="button" value="Open a local file" class="ds-button-bg-white btn" onclick="LoadImages();" />
+	</div>
+	<div class="ds-div-scanPageDemo">
+		<div class="ds-div-scanPage-column ds-div-scanPage-column0">
+            <div id="dwtcontrolContainer" style="width: 100%;height: 100%;"></div>
+        </div>
+		<div class="ds-div-scanPage-column ds-div-scanPage-column1">
+            <div>
+                <input type="button" class="ds-button-bg-black" value="ConvertToBase64 >>" onclick="ConvertToBase64();" />
+                <input type="button" class="ds-button-bg-black" value="<< LoadBase64" onclick="LoadBase64();" />
+            </div>
+        </div>
+		<div class="ds-div-scanPage-column ds-div-scanPage-column2">
+            <textarea id="txtBase64" style="border: 1px solid rgb(204, 204, 204);" placeholder="" ></textarea>
+        </div>
+	</div>
+	<style>
+        .ds-div-scanPage-column0 {
+            width: 400px;
+            min-width: 400px;
+            background-color: #FFF;
+            padding: 0;
+            border: 0;
+        }
+        .ds-div-scanPage-column1 {
+            vertical-align: middle;
+            transform: translate(0, 30%);
+            width: 180px;
+            min-width: 180px;
+            padding: 7px;
+        }
+        .ds-div-scanPage-column2 {
+            width: calc(100% - 580px);
+            min-width: 400px;
+            padding: 0;
+        }
+        input[type=button] {
+            width: 165px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 100%;
+        }
+
+        @media screen and ((max-height: 900px) or (max-width: 1440px)) {
+            .ds-div-scanPageAPI, .ds-div-scanPageHeader, .ds-div-scanPageNote,
+            .ds-div-scanPageDemo, .ds-div-scanPageDemo-button,
+            .ds-div-scanPageTry {
+                min-width: 1120px;
+            }
+        }
+    </style>
+    <script type="text/javascript">
+        var DWTObject;
+        Dynamsoft.DWT.RegisterEvent("OnWebTwainReady", function () {
+            DWTObject = Dynamsoft.DWT.GetWebTwain('dwtcontrolContainer'); // Get the Dynamic Web TWAIN object that is embeded in the div with id 'dwtcontrolContainer'
+        });
+
+        function AcquireImage() {
+            if (DWTObject) {
+                DWTObject.SelectSourceAsync().then(function () {
+						return DWTObject.AcquireImageAsync({
+						    IfCloseSourceAfterAcquire: true // Scanner source will be closed automatically after the scan.
+						});
+					}).catch(function (exp) {
+						alert(exp.message);
+				});
+            }
+        }
+
+        function LoadImages() {
+            if (DWTObject) {			
+				// Load images in all supported formats (.bmp, .jpg, .tif, .png, .pdf). OnSuccess or OnFailure will be called after the operation
+                DWTObject.LoadImageEx("", Dynamsoft.DWT.EnumDWT_ImageType.IT_ALL, function(){
+					console.log('successful');
+				}, function(errorCode, errorString){
+					 alert(errorString);
+				}); 
+            }
+        }
+
+        function ConvertToBase64(){
+            if (DWTObject) {
+                DWTObject.ConvertToBase64(
+                    [DWTObject.CurrentImageIndexInBuffer],
+                    Dynamsoft.DWT.EnumDWT_ImageType.IT_PNG,
+                    function (result, indices, type) {
+                        var txtBase64 = document.getElementById("txtBase64");
+					    txtBase64.value = result.getData(0, result.getLength());
+                    },
+                    function (errorCode, errorString) {
+                        alert(errorString);
+                    }
+                );
+            }
+        }
+
+        function LoadBase64(){
+            if (DWTObject) {
+                var txtBase64 = document.getElementById("txtBase64");
+                if(txtBase64.value.length > 0) {
+                    DWTObject.LoadImageFromBase64Binary(txtBase64.value,  Dynamsoft.DWT.EnumDWT_ImageType.IT_PNG, function(){
+                        console.log("Successful.");
+                    }, function(errorCode, errorString){
+                        alert(errorString);
+                    });
+                } else {
+                    alert("The base64 string cannot be empty.");
+                }
+
+            }
+        }
+    </script>
+	
+</body>
+</html>
