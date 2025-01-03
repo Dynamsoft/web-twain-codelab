@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Loading Images by File Type</title>
+    <link rel="stylesheet" href="../css/global.css" />
+	<link rel="stylesheet" href="../css/scan.css" />
+    <script src="https://cdn.jsdelivr.net/npm/dwt@latest/dist/dynamsoft.webtwain.min.js"></script>
+    <script type="text/javascript" src="../Resources/dynamsoft.webtwain.config_autoload.js"></script>
+</head>
+
+<body>
+    <div class="ds-div-scanPageHeader">
+		<div class="ds-div-title">Loading Images by File Type</div>
+	</div>
+	<div class="ds-div-scanPageDemo" >
+		<div class="ds-div-scanPage-column ds-div-scanPage-column0">
+            <div><span>Filter by:</span><select size="1" id="filterBy">
+				<option value="0">BMP,TIF,JPG,PNG,PDF</option>
+				<option value="1">PDF</option>
+				<option value="2">PNG</option>
+				<option value="3">JPG</option>
+				<option value="4">TIF</option>
+			</select></div>
+            <input type="button" value="Load" class="ds-button-bg-black" onclick="LoadImage();" />
+        </div>
+        <div class="ds-div-scanPage-column ds-div-scanPage-column1">
+            <div id="dwtcontrolContainer" style="width: 100%; height: 100%;"></div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        var DWTObject;
+        Dynamsoft.DWT.RegisterEvent("OnWebTwainReady", function () {
+            DWTObject = Dynamsoft.DWT.GetWebTwain('dwtcontrolContainer'); // Get the Dynamic Web TWAIN object that is embeded in the div with id 'dwtcontrolContainer'
+            DWTObject.RegisterEvent("OnGetFilePath",
+                function (isSave, filesCount, index, directory, fileName) {
+                    if(filesCount > 0)
+                        DWTObject.LoadImage(directory + "\\" + fileName, function(){console.log("Successful.");}, function(ec,es){console.log(es);});
+                }
+            );
+        });
+
+        function LoadImage() {
+            if (DWTObject) {
+                var filterbyString = "BMP,TIF,JPG,PNG,PDF|*.bmp;*.tif;*.png;*.jpg;*.pdf;*.tiff;*.jpeg";
+                var filterby = document.getElementById("filterBy");
+                switch(filterBy.selectedIndex) {
+                    case 0: 
+                        if(Dynamsoft.navInfoSync.bMac)
+                            filterbyString = "TIF,TIFF,JPG,JPEG,PNG,PDF";
+                        else 
+                            filterbyString = "BMP,TIF,JPG,PNG,PDF|*.bmp;*.tif;*.png;*.jpg;*.pdf;*.tiff;*.jpeg";
+                        break;
+                    case 1: 
+                        if(Dynamsoft.navInfoSync.bMac)
+                            filterbyString = "PDF";
+                        else 
+                            filterbyString = "PDF|*.pdf";
+                        break;
+                    case 2: 
+                        if(Dynamsoft.navInfoSync.bMac)
+                            filterbyString = "PNG";
+                        else 
+                            filterbyString = "PNG|*.png";
+                        break;
+                    case 3: 
+                        if(Dynamsoft.navInfoSync.bMac)
+                            filterbyString = "JPG";
+                        else 
+                            filterbyString = "JPG|*.jpg;*.jpeg";
+                        break;
+                    case 4: 
+                        if(Dynamsoft.navInfoSync.bMac)
+                            filterbyString = "TIF,TIFF";
+                        else 
+                            filterbyString = "TIF|*.tif;*.tiff";
+                        break;
+                }
+
+                DWTObject.ShowFileDialog(
+                    false,
+                    filterbyString,
+                    0,
+                    "",
+                    "",
+                    true,
+                    false,
+                    0
+                );
+            }
+        }
+    </script>
+    
+</body>
+
+</html>
