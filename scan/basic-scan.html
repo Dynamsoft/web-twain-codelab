@@ -11,62 +11,61 @@
 <body>
 	<div class="ds-div-scanPageHeader">
 		<div class="ds-div-title">Basic Scan</div>
-		<p class="ds-div-description"></p>
+		<p class="ds-div-description">The scanner must support scanner properties in order for the property to be successfully set.</p>
 	</div>
 	<div class="ds-div-scanPageDemo">
 		<div class="ds-div-scanPage-column ds-div-scanPage-column0">
-		  <div class="ds-div-scan-step1">
-			<div>
+		  <div class="ds-div-scan-step1 mb10">
+			<div class="ds-div-scan-step">Step 1</div>
+			<div class="ds-div-scan-step-detail">
 				<div>Source Type: </div>
-				<div>
-					<label for="TWAIN"><input type="checkbox" id="TWAIN" name="PixelType" checked="checked">TWAIN(Windows/macOS)</label>
-				</div>
-				<div>
-					<label for="WIA"><input type="checkbox" id="WIA" name="PixelType" checked="checked">WIA(Windows)</label>
-				</div>
-				<div>
-					<label for="TWAINX64"><input type="checkbox" id="TWAINX64" name="PixelType" checked="checked">TWAINX64(Windows/macOS)</label>
-				</div>
-				<div>
-					<label for="ICA"><input type="checkbox" id="ICA" name="PixelType"  checked="checked">ICA(macOS) </label>
-				</div>
-				<div>
-					<label for="SANE"><input type="checkbox" id="SANE" name="PixelType"  checked="checked">SANE(Linux)</label>
-				</div>
-				<div>
-					<label for="ESCL"><input type="checkbox" id="ESCL" name="PixelType" >ESCL(Windows/macOS/Linux)</label>
-				</div>
-				<div>
-					<label for="WIFIDIRECT"><input type="checkbox" id="WIFIDIRECT" name="PixelType">WIFIDIRECT(Windows/macOS/Linux)</label>
-				</div>
-				<input type="button" style=" margin-bottom: 20px;" value="Next" onclick="next();" />
+				<ul>
+					<li>
+						<label class="ds-div-fixed-label" for="TWAIN"><input type="checkbox" id="TWAIN" name="SourceType" checked="checked">TWAIN(Windows/macOS)</label>
+						<label for="WIA"><input type="checkbox" id="WIA" name="SourceType" checked="checked">WIA(Windows)</label>
+					</li>
+					<li>
+						<label class="ds-div-fixed-label" for="TWAINX64"><input type="checkbox" id="TWAINX64" name="SourceType" checked="checked">TWAINX64(Windows/macOS)</label>
+						<label for="ICA"><input type="checkbox" id="ICA" name="SourceType"  checked="checked">ICA(macOS) </label>
+					</li>
+					<li>
+						<label for="SANE"><input type="checkbox" id="SANE" name="SourceType"  checked="checked">SANE(Linux)</label>
+					</li>
+					<li>
+						<label for="ESCL"><input type="checkbox" id="ESCL" name="SourceType" >ESCL(Windows/macOS/Linux)</label>
+					</li>
+					<li>
+						<label for="WIFIDIRECT"><input type="checkbox" id="WIFIDIRECT" name="SourceType">WIFIDIRECT(Windows/macOS/Linux)</label>
+					</li>
+				</ul>
+				<input type="button" value="Get Sources" class="ds-button-bg-black" onclick="GetSource();" />
 			</div>
 		  </div>
-		  <div class="ds-div-scan-step2">
-			<div>Select Source:</div>
-			<div><select size="1" id="source"></select></div>
-			<div> Pixel Type:     
-				<label for="BW"><input type="radio" id="BW" name="PixelType">B&amp;W </label>
-				<label for="Gray"><input type="radio" id="Gray" name="PixelType">Gray</label>
-				<label for="RGB"><input type="radio" id="RGB" name="PixelType" checked="checked">Color</label>
+		  <div class="ds-div-scan-step2 mb10">
+			<div class="ds-div-scan-step">Step 2</div>
+			<div class="ds-div-scan-step-detail">
+				<div>Select Source: <select size="1" id="source"></select></div>
+				<div> Pixel Type:     
+					<label for="BW"><input type="radio" id="BW" name="PixelType">B&amp;W </label>
+					<label for="Gray"><input type="radio" id="Gray" name="PixelType">Gray</label>
+					<label for="RGB"><input type="radio" id="RGB" name="PixelType" checked="checked">Color</label>
+				</div>
+				<div>
+					<label><input type="checkbox" id="ADF">Auto Feeder</label>
+					<label><input type="checkbox" id="ShowUI">Show UI</label>
+					<label><input type="checkbox" id="Duplex">2-sided Scan</label><br />
+				</div>
+				<div> Resolution:
+					<select size="1" id="Resolution">
+						<option value="100">100</option>
+						<option value="150">150</option>
+						<option value="200">200</option>
+						<option value="300">300</option>
+					</select>
+				</div>
+				<input type="button" id="btnAcquireImage" value="Scan" class="ds-button-bg-black" onclick="AcquireImage();" />
 			</div>
-			<div>
-				<label>
-					<input type="checkbox" id="ADF" checked="checked">Auto Feeder</label>
-				<label>
-				<input type="checkbox" id="ShowUI" checked="checked">Show UI<br /></label>
-			</div>
-			<div> Resolution:
-				<select size="1" id="Resolution">
-					<option value="100">100</option>
-					<option value="150">150</option>
-					<option value="200">200</option>
-					<option value="300">300</option>
-				</select>
-			</div>
-			<input type="button" id="btnAcquireImage" value="Scan" onclick="AcquireImage();" />
 		  </div>
-
 		</div>
 		<div class="ds-div-scanPage-column ds-div-scanPage-column1">
 			<div id="dwtcontrolContainer" style="width: 100%; height: 100%;"></div>
@@ -78,18 +77,32 @@
 		}
 		.ds-div-scan-step2 {
 			padding: 0 0 0 0;
-			display: none;
 		}
 		.ds-div-scan-step2>div {
 			margin: 10px 0;
+		}
+		li label {
+			display: inline-block;
+			margin: 0 10px 0 0;
+		}
+		.ds-button-bg-black, #btnAcquireImage {
+			width:110px;
+		}
+		.ds-div-scan-step {
+			margin: 0px !important;
+		}
+		.ds-div-scan-step-detail {
+			margin-left: 10px !important;
 		}
 	</style>
     <script src="https://cdn.jsdelivr.net/npm/dwt@latest/dist/dynamsoft.webtwain.min.js"></script>
     <script type="text/javascript" src="../Resources/dynamsoft.webtwain.config_autoload.js"></script>
     <script type="text/javascript">
-        var DWTObject, deviceList;
+         var DWTObject, deviceList;
         Dynamsoft.DWT.RegisterEvent("OnWebTwainReady", function () {
             DWTObject = Dynamsoft.DWT.GetWebTwain('dwtcontrolContainer'); // Get the Dynamic Web TWAIN object that is embeded in the div with id 'dwtcontrolContainer'
+			var btnAcquireImage = document.getElementById('btnAcquireImage');
+			btnAcquireImage.disabled = true;
         });
 		
         function AcquireImage() {
@@ -102,12 +115,17 @@
 				
 				var ddlSource = document.getElementById('source');
 				if (ddlSource) {
+					if(ddlSource.selectedIndex == -1) {
+						alert('No source available. Please click the "Get Source" button to retrieve the source.');
+						return;
+					}
 					DWTObject.SelectDeviceAsync(deviceList[ddlSource.selectedIndex]).then(function () {
 						return DWTObject.AcquireImageAsync({
 								IfShowUI: document.getElementById('ShowUI').checked, 
 								PixelType: iPixelType,
 								Resolution: document.getElementById('Resolution').value,
-								IfFeederEnabled: document.getElementById('ADF').checked, //Set whether or not a data source’s Automatic Document Feeder (ADF) is enabled for scanning.
+								IfFeederEnabled: document.getElementById('ADF').checked, //Set whether or not a data source's Automatic Document Feeder (ADF) is enabled for scanning.
+								IfDuplexEnabled: document.getElementById('Duplex').checked,
 								IfCloseSourceAfterAcquire: true // Scanner source will be closed automatically after the scan.
 							});
 					}).catch(function (exp) {
@@ -116,7 +134,7 @@
 				}
             }
         }
-		function next() {
+		function GetSource() {
 
 			if (DWTObject) {
                 deviceList=[];
@@ -156,29 +174,29 @@
 				if(WIFIDirctEl.checked) {
 					deviceType |= Dynamsoft.DWT.EnumDWT_DeviceType.WIFIDIRECTSCANNER;
 				}
-
-				if(deviceType == 0) {
-					deviceType = Dynamsoft.DWT.EnumDWT_DeviceType.TWAINSCANNER;
-				}
 				
-				DWTObject.GetDevicesAsync(deviceType).then(function(devices){
+				var btnAcquireImage = document.getElementById("btnAcquireImage");
+				document.getElementById('source').options.length = 0;
+				if(deviceType != 0) {
+					DWTObject.GetDevicesAsync(deviceType).then(function(devices){
 
-					if(devices.length == 0) {
-						var btnAcquireImage = document.getElementById("btnAcquireImage");
-						btnAcquireImage.disabled = true;
-					}
+						if(devices.length == 0) {
+							btnAcquireImage.disabled = true;
+						} else {
+							btnAcquireImage.disabled = false;
+						}
 
-					for (var i = 0; i < devices.length; i++) { // Get how many sources are installed in the system
-						document.getElementById('source').options.add(new Option(devices[i].displayName, i)); // Add the sources in a drop-down list
-						deviceList.push(devices[i]);
-                    }
-				}).catch(function (exp) {
-					alert(exp.message);
-				});
+						for (var i = 0; i < devices.length; i++) { // Get how many sources are installed in the system
+							document.getElementById('source').options.add(new Option(devices[i].displayName, i)); // Add the sources in a drop-down list
+							deviceList.push(devices[i]);
+						}
+					}).catch(function (exp) {
+						alert(exp.message);
+					});
+				} else {
+					btnAcquireImage.disabled = true;
+				}
             }
-
-			document.querySelector('.ds-div-scan-step1').style.display = 'none';
-			document.querySelector('.ds-div-scan-step2').style.display = 'block';
 		}
 
 	</script>
