@@ -31,6 +31,9 @@
         </div>
 	</div>
 	<style>
+        .ds-div-download {
+			bottom: 2px;
+		}
         .ds-div-scanPage-column0 {
             width: 400px;
             min-width: 400px;
@@ -40,17 +43,16 @@
         }
         .ds-div-scanPage-column1 {
             vertical-align: middle;
-            transform: translate(0, 30%);
             width: 180px;
             min-width: 180px;
-            padding: 7px;
+            padding: 10% 7px;
         }
         .ds-div-scanPage-column2 {
             width: calc(100% - 580px);
             min-width: 400px;
             padding: 0;
         }
-        input[type=button] {
+        .ds-button-bg-black, .ds-button-bg-white {
             width: 165px;
         }
 
@@ -59,16 +61,26 @@
             height: 100%;
         }
 
-        @media screen and ((max-height: 900px) or (max-width: 1440px)) {
-            .ds-div-scanPageAPI, .ds-div-scanPageHeader, .ds-div-scanPageNote,
-            .ds-div-scanPageDemo, .ds-div-scanPageDemo-button,
-            .ds-div-scanPageTry {
-                min-width: 1120px;
-            }
+        .ds-div-scanPageDemo {
+            min-height: 580px;
+            margin-top: 0px;
+        }
+
+        .ds-div-scanPageHeader, .ds-div-scanPageNote,
+        .ds-div-scanPageDemo, .ds-div-scanPageDemo-button {
+            min-width: 1000px;
+            width: 1050px;
+        }
+
+        .ds-button-bg-black, .ds-button-bg-white {
+            margin: 15px 6px 0 0;
+            padding: 5px 5px;
+            font-size: 14px;
+            line-height: 22px;
         }
     </style>
     <script type="text/javascript">
-        var DWTObject;
+         var DWTObject;
         Dynamsoft.DWT.RegisterEvent("OnWebTwainReady", function () {
             DWTObject = Dynamsoft.DWT.GetWebTwain('dwtcontrolContainer'); // Get the Dynamic Web TWAIN object that is embeded in the div with id 'dwtcontrolContainer'
         });

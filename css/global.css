@@ -35,6 +35,14 @@ ul span {
 .mb10 {margin-bottom: 10px;}
 .mb20 {margin-bottom: 20px;}
 
+.ds-div-scanPageAPI, .ds-div-scanPageHeader, .ds-div-scanPageNote,
+.ds-div-scanPageDemo, .ds-div-scanPageDemo-button,
+.ds-div-scanPageTry {
+  margin: 0 auto;
+  padding: 0;
+  min-width: 890px;
+}
+
 .ds-div-scanPageHeader {
   width: 1500px;
   min-width: 1150px;

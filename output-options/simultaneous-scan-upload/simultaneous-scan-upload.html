@@ -1,20 +1,24 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Simultaneous Scanning and Uploading</title>
-	<link rel="stylesheet" href="../../css/global.css" />
-	<link rel="stylesheet" href="../../css/scan.css" />
+    <link rel="stylesheet" href="../../css/global.css" />
+    <link rel="stylesheet" href="../../css/scan.css" />
     <script src="https://cdn.jsdelivr.net/npm/dwt@latest/dist/dynamsoft.webtwain.min.js"></script>
     <script type="text/javascript" src="../../Resources/dynamsoft.webtwain.config_autoload.js"></script>
-    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"
+        integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
 </head>
+
 <body>
 
-	<div class="ds-div-scanPageHeader">
-		<div class="ds-div-title">Simultaneous Scanning and Uploading</div>
-	</div>
-	<div class="ds-div-scanPageDemo" >
-<div class="ds-div-scanPage-column ds-div-scanPage-column0" style="padding: 0;">
+    <div class="ds-div-scanPageHeader">
+        <div class="ds-div-title">Simultaneous Scanning and Uploading</div>
+        <p>The project requires an HTTP server environment to enable uploading.</p>
+    </div>
+    <div class="ds-div-scanPageDemo">
+        <div class="ds-div-scanPage-column ds-div-scanPage-column0" style="padding: 0;">
             <div class="content clearfix">
                 <div class="section">
                     <div id="divSaveDetail" class="ds-PT40">
@@ -22,42 +26,49 @@
                             <li>
                                 <p style="margin: 0;">File Name:</p>
                                 <input type="text" size="20" id="txt_fileName" value="WebTWAINImage" /><b> . </b>
-                                <select size="1" id="fileType" onchange="fileType_onchange();">     
-                                <option value="pdf">pdf</option>
-                                <option value="tif">tif</option>
-                                <option value="jpg">jpg</option>
-                                <option value="png">png</option>
-                                <option value="bmp">bmp</option></select>
+                                <select size="1" id="fileType" onchange="fileType_onchange();">
+                                    <option value="pdf">pdf</option>
+                                    <option value="tif">tif</option>
+                                    <option value="jpg">jpg</option>
+                                    <option value="png">png</option>
+                                    <option value="bmp">bmp</option>
+                                </select>
                             </li>
                             <li>
                                 <div>
-                                    <span class="customInfo" onmouseover="showCustomInfo();" onmouseout="hideCustomInfo();">Optional Custom Info: <i class="fa fa-download"></i></span>
-                                    <span style="display: none;" id="customDetail">You can input any custom info to be uploaded with your images.</span>
+                                    <span class="customInfo" onmouseover="showCustomInfo();"
+                                        onmouseout="hideCustomInfo();">Custom Info (Optional): <i
+                                            class="fa fa-download"></i></span>
+                                    <span style="display: none;" id="customDetail">You can input any custom info to be
+                                        uploaded with your images.</span>
                                 </div>
                                 <input type="text" id="txt_CustomInfo" />
                             </li>
                             <li>
-                                <input type="button" value="Scan and Upload" class="ds-button-bg-black" onclick="ScanAndUpload();" />
+                                <input type="button" value="Scan and Upload" class="ds-button-bg-black"
+                                    onclick="ScanAndUpload();" />
                             </li>
                         </ul>
-                    </div> 
-                </div>  
+                    </div>
+                </div>
             </div>
             <div id="divUploadedFiles" style="padding-left: 20px;">
-                <div id='resultWrap'></div>                    
+                <div id='resultWrap'></div>
             </div>
-		</div>
-		<div class="ds-div-scanPage-column ds-div-scanPage-column1">
-			<div id="dwtcontrolContainer" style="width: 100%; height: 100%;"></div>
-		</div>
-	</div>
+        </div>
+        <div class="ds-div-scanPage-column ds-div-scanPage-column1">
+            <div id="dwtcontrolContainer" style="width: 100%; height: 100%;"></div>
+        </div>
+    </div>
     <style>
-       .ds-div-scanPage-column0 span {
+        .ds-div-scanPage-column0 span {
             width: 180px;
         }
+
         .ds-div-scanPage-column0 {
             padding: 0;
         }
+
         .section {
             padding: 20px 5px 5px 20px;
         }
@@ -65,6 +76,7 @@
         #txt_fileName {
             width: 270px
         }
+
         #customDetail {
             float: left;
             position: absolute;
@@ -77,20 +89,25 @@
             font-size: 12px;
             font-weight: 400;
         }
-        #txt_CustomInfo{
+
+        #txt_CustomInfo {
             width: 365px;
         }
+
         #divUploadedFiles {
             border-top: 1px solid #CCC;
         }
-        .ds-PT40 ul>li{
+
+        .ds-PT40 ul>li {
             margin: 0 0 10px 0;
         }
+
         #resultWrap {
             width: 100%;
             height: 280px;
             overflow-y: scroll;
         }
+
         #resultWrap a {
             cursor: pointer;
             font-size: 12px;
@@ -98,49 +115,60 @@
             letter-spacing: 0px;
             color: #FE8E14;
         }
+
         input[type=button] {
             margin: 0 6px 10px 0;
         }
+
         .ds-div-scanPage-column0 span.customInfo {
             width: 200px
         }
-	</style>
+
+        .ds-div-download {
+            bottom: 2px;
+        }
+    </style>
     <script type="text/javascript">
         var DWTObject, extrFieldsCount = 0;
 
         Dynamsoft.DWT.RegisterEvent("OnWebTwainReady", function () {
             DWTObject = Dynamsoft.DWT.GetWebTwain('dwtcontrolContainer'); // Get the Dynamic Web TWAIN object that is embeded in the div with id 'dwtcontrolContainer'
             DWTObject.RegisterEvent("OnPostTransferAsync", function (outputInfo) {
-		        HTTPUpload();
-		    });
+                HTTPUpload();
+            });
         });
 
         function ScanAndUpload() {
             if (DWTObject) {
-				DWTObject.SelectSourceAsync().then(function () {
-						return DWTObject.AcquireImageAsync({
-						    IfCloseSourceAfterAcquire: true // Scanner source will be closed automatically after the scan.
-						});
-					}).catch(function (exp) {
-						alert(exp.message);
-				});
+                DWTObject.SelectSourceAsync().then(function () {
+                    return DWTObject.AcquireImageAsync({
+                        IfCloseSourceAfterAcquire: true // Scanner source will be closed automatically after the scan.
+                    });
+                }).catch(function (exp) {
+                    alert(exp.message);
+                });
             }
         }
-        
+
         function LoadImages() {
-            if (DWTObject) {			
-				// Load images in all supported formats (.bmp, .jpg, .tif, .png, .pdf). OnSuccess or OnFailure will be called after the operation
-                DWTObject.LoadImageEx("", Dynamsoft.DWT.EnumDWT_ImageType.IT_ALL, function(){
-					console.log('successful');
-				}, function(errorCode, errorString){
-					 alert(errorString);
-				}); 
+            if (DWTObject) {
+                // Load images in all supported formats (.bmp, .jpg, .tif, .png, .pdf). OnSuccess or OnFailure will be called after the operation
+                DWTObject.LoadImageEx("", Dynamsoft.DWT.EnumDWT_ImageType.IT_ALL, function () {
+                    console.log('successful');
+                }, function (errorCode, errorString) {
+                    alert(errorString);
+                });
             }
         }
 
         function HTTPUpload() {
             if (DWTObject.HowManyImagesInBuffer == 0) {
                 alert("There is no image in the buffer.")
+                return;
+            }
+
+            if (location.protocol == 'file:') {
+                alert('The project requires an HTTP server environment to enable uploading.');
                 return;
             }
 
@@ -185,12 +213,12 @@
             DWTObject.SetHTTPFormField("CustomInfo", customInfo.value);
 
             DWTObject.HTTPUpload(
-                strActionPage, 
-                [DWTObject.CurrentImageIndexInBuffer], 
+                strActionPage,
+                [DWTObject.CurrentImageIndexInBuffer],
                 strImageType,
-                Dynamsoft.DWT.EnumDWT_UploadDataFormat.Binary, 
-                uploadfilename, 
-                OnSuccess, 
+                Dynamsoft.DWT.EnumDWT_UploadDataFormat.Binary,
+                uploadfilename,
+                OnSuccess,
                 OnFailure
             );
         }
@@ -238,13 +266,10 @@
                 try {
                     var realfileName1 = realfileName.replace("\\", "\\\\");
                     var newDiv = document.createElement('div');
-                   // var uploadeddetail = "<div class='info'><span class='title'>File Name:</span><span class='content'>" + strImageName + "</span><br/>" +
-                   // "<span class='title'>Custom Info:</span><span class='content'>" + strCustomInfo + "</span><br/>" +
-                   // "<a onclick='onClickDel(this, \"" + realfileName1 + "\");'>Del</a><span> | </span><a  target='_blank' href = 'online_demo_download.aspx?ImageName=" + realfileName + "&ImageExtName=" + strImageExtName + "'>Download</a></div>";
-                   var uploadeddetail = "<div class='info'><span class='title'>File Name:</span><span class='content'>" + strImageName + "</span><br/>" +
-                    "<span class='title'>Custom Info:</span><span class='content'>" + strCustomInfo + "</span><br/>" +
-                    "<a onclick='onClickDel(this, \"" + realfileName1 + "\");'>Del</a><span style='width: 0px; margin: 0 10px;'> | </span><a  target='_blank' href = 'Download.aspx?ImageName=" + realfileName + "&ImageExtName=" + strImageExtName + "'>Download</a></div>"; 
-                   newDiv.innerHTML = uploadeddetail;
+                    var uploadeddetail = "<div class='info'><span class='title'>File Name:</span><span class='content'>" + strImageName + "</span><br/>" +
+                        "<span class='title'>Custom Info:</span><span class='content'>" + strCustomInfo + "</span><br/>" +
+                        "<a onclick='onClickDel(this, \"" + realfileName1 + "\");'>Del</a><span style='width: 0px; margin: 0 10px;'> | </span><a  target='_blank' href = 'Download.aspx?ImageName=" + realfileName + "&ImageExtName=" + strImageExtName + "'>Download</a></div>";
+                    newDiv.innerHTML = uploadeddetail;
                     newDiv.style.borderBottom = "solid 1px #ccc";
                     document.getElementById('resultWrap').appendChild(newDiv);
 
@@ -287,12 +312,12 @@
                 if (currentPage) {
                     currentPage.disabled = true;
                     currentPage.checked = true;
-                }      
+                }
                 if (allPages)
                     allPages.disabled = true;
             }
         }
-        
+
         function showCustomInfo() {
             var customDetail = document.getElementById("customDetail");
             customDetail.style.display = "";
@@ -305,15 +330,17 @@
 
         function onResize() {
             var column = document.querySelector(".ds-div-scanPage-column");
+            var column0Row0 = document.querySelector(".ds-div-scanPage-column .content");
 
             var resultWrap = document.getElementById("resultWrap");
-            if(resultWrap)
-                resultWrap.style.height = (column.offsetHeight - 210) + 'px';
+            if (resultWrap)
+                resultWrap.style.height = (column.offsetHeight - column0Row0.offsetHeight - 4) + 'px';
         }
 
         window.addEventListener('resize', onResize);
         onResize();
     </script>
-	
+
 </body>
+
 </html>

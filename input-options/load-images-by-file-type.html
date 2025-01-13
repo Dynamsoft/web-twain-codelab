@@ -12,6 +12,7 @@
 <body>
     <div class="ds-div-scanPageHeader">
 		<div class="ds-div-title">Loading Images by File Type</div>
+        <p>This demo only supports Windows and MacOS.</p>
 	</div>
 	<div class="ds-div-scanPageDemo" >
 		<div class="ds-div-scanPage-column ds-div-scanPage-column0">
@@ -28,6 +29,11 @@
             <div id="dwtcontrolContainer" style="width: 100%; height: 100%;"></div>
         </div>
     </div>
+    <style>
+		.ds-div-download {
+			bottom: 2px;
+		}
+    </style>   
     <script type="text/javascript">
         var DWTObject;
         Dynamsoft.DWT.RegisterEvent("OnWebTwainReady", function () {
@@ -35,13 +41,18 @@
             DWTObject.RegisterEvent("OnGetFilePath",
                 function (isSave, filesCount, index, directory, fileName) {
                     if(filesCount > 0)
-                        DWTObject.LoadImage(directory + "\\" + fileName, function(){console.log("Successful.");}, function(ec,es){console.log(es);});
+                        DWTObject.LoadImage(directory + "/" + fileName, function(){console.log("Successful.");}, function(ec,es){console.log(es);});
                 }
             );
         });
 
         function LoadImage() {
             if (DWTObject) {
+                if (!Dynamsoft.navInfoSync.bWin && !Dynamsoft.navInfoSync.bMac) {
+					alert("This demo only supports Windows or MacOS.");
+                    return;
+				}
+
                 var filterbyString = "BMP,TIF,JPG,PNG,PDF|*.bmp;*.tif;*.png;*.jpg;*.pdf;*.tiff;*.jpeg";
                 var filterby = document.getElementById("filterBy");
                 switch(filterBy.selectedIndex) {

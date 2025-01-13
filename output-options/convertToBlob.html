@@ -13,6 +13,10 @@
 		<div class="ds-div-title">Converting Image to Blob</div>
 	</div>
 	<div class="ds-div-scanPageDemo-button">
+        <div class="ds-div-title"></div>
+		<div class="ds-div-download "><a class="ds-button" href="https://github.com/Dynamsoft/web-twain-codelab/blob/main/output-options/convertToBlob.html" target="_blank">Download Code</a></div>
+	</div>
+	<div class="ds-div-scanPageDemo-button">
         <input type="button" value="Scan" class="ds-button-bg-black" onclick="AcquireImage();" />
         <input type="button" value="Open a local file" class="ds-button-bg-white btn" onclick="LoadImages();" />
 	</div>
@@ -32,11 +36,15 @@
 		</div>
 	</div>
 	<style>
+       .ds-div-download {
+			bottom: 2px;
+		}
         #txtBlob {
             padding: 0 10px;
             border: 1px solid rgb(204, 204, 204); 
             height: 30px;
             line-height: 30px;
+            overflow: auto;  
         }
         .ds-div-scanPage-column0 {
             width: 400px;
@@ -47,19 +55,18 @@
         }
         .ds-div-scanPage-column1 {
             vertical-align: middle;
-            transform: translate(0, 30%);
             width: 180px;
             min-width: 180px;
-            padding: 7px;
+            padding: 10% 7px;
         }
         .ds-div-scanPage-column2 {
             width: calc(100% - 580px);
-            min-width: 540px;
+            /*min-width: 540px;*/
             padding: 0;
         }
         .ds-div-scanPage-column2 img {
-            height: 100%;
-            min-height: 362px;
+            /*height: 100%;
+            min-height: 362px;*/
             margin: 0 auto;
             border: 0;
         }
@@ -71,7 +78,7 @@
             vertical-align: middle;
             border: 1px solid rgb(204, 204, 204);
         }
-        input[type=button] {
+        .ds-button-bg-black, .ds-button-bg-white {
             width: 165px;
         }
         textarea {
@@ -79,13 +86,45 @@
             height: 100%;
         }
 
-        @media screen and ((max-height: 900px) or (max-width: 1440px)) {
+        .ds-div-try-buttons {
+            margin-top: 10px;
+        }
+
+        .ds-div-scanPageDemo {
+				min-height: 580px;
+                margin-top: 0px;
+			}
+
+            .ds-div-scanPage-column1 {
+                width: 155px;
+                min-width: 155px;
+            }
+
+            .ds-div-scanPage-column2 {
+                min-width: 495px;
+            }
+
             .ds-div-scanPageAPI, .ds-div-scanPageHeader, .ds-div-scanPageNote,
             .ds-div-scanPageDemo, .ds-div-scanPageDemo-button,
             .ds-div-scanPageTry {
-                min-width: 1120px;
+                min-width: 1000px;
+                width: 1050px;
             }
-        }
+
+            .ds-button-bg-black, .ds-button-bg-black-thin, 
+            .ds-button-bg-white, .ds-button-bg-white-thin {
+                padding: 6px 0px;
+            }
+
+
+            .ds-button-bg-black, .ds-button-bg-white {
+                width: 140px;
+               /* height: 36px;*/
+                margin: 0 6px 10px 0;
+                padding: 5px 7px;
+                font-size: 14px;
+                line-height: 22px;
+            }
     </style>
     <script type="text/javascript">
        var DWTObject;
@@ -118,6 +157,10 @@
 
         function ConvertToBlob(){
             if (DWTObject) {
+                var imageBox = document.getElementsByClassName('ds-div-imageBox');
+                var relWidth = imageBox[0].offsetWidth;
+                var relHeight = imageBox[0].offsetHeight;
+
                 DWTObject.ConvertToBlob(
                     [DWTObject.CurrentImageIndexInBuffer],
                     Dynamsoft.DWT.EnumDWT_ImageType.IT_PNG,
@@ -127,6 +170,13 @@
                         txtBlob.innerHTML = blobUrl;
                         var imgShowBlob = document.getElementById("imgShowBlob");
                         imgShowBlob.src = blobUrl;
+                        imgShowBlob.style.width = '';
+                        imgShowBlob.style.height = '';
+                        if((DWTObject.GetImageHeight(DWTObject.CurrentImageIndexInBuffer)/relHeight) > (DWTObject.GetImageWidth(DWTObject.CurrentImageIndexInBuffer)/relWidth)) 
+                            imgShowBlob.style.height = relHeight + "px";
+                        else
+                            imgShowBlob.style.width = relWidth + "px";
+
                     },
                     function (errorCode, errorString) {
                         alert(errorString);
@@ -134,7 +184,6 @@
                 );
             }
         }
-
     </script>
 	
 </body>

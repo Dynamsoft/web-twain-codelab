@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Save to Local Drive</title>
+    <title>Saving Documents Locally</title>
 	<link rel="stylesheet" href="../css/global.css" />
 	<link rel="stylesheet" href="../css/scan.css" />
     <script src="https://cdn.jsdelivr.net/npm/dwt@latest/dist/dynamsoft.webtwain.min.js"></script>
@@ -10,18 +10,19 @@
 </head>
 <body>
 	<div class="ds-div-scanPageHeader">
-		<div class="ds-div-title">Save to Local Drive</div>
+		<div class="ds-div-title">Saving Documents Locally</div>
 	</div>
 	<div class="ds-div-scanPageDemo" >
 		<div class="ds-div-scanPage-column ds-div-scanPage-column0">
             <div><label for="left" >Select Source:</label><select size="1" id="source"></select></div>	
-            <input type="button" value="Scan" onclick="AcquireImage();" />
+            <input type="button" value="Scan" class="ds-button-bg-black btn mr20" onclick="AcquireImage();" />
+            <input type="button" value="Open a local file" class="ds-button-bg-white btn" onclick="LoadImages();" />
             <br />
             <div id="divSaveDetail" class="ds-PT40">
                 <ul style="list-style: none; padding-left: 0px;">
                     <li>
                         <p style="margin: 0;">File Name:</p>
-                        <input type="text" size="20" id="txt_fileName" value="WebTWAINImage"><span> . </span>
+                        <input type="text" size="20" id="txt_fileName" value="WebTWAINImage"><b> . </b>
                         <select size="1" id="fileType" onchange="fileType_onchange();">     
                         <option value="pdf">pdf</option>
                         <option value="tif">tif</option>
@@ -35,7 +36,7 @@
                         <label for="AllPages"><input type="radio" id="AllPages" name="Pages" checked>All Pages</label>
                     </li>
                     <li>
-                        <input type="button" value="Save" onclick="SaveWithFileDialog();" />
+                        <input type="button" value="Save" class="ds-button-bg-white" onclick="SaveWithFileDialog();" />
                     </li>
                 </ul>
             </div>
@@ -44,6 +45,15 @@
 			<div id="dwtcontrolContainer" style="width: 100%; height: 100%;"></div>
 		</div>
 	</div>
+    <style>
+		.ds-div-download {
+			bottom: 2px;
+		}
+        .ds-div-scanPage-column0 label {
+			width: 140px;
+			display: inline-block;
+		}
+    </style>
     <script type="text/javascript">
         var DWTObject;
         Dynamsoft.DWT.RegisterEvent("OnWebTwainReady", function () {
@@ -74,6 +84,17 @@
             }
         }
 
+        function LoadImages() {
+            if (DWTObject) {			
+				// Load images in all supported formats (.bmp, .jpg, .tif, .png, .pdf). OnSuccess or OnFailure will be called after the operation
+                DWTObject.LoadImageEx("", Dynamsoft.DWT.EnumDWT_ImageType.IT_ALL, function(){
+					console.log('successful');
+				}, function(errorCode, errorString){
+					 alert(errorString);
+				}); 
+            }
+        }
+        
         function SaveWithFileDialog() {
             if (DWTObject.HowManyImagesInBuffer == 0) {
                 alert("There is no image in the buffer.")

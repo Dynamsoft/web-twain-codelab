@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Download from HTTP Server</title>
+    <title>Downloading from HTTP Server</title>
     <link rel="stylesheet" href="../css/global.css" />
 	<link rel="stylesheet" href="../css/scan.css" />
     <script src="https://cdn.jsdelivr.net/npm/dwt@latest/dist/dynamsoft.webtwain.min.js"></script>
@@ -11,17 +11,22 @@
 
 <body>
     <div class="ds-div-scanPageHeader">
-		<div class="ds-div-title">Download from HTTP Server</div>
+		<div class="ds-div-title">Downloading from HTTP Server</div>
 	</div>
 	<div class="ds-div-scanPageDemo" >
 		<div class="ds-div-scanPage-column ds-div-scanPage-column0">
 	        <div>URL: <input type="text" id="txtURL" style="width: 100%;" value="https://demo.dynamsoft.com/Samples/DWT/Download-from-HTTP-Server/DynamsoftSample.pdf" /></div>
-            <div><input type="button" value="Download" onclick="DownloadImage();" /></div>
+            <div><input type="button" value="Download" class="ds-button-bg-black" onclick="DownloadImage();" /></div>
         </div>
         <div class="ds-div-scanPage-column ds-div-scanPage-column1">
             <div id="dwtcontrolContainer" style="width: 100%; height: 100%;"></div>
         </div>
     </div>
+    <style>
+		.ds-div-download {
+			bottom: 2px;
+		}
+    </style>    
     <script type="text/javascript">
         var DWTObject;
         Dynamsoft.DWT.RegisterEvent("OnWebTwainReady", function () {
@@ -39,33 +44,19 @@
 
         function DownloadImage() {
             if (DWTObject) {
-                var strHTTPServer, downloadfilename;
-                var txtURL = document.getElementById('txtURL');
-                if(txtURL.value.indexOf('https://') != -1){
-                    DWTObject.IfSSL = true; 
-                } else {
-                    DWTObject.IfSSL = false; 
-                }
-                var index = txtURL.value.indexOf('://');
-                if(index != -1) {
-                    var iStart = index + '://'.length;
-                    var iEnd = txtURL.value.indexOf(':', iStart);
-                    if(iEnd == -1) {
-                        iEnd = txtURL.value.indexOf('/', iStart);
-                        DWTObject.HTTPPort = DWTObject.IfSSL ? 443 : 80; 
-                        strHTTPServer = txtURL.value.substr(iStart, iEnd-iStart);
-                        downloadfilename = txtURL.value.substr(iEnd, txtURL.value.length-iEnd);
-                    } else {
-                        strHTTPServer = txtURL.value.substr(iStart, iEnd-iStart);
-                        var iTemp = iEnd + 1;
-                        iEnd = txtURL.value.indexOf('/', iStart);
-                        DWTObject.HTTPPort = txtURL.value.substr(iTemp, iEnd-iTemp);
-                        downloadfilename = txtURL.value.substr(iEnd, txtURL.value.length-iEnd);
-                    }
-                        
-                }
+                var txtURL = document.getElementById('txtURL').value.trim(); 
+                try {
+                    var url = new URL(txtURL);
+                    DWTObject.IfSSL = (url.protocol === 'https:');
+                    DWTObject.HTTPPort = url.port? parseInt(url.port) : (DWTObject.IfSSL ? 443 : 80);
+                    var strHTTPServer = url.hostname;
+                    var downloadfilename = url.pathname + (url.search || '') + (url.hash || ''); 
 
-                DWTObject.HTTPDownload(strHTTPServer, downloadfilename, OnSuccess, OnFailure);
+                    DWTObject.HTTPDownload(strHTTPServer, downloadfilename, OnSuccess, OnFailure);
+
+                } catch (e) {
+                    console.error('Invalid URL:', e);
+                }
             }
         }
     </script>

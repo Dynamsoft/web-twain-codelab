@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Load from Local Drive</title>
+    <title>Loading from Local Drive</title>
     <link rel="stylesheet" href="../css/global.css" />
 	<link rel="stylesheet" href="../css/scan.css" />
     <script src="https://cdn.jsdelivr.net/npm/dwt@latest/dist/dynamsoft.webtwain.min.js"></script>
@@ -11,16 +11,21 @@
 
 <body>
     <div class="ds-div-scanPageHeader">
-		<div class="ds-div-title">Load from Local Drive</div>
+		<div class="ds-div-title">Loading from Local Drive</div>
 	</div>
 	<div class="ds-div-scanPageDemo" >
 		<div class="ds-div-scanPage-column ds-div-scanPage-column0">
-            <input type="button" value="Load" onclick="LoadImage();" />
+            <input type="button" value="Load" class="ds-button-bg-black" onclick="LoadImage();" />
         </div>
         <div class="ds-div-scanPage-column ds-div-scanPage-column1">
             <div id="dwtcontrolContainer" style="width: 100%; height: 100%;"></div>
         </div>
     </div>
+    <style>
+		.ds-div-download {
+			bottom: 2px;
+		}
+    </style>
     <script type="text/javascript">
         var DWTObject;
         Dynamsoft.DWT.RegisterEvent("OnWebTwainReady", function () {
