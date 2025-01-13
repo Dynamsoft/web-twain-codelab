@@ -9,16 +9,16 @@
 
 <body>
 	<div class="ds-div-scanPageHeader">
-		<div class="ds-div-title">Set Custom Data for Scanning</div>
-		<p>This demo only supports TWAIN drivers on Windows or Mac, and primarily achieves specific scanning operations by setting predefined scanning configuration profiles.</p>
+		<div class="ds-div-title">Setting Custom Scanning Data</div>
+		<p>This demo sets pre-defined scanning configuration profiles to perform custom scanning operations. This demo only supports TWAIN drivers on Windows.</p>
 	</div>
 	<div class="ds-div-scanPageDemo" >
 		<div class="ds-div-scanPage-column ds-div-scanPage-column0">
-			<div><label for="left" >Select Source:</label><select size="1" id="source"></select></div>	
+			<div><label for="left" style="margin-right: 10px;">Select Source:</label><select size="1" id="source"></select></div>	
 			<div><label for="message">Custom DS Data:</label></div>
 			<div><textarea id="message" name="message" rows="7" cols="50" placeholder="Enter Custom DS Data here..."></textarea></div>
-			<div><label for="message">Note: If you don't have the base64 string of the custom DS data yet, please click <a class="bluelink" href="get-custom-data.html">here</a> to retrieve it.</label></div>
-			<div><input type="button" style="margin-bottom: 20px;" value="Set Custom DS Data and Scan" onclick="SetCustomDSDataAndAcquireImage();" /></div>
+			<div><label for="message">Note: You can click <a class="bluelink" href="get-custom-data.html">here</a> to retrieve the custom DS data as a base64 string.</label></div>
+			<div><input type="button" style="margin-bottom: 20px;" value="Set Custom DS Data and Scan" class="ds-button-bg-black" onclick="SetCustomDSDataAndAcquireImage();" /></div>
 		</div>
 		<div class="ds-div-scanPage-column ds-div-scanPage-column1">
 			<div id="dwtcontrolContainer" style="width: 100%; height: 100%;"></div>
@@ -27,9 +27,6 @@
 	<style>
 		.ds-div-scanPage-column0>div {
 			margin: 7px;
-		}
-		.ds-div-scanPage-column0>div textarea {
-			width: 385px;
 		}
 	</style>
     <script src="https://cdn.jsdelivr.net/npm/dwt@latest/dist/dynamsoft.webtwain.min.js"></script>
@@ -40,14 +37,16 @@
 			DWTObject = Dynamsoft.DWT.GetWebTwain('dwtcontrolContainer'); // Get the Dynamic Web TWAIN object that is embeded in the div with id 'dwtcontrolContainer'
 			if (DWTObject) {
                 deviceList=[];
-				DWTObject.GetDevicesAsync().then(function(devices){
-					for (var i = 0; i < devices.length; i++) { // Get how many sources are installed in the system
-						document.getElementById('source').options.add(new Option(devices[i].displayName, i)); // Add the sources in a drop-down list
-						deviceList.push(devices[i]);
-                    }
-				}).catch(function (exp) {
-					alert(exp.message);
-				});
+				if(Dynamsoft.navInfoSync.bWin) {
+					DWTObject.GetDevicesAsync(Dynamsoft.DWT.EnumDWT_DeviceType.TWAINX64SCANNER|Dynamsoft.DWT.EnumDWT_DeviceType.TWAINSCANNER).then(function(devices){
+						for (var i = 0; i < devices.length; i++) { // Get how many sources are installed in the system
+							document.getElementById('source').options.add(new Option(devices[i].displayName, i)); // Add the sources in a drop-down list
+							deviceList.push(devices[i]);
+						}
+					}).catch(function (exp) {
+						alert(exp.message);
+					});
+				}
             }
 		}); 
 		
@@ -57,6 +56,7 @@
 				var customDSData = document.getElementById("message");
 				DWTObject.SetCustomDSDataEx(customDSData.value);
 				return DWTObject.AcquireImageAsync({
+					IfShowUI: false,
 					IfCloseSourceAfterAcquire: true // Scanner source will be closed automatically after the scan.
 				});
 			}).catch(function (exp) {

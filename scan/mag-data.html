@@ -2,19 +2,19 @@
 <html>
 
 <head>
-    <title>Read MagData during scanning</title>
+    <title>Reading MagData During Scan</title>
 	<link rel="stylesheet" href="../css/global.css" />
 	<link rel="stylesheet" href="../css/scan.css" />
 </head>
 
 <body>
 	<div class="ds-div-scanPageHeader">
-		<div class="ds-div-title">Read MagData during scanning</div>
-		<p>The demo requires a scanner capable of reading MagData.</p>
+		<div class="ds-div-title">Reading MagData During Scan</div>
+		<p>This demo requires a scanner with MagData reading capabilities.</p>
 	</div>
 	<div class="ds-div-scanPageDemo" >
 		<div class="ds-div-scanPage-column ds-div-scanPage-column0">
-			<input type="button" value="Scan" onclick="AcquireImage();" />
+			<input type="button" value="Scan" class="ds-button-bg-black" onclick="AcquireImage();" />
 			<div id="MagData" class="clearfix"><span class="lblMagData">MagData Info:</span><br>
 				<div id="DWTMagData"></div>
 			</div>						
@@ -25,10 +25,11 @@
 	</div>
 	<style>
 		#DWTMagData {
-			width: 400px;
+			width: 380px;
 			height: 200px;
 			border: 1px solid #c3c3c3;
 			margin-bottom: 20px;
+			word-wrap: break-word;
 		}
 	</style>
     <script src="https://cdn.jsdelivr.net/npm/dwt@latest/dist/dynamsoft.webtwain.min.js"></script>

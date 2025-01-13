@@ -36,6 +36,10 @@ input[type=button]:disabled{
     position: relative;
 }
 
+#unitType {
+    width: 280px;
+}
+
 #Resolution {
     width: 80px;
     height: 30px;
@@ -66,4 +70,9 @@ input[type=text]{
 #fileType {
     height: 30px;
     width: 80px;
+}
+
+.ds-div-scanPage-column0 span {
+    width: 120px;
+    display: inline-block;
 }

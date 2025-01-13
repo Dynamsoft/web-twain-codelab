@@ -2,49 +2,53 @@
 <html>
 
 <head>
-    <title>Keeping ScanUI Focused on Top</title>
-    <link rel="stylesheet" href="../css/global.css" />
-	  <link rel="stylesheet" href="../css/scan.css" />
+  <title>Keeping ScanUI Focused on Top</title>
+  <link rel="stylesheet" href="../css/global.css" />
+  <link rel="stylesheet" href="../css/scan.css" />
 </head>
+
 <body>
-	<div class="ds-div-scanPageHeader">
-		<div class="ds-div-title">Keeping ScanUI Focused on Top</div>
-		<p>This demo supports only TWAIN drivers on Windows.</p>
-	</div>
-	<div class="ds-div-scanPageDemo" >
-		<div class="ds-div-scanPage-column ds-div-scanPage-column0">
-			<input type="checkbox" id="FocusScanUIOnTop" checked>Focus ScanUI Always on Top<br/>
-			<input type="button" value="Scan" class="ds-button-bg-black" onclick="AcquireImage();" />
-		</div>
-		<div class="ds-div-scanPage-column ds-div-scanPage-column1">
-			<div id="dwtcontrolContainer" style="width: 100%; height: 100%;"></div>
-		</div>
-	</div>
-	<style>
-	</style>
+  <div class="ds-div-scanPageHeader">
+    <div class="ds-div-title">Keeping ScanUI Focused on Top</div>
+    <p>This demo supports only TWAIN drivers on Windows.</p>
+  </div>
+  <div class="ds-div-scanPageDemo">
+    <div class="ds-div-scanPage-column ds-div-scanPage-column0">
+      <input type="checkbox" id="FocusScanUIOnTop" checked>Focus ScanUI Always on Top<br />
+      <input type="button" value="Scan" class="ds-button-bg-black" onclick="AcquireImage();" />
+    </div>
+    <div class="ds-div-scanPage-column ds-div-scanPage-column1">
+      <div id="dwtcontrolContainer" style="width: 100%; height: 100%;"></div>
+    </div>
+  </div>
+  <style>
+  </style>
   <script src="https://cdn.jsdelivr.net/npm/dwt@latest/dist/dynamsoft.webtwain.min.js"></script>
   <script type="text/javascript" src="../Resources/dynamsoft.webtwain.config_autoload.js"></script>
   <script type="text/javascript">
     var DWTObject;
     Dynamsoft.DWT.RegisterEvent("OnWebTwainReady", function () {
-		DWTObject = Dynamsoft.DWT.GetWebTwain('dwtcontrolContainer'); // Get the Dynamic Web TWAIN object that is embeded in the div with id 'dwtcontrolContainer'
+      DWTObject = Dynamsoft.DWT.GetWebTwain('dwtcontrolContainer'); // Get the Dynamic Web TWAIN object that is embeded in the div with id 'dwtcontrolContainer'   
     });
 
     function AcquireImage() {
       if (DWTObject) {
-		Dynamsoft.DWT.IfAlwaysFocusOnPopupWindow = document.getElementById('FocusScanUIOnTop').checked;	
-        DWTObject.SelectSourceAsync().then(function(){
-          return DWTObject.AcquireImageAsync({
-            IfCloseSourceAfterAcquire: true // Scanner source will be closed automatically after the scan.
+        if (Dynamsoft.navInfoSync.bWin) {
+          Dynamsoft.DWT.IfAlwaysFocusOnPopupWindow = document.getElementById('FocusScanUIOnTop').checked;
+          DWTObject.SelectSourceAsync(Dynamsoft.DWT.EnumDWT_DeviceType.TWAINX64SCANNER | Dynamsoft.DWT.EnumDWT_DeviceType.TWAINSCANNER).then(function () {
+            return DWTObject.AcquireImageAsync({
+              IfCloseSourceAfterAcquire: true // Scanner source will be closed automatically after the scan.
+            });
+          }).catch(function (exp) {
+            alert(exp.message);
           });
-		}).then(function(){
-		  return DWTObject.CloseWorkingProcess();
-        }).catch(function (exp) {
-          alert(exp.message);
-        });
+        } else {
+          alert("This demo only supports TWAIN drivers on Windows.");
+        }
       }
     }
   </script>
-  
+
 </body>
+
 </html>
