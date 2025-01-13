@@ -19,7 +19,7 @@
 .ds-ddv-button.active {background: 0% 0% no-repeat padding-box padding-box rgb(254, 142, 20);}
 .ds-ddv-button.active:hover { background: #ffae38; }
 
-input[type=button]{
+/*input[type=button]{
     padding: 6px 20px; 
     margin: 20px 4px 20px 0;
     background-color: #323234;
@@ -28,9 +28,9 @@ input[type=button]{
 }
 input[type=button]:disabled{
     background-color: #CCC;
-}
+}*/
 
-#source { 
+#source, #filterBy { 
     width: 280px;
     height: 30px;
     position: relative;
@@ -58,6 +58,10 @@ input[type=button]:disabled{
 
 input[type=text]{
     height: 30px;
+}
+
+.dvs-changeSizeBox,.dvs-rotateBox {
+    width: 280px;
 }
 
 #fileFormat, #txt_XferCount {

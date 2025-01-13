@@ -2,11 +2,11 @@
 <html>
 
 <head>
-    <title>Built-in image viewer and editor</title>
+	<title>Built-in image viewer and editor</title>
 	<link rel="stylesheet" href="../css/global.css" />
 	<link rel="stylesheet" href="../css/scan.css" />
-    <script src="https://cdn.jsdelivr.net/npm/dwt@latest/dist/dynamsoft.webtwain.min.js"></script>
-    <script type="text/javascript" src="../Resources/dynamsoft.webtwain.config_autoload.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/dwt@latest/dist/dynamsoft.webtwain.min.js"></script>
+	<script type="text/javascript" src="../Resources/dynamsoft.webtwain.config_autoload.js"></script>
 </head>
 
 <body>
@@ -14,189 +14,329 @@
 	<div class="ds-div-scanPageHeader">
 		<div class="ds-div-title">Built-in image viewer and editor</div>
 	</div>
-	<div class="ds-div-scanPageDemo" >
+	<div class="ds-div-scanPageDemo">
 		<div class="ds-div-scanPage-column ds-div-scanPage-column0">
 			<div class="ds-div-left">
-				<div class="ds-div-tab-header mt30">
-				  <ul>
-					<li class="tabList tabList-0 selectTab" onclick="showTab(0)">Styles</li>
-					<li class="tabList tabList-1 unselectTab" onclick="showTab(1)">Customizable Display Info</li>
-				  </ul>
+				<div class="ds-div-tab-header">
+					<ul>
+						<li class="tabList tabList-0 selectTab" onclick="showTab(0)">Styles</li>
+						<li class="tabList tabList-1 unselectTab" onclick="showTab(1)">Customizable Display Info</li>
+					</ul>
 				</div>
-				<div class="ds-div-tab-body mt30">
+				<div class="ds-div-tab-body">
 					<div class="ds-div-tab-content-0">
-					  <div><label id="lblSelectedPageBackground" for="headerBackground">Header Background: </label>
-						  <input type="color" id="headerBackground" value='#FE8E14' />
-					  </div>
-					  <div><label id="lblSelectedPageBorder" for="selectedIconColor">Icon Color: </label>
-						  <input type="color" id="selectedIconColor" value='#ffffff' />
-					  </div>
-					  <div><label id="lblHoverPageBackground" for="selectedGreyIconColor">Grey Icon Color: </label>
-						  <input type="color" id="selectedGreyIconColor" value='#fda925' />
-					  </div>
-					  <div><label for="selectedBackground">Selected Background Color: </label>
-						  <input type="color" id="selectedBackground" value='#fe8e14' />
-					  </div>
-					  <div><label for="backgroundColor">Background Color: </label>
-						  <input type="color" id="backgroundColor" value='#ffffff' />
-					  </div>
+						<div><span>Header Background: </span>
+							<input autocomplete="off" type="color" id="headerBackground" value='#000000' />
+						</div>
+						<div><span>Active Icon: </span>
+							<input autocomplete="off" type="color" id="selectedIconColor" value='#ffffff' />
+						</div>
+						<div><span>Inactive Icon: </span>
+							<input autocomplete="off" type="color" id="selectedGreyIconColor" value='#A0A0A0' />
+						</div>
+						<div><span>Selected Icon Background: </span>
+							<input autocomplete="off" type="color" id="selectedBackground" value='#909090' />
+						</div>
+						<div><span>Body Background: </span>
+							<input autocomplete="off" type="color" id="backgroundColor" value='#f0f8ff' />
+						</div>
 					</div>
 					<div class="ds-div-tab-content-1">
-					  <div class="ds-div-display-info">
-			<table>
-				<thead>
-					<tr>
-					<th style="width: 60px;">Icon</th>
-					<th style="width: 60px;">Visible</th>
-					<th style="width: 300px;text-align: center;">Tooltip</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-					<td><div style="background: #FE8E14;" class="dvs-btn dvs-btn dvs-editor-iconfont dvs-buttons ds-dwt-ui-icon-preImage"></div></td>
-					<td onclick="checkBoxClicked(event)"><input type="checkbox" id='chk_previous' checked></td>
-					<td><input type="text" id="previous" value='Previous Image'></td>
-					</tr>
-					<tr>
-					<td><div style="background: #FE8E14;" class="dvs-btn dvs-btn dvs-editor-iconfont dvs-buttons ds-dwt-ui-icon-nextImage"></div></td>
-					<td onclick="checkBoxClicked(event)"><input type="checkbox" id='chk_next' checked></td>
-					<td><input type="text" id='next' value='Next Image'></td>
-					</tr>
-					<tr>
-					<td><div style="background: #FE8E14;" class="dvs-btn dvs-editor-iconfont ds-dwt-ui-icon-acquire dvs-buttons"></div></td>
-					<td onclick="checkBoxClicked(event)"><input type="checkbox" id='chk_scan' checked></td>
-					<td><input type="text" id='scan' value='Acquire new Image(s)'></td>
-					</tr>
-					<tr>
-					<td><div style="background: #FE8E14;" class="dvs-btn dvs-editor-iconfont ds-dwt-ui-icon-load dvs-buttons"></div></td>
-					<td onclick="checkBoxClicked(event)"><input type="checkbox" id='chk_load' checked></td>
-					<td><input type="text" id='load' value='Load local Image(s)'></td>
-					</tr>
-					<tr>
-					<td><div style="background: #FE8E14;" class="dvs-btn dvs-editor-iconfont ds-dwt-ui-icon-printImage dvs-buttons"></div></td>
-					<td onclick="checkBoxClicked(event)"><input type="checkbox" id='chk_print' checked></td>
-					<td><input type="text" id='print' value='Print Image'></td>
-					</tr>
-					<tr>
-					<td><div style="background: #FE8E14;" class="dvs-btn dvs-editor-iconfont ds-dwt-ui-icon-removeall dvs-buttons"></div></td>
-					<td onclick="checkBoxClicked(event)"><input type="checkbox" id='chk_removeall' checked></td>
-					<td><input type="text" id='removeall' value='Remove All Images'></td>
-					</tr>
-					<tr>
-					<td><div style="background: #FE8E14;" class="dvs-btn dvs-editor-iconfont ds-dwt-ui-icon-removeImage dvs-buttons"></div></td>
-					<td onclick="checkBoxClicked(event)"><input type="checkbox" id='chk_removeselected' checked></td>
-					<td><input type="text" id='removeselected' value='Remove All Selected Images'></td>
-					</tr>	
-					<tr>
-					<td><div style="background: #FE8E14;" class="dvs-btn dvs-editor-iconfont ds-dwt-ui-icon-rotateLeftImage dvs-buttons"></div></td>
-					<td onclick="checkBoxClicked(event)"><input type="checkbox" id='chk_rotateleft' checked></td>
-					<td><input type="text" id='rotateleft' value='Rotate Left'></td>
-					</tr>
-					<tr>
-					<td><div style="background: #FE8E14;" class="dvs-btn dvs-editor-iconfont ds-dwt-ui-icon-rotate dvs-buttons"></div></td>
-					<td onclick="checkBoxClicked(event)"><input type="checkbox" id='chk_rotate' checked></td>
-					<td><input type="text" id='rotate' value='Rotate'></td>
-					</tr>
-					<tr>
-					<td><div style="background: #FE8E14;" class="dvs-btn dvs-editor-iconfont ds-dwt-ui-icon-rotateRightImage dvs-buttons"></div></td>
-					<td onclick="checkBoxClicked(event)"><input type="checkbox" id='chk_rotateright' checked></td>
-					<td><input type="text" id='rotateright' value='Rotate Right'></td>
-					</tr>
-					<tr>
-					<td><div style="background: #FE8E14;" class="dvs-btn dvs-editor-iconfont ds-dwt-ui-icon-deskew dvs-buttons"></div></td>
-					<td onclick="checkBoxClicked(event)"><input type="checkbox" id='chk_deskew' checked></td>
-					<td><input type="text" id='deskew' value='Deskew'></td>
-					</tr>	
-					<tr>
-					<td><div style="background: #FE8E14;" class="dvs-btn dvs-btn dvs-editor-iconfont dvs-buttons ds-dwt-ui-icon-cropImage"></div></td>
-					<td onclick="checkBoxClicked(event)"><input type="checkbox" id='chk_crop' checked></td>
-					<td><input type="text" id='crop' value='Crop Selected Area'></td>
-					</tr>	
-					<tr>
-					<td><div style="background: #FE8E14;" class="dvs-btn dvs-btn dvs-editor-iconfont dvs-buttons ds-dwt-ui-icon-erase"></div></td>
-					<td onclick="checkBoxClicked(event)"><input type="checkbox" id='chk_cut' checked></td>
-					<td><input type="text" id='cut' value='Cut Selected Area'></td>
-					</tr>
-					<tr>
-					<td><div style="background: #FE8E14;" class="dvs-btn dvs-editor-iconfont ds-dwt-ui-icon-changeImageSize dvs-buttons"></div></td>
-					<td onclick="checkBoxClicked(event)"><input type="checkbox" id='chk_changeimagesize' checked></td>
-					<td><input type="text" id='changeimagesize' value='Change Image Size'></td>
-					</tr>
-					<tr>
-					<td><div style="background: #FE8E14;" class="dvs-btn dvs-editor-iconfont ds-dwt-ui-icon-flipImage dvs-buttons"></div></td>
-					<td onclick="checkBoxClicked(event)"><input type="checkbox" id='chk_flip' checked></td>
-					<td><input type="text" id='flip' value='Flip Image'></td>
-					</tr>
-					<tr>
-					<td><div style="background: #FE8E14;" class="dvs-btn dvs-editor-iconfont ds-dwt-ui-icon-mirrorImage dvs-buttons"></div></td>
-					<td onclick="checkBoxClicked(event)"><input type="checkbox" id='chk_mirror' checked></td>
-					<td><input type="text" id='mirror' value='Mirror Image'></td>
-					</tr>     
-					<tr>
-					<td><div style="background: #FE8E14;" class="dvs-btn dvs-editor-iconfont ds-dwt-ui-icon-zoomin dvs-buttons"></div></td>
-					<td onclick="checkBoxClicked(event)"><input type="checkbox" id='chk_zoomin' checked></td>
-					<td><input type="text" id='zoomin' value='Zoom In'></td>
-					</tr>
-					<tr>
-					<td><div style="background: #FE8E14;" class="dvs-btn dvs-editor-iconfont ds-dwt-ui-icon-originalsize dvs-buttons"></div></td>
-					<td onclick="checkBoxClicked(event)"><input type="checkbox" id='chk_originalsize' checked></td>
-					<td><input type="text" id='originalsize' value='Show Original Size'></td>
-					</tr>
-					<tr>
-					<td><div style="background: #FE8E14;" class="dvs-btn dvs-editor-iconfont ds-dwt-ui-icon-zoomout dvs-buttons"></div></td>
-					<td onclick="checkBoxClicked(event)"><input type="checkbox" id='chk_zoomout' checked></td>
-					<td><input type="text" id='zoomout' value='Zoom Out'></td>
-					</tr>	
-					<tr>
-					<td><div style="background: #FE8E14;" class="dvs-btn dvs-editor-iconfont ds-dwt-ui-icon-fullWebType dvs-buttons"></div></td>
-					<td onclick="checkBoxClicked(event)"><input type="checkbox" id='chk_fit' checked></td>
-					<td><input type="text" id='fit' value='Fit Window'></td>
-					</tr>
-					<tr>
-					<td><div style="background: #FE8E14;" class="dvs-btn dvs-editor-iconfont ds-dwt-ui-icon-fitWidthType dvs-buttons"></div></td>
-					<td onclick="checkBoxClicked(event)"><input type="checkbox" id='chk_fitw' checked></td>
-					<td><input type="text" id='fitw' value='Fit Horizontally'></td>
-					</tr>
-					<tr>
-					<td><div style="background: #FE8E14;" class="dvs-btn dvs-editor-iconfont ds-dwt-ui-icon-zoomout dvs-buttons"></div></td>
-					<td onclick="checkBoxClicked(event)"><input type="checkbox" id='chk_fith' checked></td>
-					<td><input type="text" id='fith' value='Fit Vertically'></td>
-					</tr>	
-					<tr>
-					<td><div style="background: #FE8E14;" class="dvs-btn dvs-editor-iconfont ds-dwt-ui-icon-hand dvs-buttons"></div></td>
-					<td onclick="checkBoxClicked(event)"><input type="checkbox" id='chk_hand' checked></td>
-					<td><input type="text" id='hand' value='Hand Mode'></td>
-					</tr>
-					<tr>
-					<td><div style="background: #FE8E14;" class="dvs-btn dvs-editor-iconfont ds-dwt-ui-icon-select dvs-buttons"></div></td>
-					<td onclick="checkBoxClicked(event)"><input type="checkbox" id='chk_rectselect' checked></td>
-					<td><input type="text"id='rectselect'  value='Select Mode'></td>
-					</tr>
-					<tr>
-					<td><div style="background: #FE8E14;" class="dvs-btn dvs-editor-iconfont ds-dwt-ui-icon-clicktozoomin dvs-buttons"></div></td>
-					<td onclick="checkBoxClicked(event)"><input type="checkbox" id='chk_zoom' checked></td>
-					<td><input type="text" id='zoom' value='Click to Zoom In'></td>
-					</tr>
-					<tr>
-					<td><div style="background: #FE8E14;" class="dvs-btn dvs-btn dvs-editor-iconfont dvs-buttons ds-dwt-ui-icon-restore"></div></td>
-					<td onclick="checkBoxClicked(event)"><input type="checkbox" id='chk_restore' checked></td>
-					<td><input type="text" id='restore' value='Restore Orginal Image'></td>
-					</tr>
-					<tr>
-					<td><div style="background: #FE8E14;" class="dvs-btn dvs-btn dvs-editor-iconfont dvs-buttons ds-dwt-ui-icon-saveImage"></div></td>
-					<td onclick="checkBoxClicked(event)"><input type="checkbox" id='chk_save' checked></td>
-					<td><input type="text" id='save' value='Save Changes'></td>
-					</tr>
-					<tr>
-					<td><div style="background: #FE8E14;" class="dvs-btn dvs-editor-iconfont ds-dwt-ui-icon-close dvs-buttons"></div></td>
-					<td onclick="checkBoxClicked(event)"><input type="checkbox" id='chk_close'></td>
-					<td><input type="text" id='close' value='Close the Editor'></td>
-					</tr>
-				</tbody>
-			</table>
+						<div class="ds-div-display-info">
+							<table>
+								<thead>
+									<tr>
+										<th class="th1">Icon</th>
+										<th class="th2">Visible</th>
+										<th class="th3">Tooltip</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>
+											<div style="background: #323334;"
+												class="dvs-btn dvs-btn dvs-editor-iconfont dvs-buttons ds-dwt-ui-icon-preImage">
+											</div>
+										</td>
+										<td onclick="checkBoxClicked(event)"><input type="checkbox" id='chk_previous'
+												checked></td>
+										<td><input type="text" id="previous" value='Previous Image'></td>
+									</tr>
+									<tr>
+										<td>
+											<div style="background: #323334;"
+												class="dvs-btn dvs-btn dvs-editor-iconfont dvs-buttons ds-dwt-ui-icon-nextImage">
+											</div>
+										</td>
+										<td onclick="checkBoxClicked(event)"><input type="checkbox" id='chk_next'
+												checked></td>
+										<td><input type="text" id='next' value='Next Image'></td>
+									</tr>
+									<tr>
+										<td>
+											<div style="background: #323334;"
+												class="dvs-btn dvs-editor-iconfont ds-dwt-ui-icon-acquire dvs-buttons">
+											</div>
+										</td>
+										<td onclick="checkBoxClicked(event)"><input type="checkbox" id='chk_scan'
+												checked></td>
+										<td><input type="text" id='scan' value='Acquire new Image(s)'></td>
+									</tr>
+									<tr>
+										<td>
+											<div style="background: #323334;"
+												class="dvs-btn dvs-editor-iconfont ds-dwt-ui-icon-load dvs-buttons">
+											</div>
+										</td>
+										<td onclick="checkBoxClicked(event)"><input type="checkbox" id='chk_load'
+												checked></td>
+										<td><input type="text" id='load' value='Load local Image(s)'></td>
+									</tr>
+									<tr>
+										<td>
+											<div style="background: #323334;"
+												class="dvs-btn dvs-editor-iconfont ds-dwt-ui-icon-printImage dvs-buttons">
+											</div>
+										</td>
+										<td onclick="checkBoxClicked(event)"><input type="checkbox" id='chk_print'
+												checked></td>
+										<td><input type="text" id='print' value='Print Image'></td>
+									</tr>
+									<tr>
+										<td>
+											<div style="background: #323334;"
+												class="dvs-btn dvs-editor-iconfont ds-dwt-ui-icon-removeall dvs-buttons">
+											</div>
+										</td>
+										<td onclick="checkBoxClicked(event)"><input type="checkbox" id='chk_removeall'
+												checked></td>
+										<td><input type="text" id='removeall' value='Remove All Images'></td>
+									</tr>
+									<tr>
+										<td>
+											<div style="background: #323334;"
+												class="dvs-btn dvs-editor-iconfont ds-dwt-ui-icon-removeImage dvs-buttons">
+											</div>
+										</td>
+										<td onclick="checkBoxClicked(event)"><input type="checkbox"
+												id='chk_removeselected' checked></td>
+										<td><input type="text" id='removeselected' value='Remove All Selected Images'>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<div style="background: #323334;"
+												class="dvs-btn dvs-editor-iconfont ds-dwt-ui-icon-rotateLeftImage dvs-buttons">
+											</div>
+										</td>
+										<td onclick="checkBoxClicked(event)"><input type="checkbox" id='chk_rotateleft'
+												checked></td>
+										<td><input type="text" id='rotateleft' value='Rotate Left'></td>
+									</tr>
+									<tr>
+										<td>
+											<div style="background: #323334;"
+												class="dvs-btn dvs-editor-iconfont ds-dwt-ui-icon-rotate dvs-buttons">
+											</div>
+										</td>
+										<td onclick="checkBoxClicked(event)"><input type="checkbox" id='chk_rotate'
+												checked></td>
+										<td><input type="text" id='rotate' value='Rotate'></td>
+									</tr>
+									<tr>
+										<td>
+											<div style="background: #323334;"
+												class="dvs-btn dvs-editor-iconfont ds-dwt-ui-icon-rotateRightImage dvs-buttons">
+											</div>
+										</td>
+										<td onclick="checkBoxClicked(event)"><input type="checkbox" id='chk_rotateright'
+												checked></td>
+										<td><input type="text" id='rotateright' value='Rotate Right'></td>
+									</tr>
+									<tr>
+										<td>
+											<div style="background: #323334;"
+												class="dvs-btn dvs-editor-iconfont ds-dwt-ui-icon-deskew dvs-buttons">
+											</div>
+										</td>
+										<td onclick="checkBoxClicked(event)"><input type="checkbox" id='chk_deskew'
+												checked></td>
+										<td><input type="text" id='deskew' value='Deskew'></td>
+									</tr>
+									<tr>
+										<td>
+											<div style="background: #323334;"
+												class="dvs-btn dvs-btn dvs-editor-iconfont dvs-buttons ds-dwt-ui-icon-cropImage">
+											</div>
+										</td>
+										<td onclick="checkBoxClicked(event)"><input type="checkbox" id='chk_crop'
+												checked></td>
+										<td><input type="text" id='crop' value='Crop Selected Area'></td>
+									</tr>
+									<tr>
+										<td>
+											<div style="background: #323334;"
+												class="dvs-btn dvs-btn dvs-editor-iconfont dvs-buttons ds-dwt-ui-icon-erase">
+											</div>
+										</td>
+										<td onclick="checkBoxClicked(event)"><input type="checkbox" id='chk_cut'
+												checked></td>
+										<td><input type="text" id='cut' value='Cut Selected Area'></td>
+									</tr>
+									<tr>
+										<td>
+											<div style="background: #323334;"
+												class="dvs-btn dvs-editor-iconfont ds-dwt-ui-icon-changeImageSize dvs-buttons">
+											</div>
+										</td>
+										<td onclick="checkBoxClicked(event)"><input type="checkbox"
+												id='chk_changeimagesize' checked></td>
+										<td><input type="text" id='changeimagesize' value='Change Image Size'></td>
+									</tr>
+									<tr>
+										<td>
+											<div style="background: #323334;"
+												class="dvs-btn dvs-editor-iconfont ds-dwt-ui-icon-flipImage dvs-buttons">
+											</div>
+										</td>
+										<td onclick="checkBoxClicked(event)"><input type="checkbox" id='chk_flip'
+												checked></td>
+										<td><input type="text" id='flip' value='Flip Image'></td>
+									</tr>
+									<tr>
+										<td>
+											<div style="background: #323334;"
+												class="dvs-btn dvs-editor-iconfont ds-dwt-ui-icon-mirrorImage dvs-buttons">
+											</div>
+										</td>
+										<td onclick="checkBoxClicked(event)"><input type="checkbox" id='chk_mirror'
+												checked></td>
+										<td><input type="text" id='mirror' value='Mirror Image'></td>
+									</tr>
+									<tr>
+										<td>
+											<div style="background: #323334;"
+												class="dvs-btn dvs-editor-iconfont ds-dwt-ui-icon-zoomin dvs-buttons">
+											</div>
+										</td>
+										<td onclick="checkBoxClicked(event)"><input type="checkbox" id='chk_zoomin'
+												checked></td>
+										<td><input type="text" id='zoomin' value='Zoom In'></td>
+									</tr>
+									<tr>
+										<td>
+											<div style="background: #323334;"
+												class="dvs-btn dvs-editor-iconfont ds-dwt-ui-icon-originalsize dvs-buttons">
+											</div>
+										</td>
+										<td onclick="checkBoxClicked(event)"><input type="checkbox"
+												id='chk_originalsize' checked></td>
+										<td><input type="text" id='originalsize' value='Show Original Size'></td>
+									</tr>
+									<tr>
+										<td>
+											<div style="background: #323334;"
+												class="dvs-btn dvs-editor-iconfont ds-dwt-ui-icon-zoomout dvs-buttons">
+											</div>
+										</td>
+										<td onclick="checkBoxClicked(event)"><input type="checkbox" id='chk_zoomout'
+												checked></td>
+										<td><input type="text" id='zoomout' value='Zoom Out'></td>
+									</tr>
+									<tr>
+										<td>
+											<div style="background: #323334;"
+												class="dvs-btn dvs-editor-iconfont ds-dwt-ui-icon-fullWebType dvs-buttons">
+											</div>
+										</td>
+										<td onclick="checkBoxClicked(event)"><input type="checkbox" id='chk_fit'
+												checked></td>
+										<td><input type="text" id='fit' value='Fit Window'></td>
+									</tr>
+									<tr>
+										<td>
+											<div style="background: #323334;"
+												class="dvs-btn dvs-editor-iconfont ds-dwt-ui-icon-fitWidthType dvs-buttons">
+											</div>
+										</td>
+										<td onclick="checkBoxClicked(event)"><input type="checkbox" id='chk_fitw'
+												checked></td>
+										<td><input type="text" id='fitw' value='Fit Horizontally'></td>
+									</tr>
+									<tr>
+										<td>
+											<div style="background: #323334;"
+												class="dvs-btn dvs-editor-iconfont ds-dwt-ui-icon-zoomout dvs-buttons">
+											</div>
+										</td>
+										<td onclick="checkBoxClicked(event)"><input type="checkbox" id='chk_fith'
+												checked></td>
+										<td><input type="text" id='fith' value='Fit Vertically'></td>
+									</tr>
+									<tr>
+										<td>
+											<div style="background: #323334;"
+												class="dvs-btn dvs-editor-iconfont ds-dwt-ui-icon-hand dvs-buttons">
+											</div>
+										</td>
+										<td onclick="checkBoxClicked(event)"><input type="checkbox" id='chk_hand'
+												checked></td>
+										<td><input type="text" id='hand' value='Hand Mode'></td>
+									</tr>
+									<tr>
+										<td>
+											<div style="background: #323334;"
+												class="dvs-btn dvs-editor-iconfont ds-dwt-ui-icon-select dvs-buttons">
+											</div>
+										</td>
+										<td onclick="checkBoxClicked(event)"><input type="checkbox" id='chk_rectselect'
+												checked></td>
+										<td><input type="text" id='rectselect' value='Select Mode'></td>
+									</tr>
+									<tr>
+										<td>
+											<div style="background: #323334;"
+												class="dvs-btn dvs-editor-iconfont ds-dwt-ui-icon-clicktozoomin dvs-buttons">
+											</div>
+										</td>
+										<td onclick="checkBoxClicked(event)"><input type="checkbox" id='chk_zoom'
+												checked></td>
+										<td><input type="text" id='zoom' value='Click to Zoom In'></td>
+									</tr>
+									<tr>
+										<td>
+											<div style="background: #323334;"
+												class="dvs-btn dvs-btn dvs-editor-iconfont dvs-buttons ds-dwt-ui-icon-restore">
+											</div>
+										</td>
+										<td onclick="checkBoxClicked(event)"><input type="checkbox" id='chk_restore'
+												checked></td>
+										<td><input type="text" id='restore' value='Restore Orginal Image'></td>
+									</tr>
+									<tr>
+										<td>
+											<div style="background: #323334;"
+												class="dvs-btn dvs-btn dvs-editor-iconfont dvs-buttons ds-dwt-ui-icon-saveImage">
+											</div>
+										</td>
+										<td onclick="checkBoxClicked(event)"><input type="checkbox" id='chk_save'
+												checked></td>
+										<td><input type="text" id='save' value='Save Changes'></td>
+									</tr>
+									<tr>
+										<td>
+											<div style="background: #323334;"
+												class="dvs-btn dvs-editor-iconfont ds-dwt-ui-icon-close dvs-buttons">
+											</div>
+										</td>
+										<td onclick="checkBoxClicked(event)"><input type="checkbox" id='chk_close'></td>
+										<td><input type="text" id='close' value='Close the Editor'></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
 					</div>
-					</div>
-					<button class="ds-button-update" onclick="updateButtonClicked();">Update</button>
+					<button class="ds-button-update ds-button-bg-black" onclick="updateButtonClicked();">Update</button>
 				</div>
 			</div>
 		</div>
@@ -207,655 +347,700 @@
 	</div>
 	<style>
 		table {
+			margin-left: 10px;
 			border-spacing: 0;
 			border-collapse: collapse
 		}
-	
-		td,th {
+
+		td,
+		th {
 			padding: 0
 		}
-		
+
 		tr {
 			display: table-row;
 			vertical-align: inherit;
 			unicode-bidi: isolate;
 			border-color: inherit;
 		}
-		
-		table td,table th {
-			border-left: 1px solid #ddd;
-			border-right: 1px solid #ddd;
-			border-top: 1px solid #ddd;
-			border-bottom: 1px solid #ddd;
+
+		table td,
+		table th {
+			border: 1px solid #ddd;
 			font-size: 14px;
 			height: 30px;
 			padding: 5px 10px;
 			color: #606060
 		}
-	
+
 		table tr {
 			border-left: 1px solid #ddd
 		}
-	
+
 		table th td:first-child {
 			border-left: 0 solid #ddd
 		}
-	
+
 		table tr td:first-child {
 			border-left: 0 solid #ddd
 		}
-	
+
 		table tr:last-child td {
 			border-bottom: 1px solid #ddd
 		}
-	
+
 		table th {
 			border-top: 1px solid #323234;
 			border-right: 1px solid #323234;
-			border-left: #323234
+			border-left: #323234;
+			background-color: #787878
 		}
-	
+
 		table thead th {
-			background-color: #323234;
 			text-align: left;
 			color: #fff;
-			font-family: Oswald-Regular;
 		}
-	
-		table thead th strong {
-			color: #fff;
-			font-family: Oswald-Regular;
-			font-weight: 400
-		}
-	
+
 		table thead tr {
 			border-left: 1px solid #323234
 		}
-	
+
 		table tr:nth-child(2n) {
-			background-color: #fff
+			background-color: #fafafa
 		}
-		table td, table th {
-			padding:6px 13px; 
-			border: 1px solid #dfe2e5;
+
+		table td,
+		table th {
+			padding: 6px 13px;
+			border: 1px solid #E2E2E2;
 		}
-	
-	.tabList {
-	  padding: 5px 0 0 10px;
-	  list-style: none;
-	  float: left;
-	  height: 35px;
-	  cursor: pointer;
-	  text-align: left;
-	  letter-spacing: 0px;
-	}
-	.tabList-0 {
-		width: 140px;
-	}
-	.tabList-1 {
-		width: 310px;
-	}
-	
-	.selectTab {
-	  border-top: solid 3px #323234;
-	}
-	
-	.unselectTab {
-	  background: #323234 0% 0% no-repeat padding-box;
-	  color: #FFFFFF;
-	}
-	
-	.ds-div-tab-header {
-		position: relative;
-		height: 40px;
-	}
-	.ds-div-tab-body {
-		margin-top: 0;
-		position: relative;
-		width: 450px;
-		height: 100%;
-	}
-	
-	.ds-div-left {
-		font-size: 14px;
-		width: 450px;
-		height: 450px;
-		margin: 0 5px;
-	}
-	
-	ul{list-style: none;margin:0;padding:0}
-	li{list-style: none;}
-	body{margin:0;padding:10px 0 0 0;color: #323234;}
-	input[type="checkbox"]{
-		display: inline-block;
-		width: 18px;
-		height: 18px;
-	}
-	input[type="text"]{
-		width: 250px;
-	}
 
-	.ds-div-display-info {
-		overflow-y: scroll;
-		width: 100%;
-		height: 335px;
-	}
-	
-	.ds-div-tab-content-0 {
-		margin: 0;
-		padding: 0 10px;
-		height: 335px;
-	}
-	.ds-div-tab-content-0>div {
-		margin: 5px 0;
-		padding: 0;
-	}
-	.ds-div-tab-content-0 label {
-		display: inline-block;
-		width: 200px;
-	}
-	.ds-div-tab-content-1 {
-		padding: 0;
-		margin: 0;
-		display: none;
-		height: 340px;
-		text-align: center;
-	}
-	.ds-button-update{
-		width: 160px;
-		height: 35px;
-		background-color: #FE8E14;
-		color: #FFF;
-		border: 0;
-		border-radius: 5px;
-		margin: 10px auto;
-		cursor: pointer;
-	}
-	.dvs-editor-iconfont {
-		color: #fff!important;
-	}
-	.dvs-grey {
-		color: #fda925!important;
-	}
-	.dwt-viewer-imageEditor-selected {
-		background-color: #fe8e14!important;
-		border-radius: 0;
-		box-shadow: inset -3px -3px 2px -2px #ffc8c8, inset 2px 2px 2px 0 #cf6d09;
-	}
-	#dwtcontrolContainerLargeViewer {
-		margin-left: 20px;
-		height: 100%;
-	}
-	
-	.ds-div-scanPage-column0 {
-		padding: 0 20px;
-		border-right: 1px solid #CCC;
-	}
-</style>
-<style id="ds-viewer-style"></style>
-
-<script>
-	var g_backgroundColor = '', editorViewerChanged = true;
-
-	function showTab(index) {
-		if(index === 0) {
-			document.querySelector('.tabList-0').className = "tabList tabList-0 selectTab";
-			document.querySelector('.tabList-1').className = "tabList tabList-1 unselectTab";
-
-			document.querySelector('.ds-div-tab-content-0').style.display = "block";
-			document.querySelector('.ds-div-tab-content-1').style.display = "none";
-			
-		} else if(index === 1) {
-			document.querySelector('.tabList-0').className = "tabList tabList-0 unselectTab";
-			document.querySelector('.tabList-1').className = "tabList tabList-1 selectTab";
-			
-			document.querySelector('.ds-div-tab-content-0').style.display = "none";
-			document.querySelector('.ds-div-tab-content-1').style.display = "block";
+		.tabList {
+			padding: 5px 0 0 20px;
+			list-style: none;
+			float: left;
+			height: 35px;
+			cursor: pointer;
+			text-align: left;
+			letter-spacing: 0px;
 		}
-	}
 
-	var DWTObject, imageEditor, buttons = {
-		titles: {
-			'previous': 'Previous Image',
-			'next': 'Next Image',
-			'print': 'Print Image',
-			'scan': 'Acquire new Image(s)',
-			'load': 'Load local Image(s)',
-			'rotateleft': 'Rotate Left',
-			'rotate': 'Rotate',
-			'rotateright': 'Rotate Right',
-			'deskew': 'Deskew',
-			'crop': 'Crop Selected Area',
-			'cut': 'Cut Selected Area',
-			'changeimagesize': 'Change Image Size',
-			'flip': 'Flip Image',
-			'mirror': 'Mirror Image',
-			'zoomin': 'Zoom In',
-			'originalsize': 'Show Original Size',
-			'zoomout': 'Zoom Out',
-			'stretch': 'Stretch Mode',
-			'fit': 'Fit Window',
-			'fitw': 'Fit Horizontally',
-			'fith': 'Fit Vertically',
-			'hand': 'Hand Mode',
-			'rectselect': 'Select Mode',
-			'zoom': 'Click to Zoom In',
-			'restore': 'Restore Orginal Image',
-			'save': 'Save Changes',
-			'close': 'Close the Editor',
-			'removeall': 'Remove All Images',
-			'removeselected': 'Remove All Selected Images'
-		},
-		visibility: {
-			'previous':       true,
-			'next':           true,
-			'print':          true,
-			'scan':           true,
-			'load':           true,
-			'rotateleft':     true,
-			'rotate':         true,
-			'rotateright':    true,
-			'deskew':         true,
-			'crop':           true,
-			'cut':            true,
-			'changeimagesize':true,
-			'flip':           true,
-			'mirror':         true,
-			'zoomin':         true,
-			'originalsize':   true,
-			'zoomout':        true,
-			'stretch':        true,
-			'fit':            true,
-			'fitw':           true,
-			'fith':           true,
-			'hand':           true,
-			'rectselect':     true,
-			'zoom':           true,
-			'restore':        true,
-			'save':           true,
-			'close':          false,
-			'removeall':      true,
-			'removeselected': true
+		.tabList-0 {
+			width: 160px;
+			font-family: Oswald-Regular;
+			font-size: 16px;
 		}
-	};
-	Dynamsoft.DWT.RegisterEvent("OnWebTwainReady", function () {
-		DWTObject = Dynamsoft.DWT.GetWebTwain('dwtcontrolContainer'); // Get the Dynamic Web TWAIN object that is embeded in the div with id 'dwtcontrolContainer'
-		if (DWTObject) {
-			DWTObject.Viewer.hide();
-			
-			editorViewerChanged = true;
+
+		.tabList-1 {
+			width: 338px;
+			font-family: Oswald-Regular;
+			font-size: 16px;
+		}
+
+		.selectTab {
+			background-color: #f5f5f5;
+			border-top: 0;
+		}
+
+		.unselectTab {
+			border: solid 1px #CCC;
+			border-top: 0;
+			background-color: #e6e6e6;
+			color: #323334;
+		}
+
+		.ds-div-tab-header {
+			position: relative;
+			height: 50px;
+		}
+
+		.ds-div-tab-body {
+			margin-top: 0;
+			position: relative;
+			width: 100%;
+			height: 100%;
+		}
+
+		ul {
+			list-style: none;
+			margin: 0;
+			padding: 0
+		}
+
+		li {
+			list-style: none;
+		}
+
+		body {
+			margin: 0;
+			padding: 10px 0 0 0;
+			color: #323234;
+		}
+
+		input[type="checkbox"] {
+			display: inline-block;
+			width: 18px;
+			height: 18px;
+		}
+
+		input[type="text"] {
+			width: 250px;
+		}
+
+		.ds-div-display-info {
+			overflow-y: scroll;
+			width: 100%;
+			height: 335px;
+		}
+
+		.ds-div-tab-content-0 {
+			margin: 0;
+			padding: 5px 10px 0 20px;
+			height: 225px;
+		}
+
+		.ds-div-tab-content-0>div {
+			margin: 8px 0;
+			padding: 0;
+		}
+
+		.ds-div-tab-content-0 span {
+			display: inline-block;
+			width: 200px;
+		}
+
+		.ds-div-tab-content-1 {
+			padding: 5px 0 0 0;
+			margin: 0;
+			display: none;
+			height: 360px;
+			text-align: center;
+		}
+
+		.ds-button-update {
+			width: 160px;
+			height: 35px;
+			margin: 10px 0 10px 20px;
+			cursor: pointer;
+		}
+
+		.dvs-editor-iconfont {
+			color: #fff !important;
+		}
+
+		.dvs-grey {
+			color: #fda925 !important;
+		}
+
+		.dwt-viewer-imageEditor-selected {
+			background-color: #fe8e14 !important;
+			border-radius: 0;
+			box-shadow: inset -3px -3px 2px -2px #ffc8c8, inset 2px 2px 2px 0 #cf6d09;
+		}
+
+		#dwtcontrolContainerLargeViewer {
+			height: 100%;
+		}
+
+		.ds-div-scanPage-column0 {
+			margin: 0;
+			padding: 0;
+			border-right: 1px solid #CCC;
+		}
+
+		.th1,
+		.th2 {
+			width: 60px;
+		}
+
+		.th3 {
+			width: 340px;
+			text-align: center;
+		}
+
+		.ds-div-left {
+			width: 100%;
+			height: 100%;
+			margin: 0;
+		}
+
+		.ds-div-download {
+			bottom: 2px;
+		}
+
+		.ds-div-scanPage-column {
+			margin-top: 0px;
+		}
+	</style>
+	<style id="ds-viewer-style"></style>
+
+	<script>
+		var g_backgroundColor = '#f0f8ff', editorViewerChanged = true;
+
+		function showTab(index) {
+			if (index === 0) {
+				document.querySelector('.tabList-0').className = "tabList tabList-0 selectTab";
+				document.querySelector('.tabList-1').className = "tabList tabList-1 unselectTab";
+
+				document.querySelector('.ds-div-tab-content-0').style.display = "block";
+				document.querySelector('.ds-div-tab-content-1').style.display = "none";
+
+			} else if (index === 1) {
+				document.querySelector('.tabList-0').className = "tabList tabList-0 unselectTab";
+				document.querySelector('.tabList-1').className = "tabList tabList-1 selectTab";
+
+				document.querySelector('.ds-div-tab-content-0').style.display = "none";
+				document.querySelector('.ds-div-tab-content-1').style.display = "block";
+			}
+		}
+
+		var DWTObject, imageEditor, buttons = {
+			titles: {
+				'previous': 'Previous Image',
+				'next': 'Next Image',
+				'print': 'Print Image',
+				'scan': 'Acquire new Image(s)',
+				'load': 'Load local Image(s)',
+				'rotateleft': 'Rotate Left',
+				'rotate': 'Rotate',
+				'rotateright': 'Rotate Right',
+				'deskew': 'Deskew',
+				'crop': 'Crop Selected Area',
+				'cut': 'Cut Selected Area',
+				'changeimagesize': 'Change Image Size',
+				'flip': 'Flip Image',
+				'mirror': 'Mirror Image',
+				'zoomin': 'Zoom In',
+				'originalsize': 'Show Original Size',
+				'zoomout': 'Zoom Out',
+				'stretch': 'Stretch Mode',
+				'fit': 'Fit Window',
+				'fitw': 'Fit Horizontally',
+				'fith': 'Fit Vertically',
+				'hand': 'Hand Mode',
+				'rectselect': 'Select Mode',
+				'zoom': 'Click to Zoom In',
+				'restore': 'Restore Orginal Image',
+				'save': 'Save Changes',
+				'close': 'Close the Editor',
+				'removeall': 'Remove All Images',
+				'removeselected': 'Remove All Selected Images'
+			},
+			visibility: {
+				'previous': true,
+				'next': true,
+				'print': true,
+				'scan': true,
+				'load': true,
+				'rotateleft': true,
+				'rotate': true,
+				'rotateright': true,
+				'deskew': true,
+				'crop': true,
+				'cut': true,
+				'changeimagesize': true,
+				'flip': true,
+				'mirror': true,
+				'zoomin': true,
+				'originalsize': true,
+				'zoomout': true,
+				'stretch': true,
+				'fit': true,
+				'fitw': true,
+				'fith': true,
+				'hand': true,
+				'rectselect': true,
+				'zoom': true,
+				'restore': true,
+				'save': true,
+				'close': false,
+				'removeall': true,
+				'removeselected': true
+			}
+		};
+		Dynamsoft.DWT.RegisterEvent("OnWebTwainReady", function () {
+			DWTObject = Dynamsoft.DWT.GetWebTwain('dwtcontrolContainer'); // Get the Dynamic Web TWAIN object that is embeded in the div with id 'dwtcontrolContainer'
+			if (DWTObject) {
+				DWTObject.Viewer.hide();
+
+				editorViewerChanged = true;
+				update();
+			}
+		});
+
+		function updateButtonClicked() {
+
+			var backgroundColorEl = document.getElementById("backgroundColor");
+			if (g_backgroundColor != backgroundColorEl.value) {
+				editorViewerChanged = true;
+				g_backgroundColor = backgroundColorEl.value;
+			}
+
 			update();
 		}
-	});
 
-	function updateButtonClicked() {
-		
-		var backgroundColorEl = document.getElementById("backgroundColor");
-		if(g_backgroundColor != backgroundColorEl.value) {
-			editorViewerChanged = true;
-			g_backgroundColor = backgroundColorEl.value;
+		function refreshText() {
+			let el;
+			el = document.getElementById("previous");
+			if (buttons.titles.previous != el.value) {
+				editorViewerChanged = true;
+				buttons.titles.previous = el.value;
+			}
+
+			el = document.getElementById("next");
+			if (buttons.titles.next != el.value) {
+				editorViewerChanged = true;
+				buttons.titles.next = el.value;
+			}
+
+			el = document.getElementById("print");
+			if (buttons.titles.print != el.value) {
+				editorViewerChanged = true;
+				buttons.titles.print = el.value;
+			}
+
+			el = document.getElementById("scan");
+			if (buttons.titles.scan != el.value) {
+				editorViewerChanged = true;
+				buttons.titles.scan = el.value;
+			}
+			el = document.getElementById("load");
+			if (buttons.titles.load != el.value) {
+				editorViewerChanged = true;
+				buttons.titles.load = el.value;
+			}
+			el = document.getElementById("rotateleft");
+			if (buttons.titles.rotateleft != el.value) {
+				editorViewerChanged = true;
+				buttons.titles.rotateleft = el.value;
+			}
+			el = document.getElementById("rotate");
+			if (buttons.titles.rotate != el.value) {
+				editorViewerChanged = true;
+				buttons.titles.rotate = el.value;
+			}
+			el = document.getElementById("rotateright");
+			if (buttons.titles.rotateright != el.value) {
+				editorViewerChanged = true;
+				buttons.titles.rotateright = el.value;
+			}
+			el = document.getElementById("deskew");
+			if (buttons.titles.deskew != el.value) {
+				editorViewerChanged = true;
+				buttons.titles.deskew = el.value;
+			}
+			el = document.getElementById("crop");
+			if (buttons.titles.crop != el.value) {
+				editorViewerChanged = true;
+				buttons.titles.crop = el.value;
+			}
+			el = document.getElementById("cut");
+			if (buttons.titles.cut != el.value) {
+				editorViewerChanged = true;
+				buttons.titles.cut = el.value;
+			}
+			el = document.getElementById("changeimagesize");
+			if (buttons.titles.changeimagesize != el.value) {
+				editorViewerChanged = true;
+				buttons.titles.changeimagesize = el.value;
+			}
+			el = document.getElementById("flip");
+			if (buttons.titles.flip != el.value) {
+				editorViewerChanged = true;
+				buttons.titles.flip = el.value;
+			}
+			el = document.getElementById("mirror");
+			if (buttons.titles.mirror != el.value) {
+				editorViewerChanged = true;
+				buttons.titles.mirror = el.value;
+			}
+			el = document.getElementById("zoomin");
+			if (buttons.titles.zoomin != el.value) {
+				editorViewerChanged = true;
+				buttons.titles.zoomin = el.value;
+			}
+			el = document.getElementById("originalsize");
+			if (buttons.titles.originalsize != el.value) {
+				editorViewerChanged = true;
+				buttons.titles.originalsize = el.value;
+			}
+			el = document.getElementById("zoomout");
+			if (buttons.titles.zoomout != el.value) {
+				editorViewerChanged = true;
+				buttons.titles.zoomout = el.value;
+			}
+			el = document.getElementById("stretch");            //id='stretch'
+			if (el && buttons.titles.stretch != el.value) {
+				editorViewerChanged = true;
+				buttons.titles.stretch = el.value;
+			}
+			el = document.getElementById("fit");
+			if (buttons.titles.fit != el.value) {
+				editorViewerChanged = true;
+				buttons.titles.fit = el.value;
+			}
+			el = document.getElementById("fitw");
+			if (buttons.titles.fitw != el.value) {
+				editorViewerChanged = true;
+				buttons.titles.fitw = el.value;
+			}
+			el = document.getElementById("fith");
+			if (buttons.titles.fith != el.value) {
+				editorViewerChanged = true;
+				buttons.titles.fith = el.value;
+			}
+			el = document.getElementById("hand");
+			if (buttons.titles.hand != el.value) {
+				editorViewerChanged = true;
+				buttons.titles.hand = el.value;
+			}
+			el = document.getElementById("rectselect");
+			if (buttons.titles.rectselect != el.value) {
+				editorViewerChanged = true;
+				buttons.titles.rectselect = el.value;
+			}
+			el = document.getElementById("zoom");
+			if (buttons.titles.zoom != el.value) {
+				editorViewerChanged = true;
+				buttons.titles.zoom = el.value;
+			}
+			el = document.getElementById("restore");
+			if (buttons.titles.restore != el.value) {
+				editorViewerChanged = true;
+				buttons.titles.restore = el.value;
+			}
+			el = document.getElementById("save");
+			if (buttons.titles.save != el.value) {
+				editorViewerChanged = true;
+				buttons.titles.save = el.value;
+			}
+			el = document.getElementById("close");
+			if (buttons.titles.close != el.value) {
+				editorViewerChanged = true;
+				buttons.titles.close = el.value;
+			}
+			el = document.getElementById("removeall");
+			if (buttons.titles.removeall != el.value) {
+				editorViewerChanged = true;
+				buttons.titles.removeall = el.value;
+			}
+			el = document.getElementById("removeselected");
+			if (buttons.titles.removeselected != el.value) {
+				editorViewerChanged = true;
+				buttons.titles.removeselected = el.value;
+			}
+
+			el = document.getElementById("chk_previous");
+			if (buttons.visibility.previous != el.checked) {
+				editorViewerChanged = true;
+				buttons.visibility.previous = el.checked;
+			}
+
+			el = document.getElementById("chk_next");
+			if (buttons.visibility.next != el.checked) {
+				editorViewerChanged = true;
+				buttons.visibility.next = el.checked;
+			}
+
+			el = document.getElementById("chk_print");
+			if (buttons.visibility.print != el.checked) {
+				editorViewerChanged = true;
+				buttons.visibility.print = el.checked;
+			}
+
+			el = document.getElementById("chk_scan");
+			if (buttons.visibility.scan != el.checked) {
+				editorViewerChanged = true;
+				buttons.visibility.scan = el.checked;
+			}
+			el = document.getElementById("chk_load");
+			if (buttons.visibility.load != el.checked) {
+				editorViewerChanged = true;
+				buttons.visibility.load = el.checked;
+			}
+			el = document.getElementById("chk_rotateleft");
+			if (buttons.visibility.rotateleft != el.checked) {
+				editorViewerChanged = true;
+				buttons.visibility.rotateleft = el.checked;
+			}
+			el = document.getElementById("chk_rotate");
+			if (buttons.visibility.rotate != el.checked) {
+				editorViewerChanged = true;
+				buttons.visibility.rotate = el.checked;
+			}
+			el = document.getElementById("chk_rotateright");
+			if (buttons.visibility.rotateright != el.checked) {
+				editorViewerChanged = true;
+				buttons.visibility.rotateright = el.checked;
+			}
+			el = document.getElementById("chk_deskew");
+			if (buttons.visibility.deskew != el.checked) {
+				editorViewerChanged = true;
+				buttons.visibility.deskew = el.checked;
+			}
+			el = document.getElementById("chk_crop");
+			if (buttons.visibility.crop != el.checked) {
+				editorViewerChanged = true;
+				buttons.visibility.crop = el.checked;
+			}
+			el = document.getElementById("chk_cut");
+			if (buttons.visibility.cut != el.checked) {
+				editorViewerChanged = true;
+				buttons.visibility.cut = el.checked;
+			}
+			el = document.getElementById("chk_changeimagesize");
+			if (buttons.visibility.changeimagesize != el.checked) {
+				editorViewerChanged = true;
+				buttons.visibility.changeimagesize = el.checked;
+			}
+			el = document.getElementById("chk_flip");
+			if (buttons.visibility.flip != el.checked) {
+				editorViewerChanged = true;
+				buttons.visibility.flip = el.checked;
+			}
+			el = document.getElementById("chk_mirror");
+			if (buttons.visibility.mirror != el.checked) {
+				editorViewerChanged = true;
+				buttons.visibility.mirror = el.checked;
+			}
+			el = document.getElementById("chk_zoomin");
+			if (buttons.visibility.zoomin != el.checked) {
+				editorViewerChanged = true;
+				buttons.visibility.zoomin = el.checked;
+			}
+			el = document.getElementById("chk_originalsize");
+			if (buttons.visibility.originalsize != el.checked) {
+				editorViewerChanged = true;
+				buttons.visibility.originalsize = el.checked;
+			}
+			el = document.getElementById("chk_zoomout");
+			if (buttons.visibility.zoomout != el.checked) {
+				editorViewerChanged = true;
+				buttons.visibility.zoomout = el.checked;
+			}
+			el = document.getElementById("chk_stretch");            //id='stretch'
+			if (el && buttons.visibility.stretch != el.checked) {
+				editorViewerChanged = true;
+				buttons.visibility.stretch = el.checked;
+			}
+			el = document.getElementById("chk_fit");
+			if (buttons.visibility.fit != el.checked) {
+				editorViewerChanged = true;
+				buttons.visibility.fit = el.checked;
+			}
+			el = document.getElementById("chk_fitw");
+			if (buttons.visibility.fitw != el.checked) {
+				editorViewerChanged = true;
+				buttons.visibility.fitw = el.checked;
+			}
+			el = document.getElementById("chk_fith");
+			if (buttons.visibility.fith != el.checked) {
+				editorViewerChanged = true;
+				buttons.visibility.fith = el.checked;
+			}
+			el = document.getElementById("chk_hand");
+			if (buttons.visibility.hand != el.checked) {
+				editorViewerChanged = true;
+				buttons.visibility.hand = el.checked;
+			}
+			el = document.getElementById("chk_rectselect");
+			if (buttons.visibility.rectselect != el.checked) {
+				editorViewerChanged = true;
+				buttons.visibility.rectselect = el.checked;
+			}
+			el = document.getElementById("chk_zoom");
+			if (buttons.visibility.zoom != el.checked) {
+				editorViewerChanged = true;
+				buttons.visibility.zoom = el.checked;
+			}
+			el = document.getElementById("chk_restore");
+			if (buttons.visibility.restore != el.checked) {
+				editorViewerChanged = true;
+				buttons.visibility.restore = el.checked;
+			}
+			el = document.getElementById("chk_save");
+			if (buttons.visibility.save != el.checked) {
+				editorViewerChanged = true;
+				buttons.visibility.save = el.checked;
+			}
+			el = document.getElementById("chk_close");
+			if (buttons.visibility.close != el.checked) {
+				editorViewerChanged = true;
+				buttons.visibility.close = el.checked;
+			}
+			el = document.getElementById("chk_removeall");
+			if (buttons.visibility.removeall != el.checked) {
+				editorViewerChanged = true;
+				buttons.visibility.removeall = el.checked;
+			}
+			el = document.getElementById("chk_removeselected");
+			if (buttons.visibility.removeselected != el.checked) {
+				editorViewerChanged = true;
+				buttons.visibility.removeselected = el.checked;
+			}
 		}
 
-		update();
-	}
-
-	function refreshText() {
-		let el;
-		el = document.getElementById("previous");
-		if(buttons.titles.previous != el.value) {
-		editorViewerChanged = true;
-		buttons.titles.previous = el.value;
-		}
-	
-		el = document.getElementById("next");
-		if(buttons.titles.next != el.value) {
-		editorViewerChanged = true;
-		buttons.titles.next = el.value;
-		}
-	
-		el = document.getElementById("print");
-		if(buttons.titles.print != el.value) {
-		editorViewerChanged = true;
-		buttons.titles.print = el.value;
-		}
-	
-		el = document.getElementById("scan");
-		if(buttons.titles.scan != el.value) {
-		editorViewerChanged = true;
-		buttons.titles.scan = el.value;
-		}
-		el = document.getElementById("load");
-		if(buttons.titles.load != el.value) {
-		editorViewerChanged = true;
-		buttons.titles.load = el.value;
-		}
-		el = document.getElementById("rotateleft");
-		if(buttons.titles.rotateleft != el.value) {
-		editorViewerChanged = true;
-		buttons.titles.rotateleft = el.value;
-		}
-		el = document.getElementById("rotate");
-		if(buttons.titles.rotate != el.value) {
-		editorViewerChanged = true;
-		buttons.titles.rotate = el.value;
-		}
-		el = document.getElementById("rotateright");
-		if(buttons.titles.rotateright != el.value) {
-		editorViewerChanged = true;
-		buttons.titles.rotateright = el.value;
-		}
-		el = document.getElementById("deskew");
-		if(buttons.titles.deskew != el.value) {
-		editorViewerChanged = true;
-		buttons.titles.deskew = el.value;
-		}
-		el = document.getElementById("crop");
-		if(buttons.titles.crop != el.value) {
-		editorViewerChanged = true;
-		buttons.titles.crop = el.value;
-		}
-		el = document.getElementById("cut");
-		if(buttons.titles.cut != el.value) {
-		editorViewerChanged = true;
-		buttons.titles.cut = el.value;
-		}
-		el = document.getElementById("changeimagesize");
-		if(buttons.titles.changeimagesize != el.value) {
-		editorViewerChanged = true;
-		buttons.titles.changeimagesize = el.value;
-		}
-		el = document.getElementById("flip");
-		if(buttons.titles.flip != el.value) {
-		editorViewerChanged = true;
-		buttons.titles.flip = el.value;
-		}
-		el = document.getElementById("mirror");
-		if(buttons.titles.mirror != el.value) {
-		editorViewerChanged = true;
-		buttons.titles.mirror = el.value;
-		}
-		el = document.getElementById("zoomin");
-		if(buttons.titles.zoomin != el.value) {
-		editorViewerChanged = true;
-		buttons.titles.zoomin = el.value;
-		}
-		el = document.getElementById("originalsize");
-		if(buttons.titles.originalsize != el.value) {
-		editorViewerChanged = true;
-		buttons.titles.originalsize = el.value;
-		}
-		el = document.getElementById("zoomout");
-		if(buttons.titles.zoomout != el.value) {
-		editorViewerChanged = true;
-		buttons.titles.zoomout = el.value;
-		}
-		el = document.getElementById("stretch");            //id='stretch'
-		if(el && buttons.titles.stretch != el.value) {
-		editorViewerChanged = true;
-		buttons.titles.stretch = el.value;
-		}
-		el = document.getElementById("fit");
-		if(buttons.titles.fit != el.value) {
-		editorViewerChanged = true;
-		buttons.titles.fit = el.value;
-		}
-		el = document.getElementById("fitw");
-		if(buttons.titles.fitw != el.value) {
-		editorViewerChanged = true;
-		buttons.titles.fitw = el.value;
-		}
-		el = document.getElementById("fith");
-		if(buttons.titles.fith != el.value) {
-		editorViewerChanged = true;
-		buttons.titles.fith = el.value;
-		}
-		el = document.getElementById("hand");
-		if(buttons.titles.hand != el.value) {
-		editorViewerChanged = true;
-		buttons.titles.hand = el.value;
-		}
-		el = document.getElementById("rectselect");
-		if(buttons.titles.rectselect != el.value) {
-		editorViewerChanged = true;
-		buttons.titles.rectselect = el.value;
-		}
-		el = document.getElementById("zoom");
-		if(buttons.titles.zoom != el.value) {
-		editorViewerChanged = true;
-		buttons.titles.zoom = el.value;
-		}
-		el = document.getElementById("restore");
-		if(buttons.titles.restore != el.value) {
-		editorViewerChanged = true;
-		buttons.titles.restore = el.value;
-		}
-		el = document.getElementById("save");
-		if(buttons.titles.save != el.value) {
-		editorViewerChanged = true;
-		buttons.titles.save = el.value;
-		}
-		el = document.getElementById("close");
-		if(buttons.titles.close != el.value) {
-		editorViewerChanged = true;
-		buttons.titles.close = el.value;
-		}
-		el = document.getElementById("removeall");
-		if(buttons.titles.removeall != el.value) {
-		editorViewerChanged = true;
-		buttons.titles.removeall = el.value;
-		}
-		el = document.getElementById("removeselected");
-		if(buttons.titles.removeselected != el.value) {
-		editorViewerChanged = true;
-		buttons.titles.removeselected = el.value;
+		function checkBoxClicked(evt) {
+			var _td = evt.target;
+			if (_td.tagName === "TD") {
+				_td.firstChild.checked = !_td.firstChild.checked;
+			}
 		}
 
-		el = document.getElementById("chk_previous");
-		if(buttons.visibility.previous != el.checked) {
-		editorViewerChanged = true;
-		buttons.visibility.previous = el.checked;
-		}
-	
-		el = document.getElementById("chk_next");
-		if(buttons.visibility.next != el.checked) {
-		editorViewerChanged = true;
-		buttons.visibility.next = el.checked;
-		}
-	
-		el = document.getElementById("chk_print");
-		if(buttons.visibility.print != el.checked) {
-		editorViewerChanged = true;
-		buttons.visibility.print = el.checked;
-		}
-	
-		el = document.getElementById("chk_scan");
-		if(buttons.visibility.scan != el.checked) {
-		editorViewerChanged = true;
-		buttons.visibility.scan = el.checked;
-		}
-		el = document.getElementById("chk_load");
-		if(buttons.visibility.load != el.checked) {
-		editorViewerChanged = true;
-		buttons.visibility.load = el.checked;
-		}
-		el = document.getElementById("chk_rotateleft");
-		if(buttons.visibility.rotateleft != el.checked) {
-		editorViewerChanged = true;
-		buttons.visibility.rotateleft = el.checked;
-		}
-		el = document.getElementById("chk_rotate");
-		if(buttons.visibility.rotate != el.checked) {
-		editorViewerChanged = true;
-		buttons.visibility.rotate = el.checked;
-		}
-		el = document.getElementById("chk_rotateright");
-		if(buttons.visibility.rotateright != el.checked) {
-		editorViewerChanged = true;
-		buttons.visibility.rotateright = el.checked;
-		}
-		el = document.getElementById("chk_deskew");
-		if(buttons.visibility.deskew != el.checked) {
-		editorViewerChanged = true;
-		buttons.visibility.deskew = el.checked;
-		}
-		el = document.getElementById("chk_crop");
-		if(buttons.visibility.crop != el.checked) {
-		editorViewerChanged = true;
-		buttons.visibility.crop = el.checked;
-		}
-		el = document.getElementById("chk_cut");
-		if(buttons.visibility.cut != el.checked) {
-		editorViewerChanged = true;
-		buttons.visibility.cut = el.checked;
-		}
-		el = document.getElementById("chk_changeimagesize");
-		if(buttons.visibility.changeimagesize != el.checked) {
-		editorViewerChanged = true;
-		buttons.visibility.changeimagesize = el.checked;
-		}
-		el = document.getElementById("chk_flip");
-		if(buttons.visibility.flip != el.checked) {
-		editorViewerChanged = true;
-		buttons.visibility.flip = el.checked;
-		}
-		el = document.getElementById("chk_mirror");
-		if(buttons.visibility.mirror != el.checked) {
-		editorViewerChanged = true;
-		buttons.visibility.mirror = el.checked;
-		}
-		el = document.getElementById("chk_zoomin");
-		if(buttons.visibility.zoomin != el.checked) {
-		editorViewerChanged = true;
-		buttons.visibility.zoomin = el.checked;
-		}
-		el = document.getElementById("chk_originalsize");
-		if(buttons.visibility.originalsize != el.checked) {
-		editorViewerChanged = true;
-		buttons.visibility.originalsize = el.checked;
-		}
-		el = document.getElementById("chk_zoomout");
-		if(buttons.visibility.zoomout != el.checked) {
-		editorViewerChanged = true;
-		buttons.visibility.zoomout = el.checked;
-		}
-		el = document.getElementById("chk_stretch");            //id='stretch'
-		if(el && buttons.visibility.stretch != el.checked) {
-		editorViewerChanged = true;
-		buttons.visibility.stretch = el.checked;
-		}
-		el = document.getElementById("chk_fit");
-		if(buttons.visibility.fit != el.checked) {
-		editorViewerChanged = true;
-		buttons.visibility.fit = el.checked;
-		}
-		el = document.getElementById("chk_fitw");
-		if(buttons.visibility.fitw != el.checked) {
-		editorViewerChanged = true;
-		buttons.visibility.fitw = el.checked;
-		}
-		el = document.getElementById("chk_fith");
-		if(buttons.visibility.fith != el.checked) {
-		editorViewerChanged = true;
-		buttons.visibility.fith = el.checked;
-		}
-		el = document.getElementById("chk_hand");
-		if(buttons.visibility.hand != el.checked) {
-		editorViewerChanged = true;
-		buttons.visibility.hand = el.checked;
-		}
-		el = document.getElementById("chk_rectselect");
-		if(buttons.visibility.rectselect != el.checked) {
-		editorViewerChanged = true;
-		buttons.visibility.rectselect = el.checked;
-		}
-		el = document.getElementById("chk_zoom");
-		if(buttons.visibility.zoom != el.checked) {
-		editorViewerChanged = true;
-		buttons.visibility.zoom = el.checked;
-		}
-		el = document.getElementById("chk_restore");
-		if(buttons.visibility.restore != el.checked) {
-		editorViewerChanged = true;
-		buttons.visibility.restore = el.checked;
-		}
-		el = document.getElementById("chk_save");
-		if(buttons.visibility.save != el.checked) {
-		editorViewerChanged = true;
-		buttons.visibility.save = el.checked;
-		}
-		el = document.getElementById("chk_close");
-		if(buttons.visibility.close != el.checked) {
-		editorViewerChanged = true;
-		buttons.visibility.close = el.checked;
-		}
-		el = document.getElementById("chk_removeall");
-		if(buttons.visibility.removeall != el.checked) {
-		editorViewerChanged = true;
-		buttons.visibility.removeall = el.checked;
-		}
-		el = document.getElementById("chk_removeselected");
-		if(buttons.visibility.removeselected != el.checked) {
-		editorViewerChanged = true;
-		buttons.visibility.removeselected = el.checked;
-		}
-	}
+		function SetHeaderBackground() {
+			var header = document.getElementById("header" + imageEditor.idPostfix);
+			var colorEl = document.getElementById('headerBackground');
 
-	function checkBoxClicked(evt) {
-		var _td = evt.target;
-		if(_td.tagName === "TD") {
-			_td.firstChild.checked = !_td.firstChild.checked;
+			header.style.background = colorEl.value;
 		}
-	}
-	
-	function SetHeaderBackground() {
-		var header = document.getElementById("header" + imageEditor.idPostfix);
-		var colorEl = document.getElementById('headerBackground');
 
-		header.style.background = colorEl.value;
-	}
+		function update() {
 
-	function update() {
-		
-		var selectedIconColorEl = document.getElementById('selectedIconColor');
-		var greyColorEl = document.getElementById('selectedGreyIconColor');
-		var selectedBackgroundColorEl = document.getElementById('selectedBackground');
-		var styles = [
-			".dvs-editor-iconfont{color:",
-			selectedIconColorEl.value,
-			" !important;}",
-			".dvs-grey{color:",
-			greyColorEl.value,
-			" !important;}",
-			".dwt-viewer-imageEditor-selected{background-color:",
-			selectedBackgroundColorEl.value,
-			" !important;}"
-		].join('');
+			var selectedIconColorEl = document.getElementById('selectedIconColor');
+			var greyColorEl = document.getElementById('selectedGreyIconColor');
+			var selectedBackgroundColorEl = document.getElementById('selectedBackground');
+			var styles = [
+				".dvs-editor-iconfont{color:",
+				selectedIconColorEl.value,
+				" !important;}",
+				".dvs-grey{color:",
+				greyColorEl.value,
+				" !important;}",
+				".dwt-viewer-imageEditor-selected{background-color:",
+				selectedBackgroundColorEl.value,
+				" !important;box-shadow:inset -3px -3px 2px -2px #eeeeee, inset 2px 2px 2px 0 #909090;}"
+			].join('');
 
-		var styleEl = document.getElementById("ds-viewer-style");
-		styleEl.setHTMLUnsafe(styles);
+			var styleEl = document.getElementById("ds-viewer-style");
+			styleEl.innerHTML = styles;
 
-		refreshText();
-		
-		if(editorViewerChanged || !imageEditor) {
-			if(imageEditor) imageEditor.dispose();
-			imageEditor = DWTObject.Viewer.createImageEditor({
-				element: document.getElementById("dwtcontrolContainerLargeViewer"),
-				width: "990px",
-				background: g_backgroundColor,
-				border: "1px solid #ccc",
-				buttons: {
-					titles: buttons.titles,
-					visibility: buttons.visibility
-				}
+			refreshText();
+
+			var w = "100%";
+			if (screen.width <= 1440) {
+				//w = "580px";
+			}
+
+			if (editorViewerChanged || !imageEditor || imageEditor.inner.bDispose) {
+				if (imageEditor) imageEditor.dispose();
+				imageEditor = DWTObject.Viewer.createImageEditor({
+					element: document.getElementById("dwtcontrolContainerLargeViewer"),
+					width: w,
+					background: g_backgroundColor,
+					border: "1px solid #ccc",
+					buttons: {
+						titles: buttons.titles,
+						visibility: buttons.visibility
+					}
 				});
 
-			imageEditor.show();
-			editorViewerChanged = false;
-		}
+				imageEditor.show();
+				editorViewerChanged = false;
+			}
 
-		SetHeaderBackground();
-	}
-</script>
+			SetHeaderBackground();
+		}
+	</script>
 
 </body>
 

@@ -16,24 +16,32 @@
 	</div>
 	<div class="ds-div-scanPageDemo" >
 		<div class="ds-div-scanPage-column ds-div-scanPage-column0">
-			<div><input type="checkbox" id="chkShowLoadingbar" onchange="ShowLoadingBar();" checked><label for="chkShowLoadingbar">Show ProgressBar</label></div> 
-			<input type="button" value="Load" onclick="LoadImage();" />
-			<input type="button" value="Upload" onclick="Upload();" />
+			<div><input type="checkbox" id="chkShowLoadingbar" onchange="ShowLoadingBar();" checked><label
+					for="chkShowLoadingbar">Progress Bar</label></div>
+			<input type="button" value="Load" class="ds-button-bg-black" onclick="LoadImage();" />
+			<input type="button" value="Upload" class="ds-button-bg-white" onclick="Upload();" />
 		</div>
 		<div class="ds-div-scanPage-column ds-div-scanPage-column1">
 			<div id="dwtcontrolContainer" style="width: 100%; height: 100%;"></div>
 		</div>
 	</div>
+	<style>
+		.ds-div-download {
+			bottom: 2px;
+		}
+	</style>
     <script type="text/javascript">
 		var DWTObject;
-        Dynamsoft.DWT.RegisterEvent("OnWebTwainReady", function () {
-            DWTObject = Dynamsoft.DWT.GetWebTwain('dwtcontrolContainer'); // Get the Dynamic Web TWAIN object that is embeded in the div with id 'dwtcontrolContainer'
-        });
-
-		function ShowLoadingBar(){
+		Dynamsoft.DWT.RegisterEvent("OnWebTwainReady", function () {
+			DWTObject = Dynamsoft.DWT.GetWebTwain('dwtcontrolContainer'); // Get the Dynamic Web TWAIN object that is embeded in the div with id 'dwtcontrolContainer'
 			var chkShowLoadingbar = document.getElementById('chkShowLoadingbar');
-			if(DWTObject){
-				if(chkShowLoadingbar.checked) {
+			chkShowLoadingbar.checked = true;
+		});
+
+		function ShowLoadingBar() {
+			var chkShowLoadingbar = document.getElementById('chkShowLoadingbar');
+			if (DWTObject) {
+				if (chkShowLoadingbar.checked) {
 					DWTObject.IfShowProgressBar = true;
 				} else {
 					DWTObject.IfShowProgressBar = false;
@@ -42,22 +50,22 @@
 		}
 
 		function LoadImage() {
-            if (DWTObject) {
-				DWTObject.LoadImageEx("", -1, function(){}, function(ec, es){ console.log(es);});
-            }
-        }
-		
+			if (DWTObject) {
+				DWTObject.LoadImageEx("", -1, function () { }, function (ec, es) { console.log(es); });
+			}
+		}
+
 		function Upload() {
 			if (DWTObject && DWTObject.HowManyImagesInBuffer > 0) {
 				var strUrl = "https://demo.dynamsoft.com/sample-uploads/";
 				var imgAry = [DWTObject.CurrentImageIndexInBuffer];
 				DWTObject.HTTPUpload(
-					strUrl, 
-					imgAry, 
+					strUrl,
+					imgAry,
 					Dynamsoft.DWT.EnumDWT_ImageType.IT_PNG,
-					Dynamsoft.DWT.EnumDWT_UploadDataFormat.Binary, 
-					"WebTWAINImage.png", 
-					onUploadSuccess, 
+					Dynamsoft.DWT.EnumDWT_UploadDataFormat.Binary,
+					"WebTWAINImage.png",
+					onUploadSuccess,
 					onUploadFailure
 				);
 			} else {
