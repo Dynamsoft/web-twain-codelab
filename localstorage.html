@@ -2,169 +2,202 @@
 <html>
 
 <head>
-    <title>Localstorage</title>
+	<title>Scanning with LocalStorage</title>
 	<link rel="stylesheet" href="css/global.css" />
 	<link rel="stylesheet" href="css/scan.css" />
-    <script src="https://cdn.jsdelivr.net/npm/dwt@latest/dist/dynamsoft.webtwain.min.js"></script>
-    <script type="text/javascript" src="Resources/dynamsoft.webtwain.config_autoload.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/dwt@latest/dist/dynamsoft.webtwain.min.js"></script>
+	<script type="text/javascript" src="Resources/dynamsoft.webtwain.config_autoload.js"></script>
 </head>
+
 <body>
-    <div class="ds-div-scanPageHeader">
-		<div class="ds-div-title">Localstorage</div>
-		<p>The Local Storage feature automatically restores scanned images from your last session when you reopen the web page. This is especially useful if your computer goes to sleep or shuts down unexpectedly during a large scan. To test this feature, enable Local Storage, close the page after scanning, and then reopen it to see how it works.</p>
+	<div class="ds-div-scanPageHeader">
+		<div class="ds-div-title">Scanning with LocalStorage</div>
+		<p>The Local Storage feature automatically saves the scanned images from the control to your disk, allowing you
+			to restore the content of the previous session when you reopen the webpage. This is especially useful if
+			your computer goes to sleep or shuts down unexpectedly during a large scan. To test this feature, enable
+			Local Storage, close the page after scanning, and then reopen the page to see that content from the previous
+			session gets restored.</p>
 	</div>
-	<div class="ds-div-scanPageDemo" >
+	<div class="ds-div-scanPageDemo">
 		<div class="ds-div-scanPage-column ds-div-scanPage-column0">
 			<div><span>Select Source:</span><select size="1" id="source"></select></div>
 			<div>
-				<label for="chkAutoSaveToStorage"><input type="checkbox" id="chkAutoSaveToStorage" onchange="checkBoxChanged_AutoSaveStorage();" checked>Auto Save to Storage</label>
+				<label for="chkAutoSaveToStorage"><input type="checkbox" id="chkAutoSaveToStorage"
+						onchange="checkBoxChanged_AutoSaveStorage();" checked>Auto-Save to Storage</label>
 			</div>
-			<div><input type="button" value="Scan" style ="margin-bottom: 20px;" onclick="AcquireImage();" /></div>
+			<div>
+				<input type="button" value="Scan" class="ds-button-bg-black" style="margin-bottom: 20px;"
+					onclick="AcquireImage();" />
+				<input style="margin-left:20px" onclick="RefreshPage()" class="ds-button-bg-white" type="button"
+					value="Refresh browser" />
+			</div>
 		</div>
 		<div class="ds-div-scanPage-column ds-div-scanPage-column1">
 			<div id="dwtcontrolContainer" style="width: 100%; height: 100%;"></div>
 		</div>
 	</div>
 	<style>
-		.ds-div-scanPageHeader p {
-			height: 60px;
-		}
 		.ds-div-scanPage-column0>div {
 			margin: 7px;
 		}
+
 		.ds-div-scanPage-column0 label {
 			width: 180px;
 			display: inline-block;
 		}
+
+		.ds-div-scanPageDemo {
+			margin-top: 7px;
+		}
+
+		.ds-div-scanPageAPI,
+		.ds-div-scanPageHeader,
+		.ds-div-scanPageNote,
+		.ds-div-scanPageDemo,
+		.ds-div-scanPageDemo-button,
+		.ds-div-scanPageTry {
+			min-width: 890px;
+		}
 	</style>
-  <script type="text/javascript">
+	<script type="text/javascript">
+		var localStoreUid, storeName = 'DynamicWebTWAIN_LocalStorage', storeName_EnableAutoSaveStorage = 'DynamicWebTWAIN_EnableAutoSaveStorage';
 
-	var localStoreUid, storeName='DynamicWebTWAIN_LocalStorage', storeName_EnableAutoSaveStorage='DynamicWebTWAIN_EnableAutoSaveStorage';
-
-	(function(){
-		var chkAutoSaveToStorage = document.getElementById('chkAutoSaveToStorage');
-		var checked = localStorage[storeName_EnableAutoSaveStorage];
-		if(checked === "false") {
-			chkAutoSaveToStorage.checked = false;
-		} else {
-			chkAutoSaveToStorage.checked = true;
-			localStoreUid = localStorage[storeName];
-			localStorage[storeName_EnableAutoSaveStorage] = "true";
-		}
-	})();
-
-    var DWTObject, deviceList;
-    Dynamsoft.DWT.RegisterEvent("OnWebTwainReady", function () {
-		DWTObject = Dynamsoft.DWT.GetWebTwain('dwtcontrolContainer'); // Get the Dynamic Web TWAIN object that is embeded in the div with id 'dwtcontrolContainer'
-		 if (DWTObject) {
-
-			deviceList=[];
-			DWTObject.GetDevicesAsync().then(function(devices){
-				for (var i = 0; i < devices.length; i++) { // Get how many sources are installed in the system
-					document.getElementById('source').options.add(new Option(devices[i].displayName, i)); // Add the sources in a drop-down list
-					deviceList.push(devices[i]);
-				}
-
-				if (isStorageEnabled()) {
-					restoreStorage();
-					DWTObject.RegisterEvent('OnBufferChanged', Dynamsoft_OnBufferChanged);
-				}
-
-			}).catch(function (exp) {
-				alert(exp.message);
-			});
-		}
-    });
-
-    function AcquireImage() {
-      if (DWTObject) {
-		var ddlSource = document.getElementById('source');
-		DWTObject.SelectDeviceAsync(deviceList[ddlSource.selectedIndex]).then(function () {
-			return DWTObject.AcquireImageAsync({
-				IfShowUI: false,
-				IfCloseSourceAfterAcquire: true // Scanner source will be disabled/closed automatically after the scan.
-			});
-		}).catch(function (exp) {
-			console.error(exp);
-		});
-      }
-    }
-
-	function Dynamsoft_OnBufferChanged() {
-		if (isStorageEnabled()) {
-			saveStorage();
-		}
-	}
-	
-	function checkBoxChanged_AutoSaveStorage() {
-		if (isStorageEnabled()) {
-			localStorage[storeName_EnableAutoSaveStorage] = "true";
-			DWTObject.RegisterEvent('OnBufferChanged', Dynamsoft_OnBufferChanged);
-			saveStorage();
-		} else {
-			localStorage[storeName_EnableAutoSaveStorage] = "false";
-			removeStorage();
-		}
-	}
-
-	async function restoreStorage() {
-		return _saveOrRestoreStorage(false);
-	}
-
-	async function saveStorage() {
-		return _saveOrRestoreStorage(true);
-	}
-
-	function removeStorage() {
-    	DWTObject.UnregisterEvent('OnBufferChanged', Dynamsoft_OnBufferChanged);
-		if(localStoreUid) {
-			var _localStoreUid = localStoreUid;
-			delete localStorage[storeName];
-			DWTObject.localStorageExist(_localStoreUid).then(function (ifExist) {
-				if (ifExist) {
-					DWTObject.removeLocalStorage({ uid: _localStoreUid });
-				}
-			}).catch(function (err) { console.log(err); });
-		}
-	}
-
-	async function _saveOrRestoreStorage(bSave){
-
-		if (!isStorageEnabled()) {
-			return;
-		}
-
-		try{
-
-			var ifExist = false;
-			if(localStoreUid){
-				ifExist = await DWTObject.localStorageExist(localStoreUid);
-			}
-
-			if(ifExist && localStoreUid){
-				if(bSave) {
-					await DWTObject.saveToLocalStorage({uid: localStoreUid});
-				} else {
-					await DWTObject.loadFromLocalStorage({uid: localStoreUid});
-				}
+		(function () {
+			var chkAutoSaveToStorage = document.getElementById('chkAutoSaveToStorage');
+			var checked = localStorage[storeName_EnableAutoSaveStorage];
+			if (checked === "false") {
+				chkAutoSaveToStorage.checked = false;
+				localStoreUid = '';
+				delete localStorage[storeName];
 			} else {
-				localStoreUid = await DWTObject.createLocalStorage();
-				localStorage[storeName] = localStoreUid;
-				await DWTObject.saveToLocalStorage({uid: localStoreUid});
+				chkAutoSaveToStorage.checked = true;
+				localStoreUid = localStorage[storeName];
+				localStorage[storeName_EnableAutoSaveStorage] = "true";
+			}
+		})();
+
+		var DWTObject, deviceList;
+		Dynamsoft.DWT.RegisterEvent("OnWebTwainReady", function () {
+			DWTObject = Dynamsoft.DWT.GetWebTwain('dwtcontrolContainer'); // Get the Dynamic Web TWAIN object that is embeded in the div with id 'dwtcontrolContainer'
+			if (DWTObject) {
+
+				deviceList = [];
+				DWTObject.GetDevicesAsync().then(function (devices) {
+					for (var i = 0; i < devices.length; i++) { // Get how many sources are installed in the system
+						document.getElementById('source').options.add(new Option(devices[i].displayName, i)); // Add the sources in a drop-down list
+						deviceList.push(devices[i]);
+					}
+
+					if (isStorageEnabled()) {
+						restoreStorage();
+						DWTObject.RegisterEvent('OnBufferChanged', Dynamsoft_OnBufferChanged);
+					}
+
+				}).catch(function (exp) {
+					alert(exp.message);
+				});
+			}
+		});
+
+		function AcquireImage() {
+			if (DWTObject) {
+				var ddlSource = document.getElementById('source');
+				DWTObject.SelectDeviceAsync(deviceList[ddlSource.selectedIndex]).then(function () {
+					return DWTObject.AcquireImageAsync({
+						IfShowUI: false,
+						IfCloseSourceAfterAcquire: true // Scanner source will be disabled/closed automatically after the scan.
+					});
+				}).catch(function (exp) {
+					console.error(exp);
+				});
+			}
+		}
+
+		function Dynamsoft_OnBufferChanged(p1) {
+			if (isStorageEnabled() && p1) {
+				if (p1.action === 'shift' || p1.action === 'filter') return;
+				saveStorage();
+			}
+		}
+
+		function checkBoxChanged_AutoSaveStorage() {
+			if (isStorageEnabled()) {
+				localStorage[storeName_EnableAutoSaveStorage] = "true";
+				DWTObject.RegisterEvent('OnBufferChanged', Dynamsoft_OnBufferChanged);
+				saveStorage();
+			} else {
+				localStorage[storeName_EnableAutoSaveStorage] = "false";
+				removeStorage();
+			}
+		}
+
+		async function restoreStorage() {
+			return _saveOrRestoreStorage(false);
+		}
+
+		async function saveStorage() {
+			return _saveOrRestoreStorage(true);
+		}
+
+		function removeStorage() {
+			DWTObject.UnregisterEvent('OnBufferChanged', Dynamsoft_OnBufferChanged);
+			if (localStoreUid) {
+				var _localStoreUid = localStoreUid;
+				localStoreUid = '';
+				delete localStorage[storeName];
+				DWTObject.localStorageExist(_localStoreUid).then(function (ifExist) {
+					if (ifExist) {
+						DWTObject.removeLocalStorage({ uid: _localStoreUid });
+					}
+				}).catch(function (err) { console.log(err); });
+			}
+		}
+
+		async function _saveOrRestoreStorage(bSave) {
+
+			if (!isStorageEnabled()) {
+				return;
 			}
 
-		} catch(_ex2) {
-			console.log(_ex2);
+			try {
+
+				var ifExist = false;
+				if (localStoreUid) {
+					ifExist = await DWTObject.localStorageExist(localStoreUid);
+				}
+
+				if (ifExist && localStoreUid) {
+					if (bSave) {
+						await DWTObject.saveToLocalStorage({ uid: localStoreUid });
+					} else {
+						await DWTObject.loadFromLocalStorage({ uid: localStoreUid });
+					}
+				} else {
+					localStoreUid = await DWTObject.createLocalStorage();
+					localStorage[storeName] = localStoreUid;
+					await DWTObject.saveToLocalStorage({ uid: localStoreUid });
+				}
+
+			} catch (_ex2) {
+				console.log(_ex2);
+			}
 		}
-	}
 
-	function isStorageEnabled() {
-		var chkAutoSaveToStorage = document.getElementById('chkAutoSaveToStorage');
-		if(chkAutoSaveToStorage)
-			return chkAutoSaveToStorage.checked;
-		return false;
-	}
+		function isStorageEnabled() {
+			var chkAutoSaveToStorage = document.getElementById('chkAutoSaveToStorage');
+			if (chkAutoSaveToStorage)
+				return chkAutoSaveToStorage.checked;
+			return false;
+		}
 
-  </script>
+		function RefreshPage() {
+			var url = new URL(top.location.href);
+			url.searchParams.delete("t");
+			url.searchParams.append("t", new Date().getTime());
+
+			top.location.href = url;
+		}
+	</script>
 </body>
+
 </html>
