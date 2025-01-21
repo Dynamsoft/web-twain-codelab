@@ -1,6 +1,4 @@
 ﻿
-var Dynamsoft = Dynamsoft || { DWT: {} };
-
 function init(Containers, bAutoLoad){
 	if(Containers)
 		Dynamsoft.DWT.Containers = Containers;
