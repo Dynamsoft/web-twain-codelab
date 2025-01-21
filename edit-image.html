@@ -5,8 +5,6 @@
     <title>Edit Image</title>
     <link rel="stylesheet" href="css/global.css" />
     <link rel="stylesheet" href="css/scan.css" />
-    <script src="https://cdn.jsdelivr.net/npm/dwt@latest/dist/dynamsoft.webtwain.min.js"></script>
-    <script src="Resources/dynamsoft.webtwain.config_autoload.js"></script>
 </head>
 
 <body>
@@ -216,7 +214,11 @@
             bottom: 2px;
         }
     </style>
-    <script type="text/javascript">
+    <script src="https://cdn.jsdelivr.net/npm/dwt@latest/dist/dynamsoft.webtwain.min.js"></script>
+    <script type="text/javascript" src="js/config.js"></script>
+	<script type="text/javascript">
+		initialization([{ ContainerId: 'dwtcontrolContainer',  Width: '100%',  Height:'100%'}], true);
+
         var DWTObject, deviceList, _iLeft, _iTop, _iRight, _iBottom;
         Dynamsoft.DWT.RegisterEvent("OnWebTwainReady", function () {
             DWTObject = Dynamsoft.DWT.GetWebTwain('dwtcontrolContainer'); // Get the Dynamic Web TWAIN object that is embeded in the div with id 'dwtcontrolContainer'

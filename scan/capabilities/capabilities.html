@@ -2,20 +2,10 @@
 <html>
 <head>
     <title>Batch-Setting Scanner Capabilities</title>
-	<link rel="stylesheet" href="../../css/global.css?v=20241223" />
-	<link rel="stylesheet" href="../../css/scan.css?v=20241223" />
-	<link rel="stylesheet" href="Style/jquery-ui.css?v=20241223" />
-	<link href="Scripts/contextMenu/jquery.contextMenu.min.css?v=20241223" rel="stylesheet" type="text/css" />
-    <script src="https://cdn.jsdelivr.net/npm/dwt@latest/dist/dynamsoft.webtwain.min.js?v=20241223"></script>
-    <script src="../../Resources/dynamsoft.webtwain.config_autoload.js?v=20241223"></script>
-	<script src="Scripts/jquery.js?v=20241223"></script>
-    <script src="Scripts/jquery-ui.js?v=20241223"></script> 
-	<script src="Scripts/tablesorter/js/jquery.tablesorter.min.js?v=20241223"></script>
-    <script src="Scripts/contextMenu/jquery.contextMenu.min.js?v=20241223"></script>
-    <script src="Scripts/contextMenu/jquery.ui.position.min.js?v=20241223"></script>
-	<script src="Scripts/twain.js?t=20241223"></script> 
-	<script src="Scripts/twainstring.js?t=20241223"></script> 
-	<script src="Scripts/twainapp.js?t=20241223"></script> 
+	<link rel="stylesheet" href="../../css/global.css?v=20250121" />
+	<link rel="stylesheet" href="../../css/scan.css?v=20250121" />
+	<link rel="stylesheet" href="Style/jquery-ui.css?v=20250121" />
+	<link href="Scripts/contextMenu/jquery.contextMenu.min.css?v=20250121" rel="stylesheet" type="text/css" />
 </head>
 <body onunload="_unload();">
 	<div id="ValueSelector" title="Select A Value" class="hidden" style="min-width: 150px;">
@@ -186,6 +176,19 @@
 			}
 
 	</style>
+    <script src="https://cdn.jsdelivr.net/npm/dwt@latest/dist/dynamsoft.webtwain.min.js"></script>
+    <script type="text/javascript" src="../../js/config.js"></script>
+	<script type="text/javascript">
+		initialization([{ ContainerId: 'dwtcontrolContainer',  Width: '100%',  Height:'100%'}], true);
+	</script>
+	<script src="Scripts/jquery.js?v=20250121"></script>
+    <script src="Scripts/jquery-ui.js?v=20250121"></script> 
+	<script src="Scripts/tablesorter/js/jquery.tablesorter.min.js?v=20250121"></script>
+    <script src="Scripts/contextMenu/jquery.contextMenu.min.js?v=20250121"></script>
+    <script src="Scripts/contextMenu/jquery.ui.position.min.js?v=20250121"></script>
+	<script src="Scripts/twain.js?t=20250121"></script> 
+	<script src="Scripts/twainstring.js?t=20250121"></script> 
+	<script src="Scripts/twainapp.js?t=20250121"></script> 
 	<script type="text/javascript">
 		var DWTObject, deviceList;
 		Dynamsoft.DWT.RegisterEvent("OnWebTwainReady", function () {
