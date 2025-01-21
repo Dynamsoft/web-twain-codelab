@@ -35,9 +35,11 @@
 		}
 	</style>
 	<script src="https://cdn.jsdelivr.net/npm/dwt@latest/dist/dynamsoft.webtwain.min.js"></script>
-	<script type="text/javascript" src="../js/util.js"></script>
 	<script type="text/javascript">
-		init([{ ContainerId: 'dwtcontrolContainer',  Width: '100%',  Height:'100%'}], true);
+		Dynamsoft.DWT.Containers = [{ ContainerId: 'dwtcontrolContainer', Width: '100%', Height: '100%' }];
+		Dynamsoft.DWT.ProductKey = "DLS2eyJvcmdhbml6YXRpb25JRCI6IjIwMDAwMSJ9";
+		Dynamsoft.DWT.ResourcesPath = 'https://cdn.jsdelivr.net/npm/dwt@latest/dist';
+		Dynamsoft.DWT.AutoLoad = true;
 
 		var DWTObject, deviceList;
 		Dynamsoft.DWT.RegisterEvent("OnWebTwainReady", function () {

@@ -3,16 +3,17 @@
 
 <head>
     <title>Saving Documents Locally</title>
-	<link rel="stylesheet" href="../css/global.css" />
-	<link rel="stylesheet" href="../css/scan.css" />
+    <link rel="stylesheet" href="../css/global.css" />
+    <link rel="stylesheet" href="../css/scan.css" />
 </head>
+
 <body>
-	<div class="ds-div-scanPageHeader">
-		<div class="ds-div-title">Saving Documents Locally</div>
-	</div>
-	<div class="ds-div-scanPageDemo" >
-		<div class="ds-div-scanPage-column ds-div-scanPage-column0">
-            <div><label for="left" >Select Source:</label><select size="1" id="source"></select></div>	
+    <div class="ds-div-scanPageHeader">
+        <div class="ds-div-title">Saving Documents Locally</div>
+    </div>
+    <div class="ds-div-scanPageDemo">
+        <div class="ds-div-scanPage-column ds-div-scanPage-column0">
+            <div><label for="left">Select Source:</label><select size="1" id="source"></select></div>
             <input type="button" value="Scan" class="ds-button-bg-black btn mr20" onclick="AcquireImage();" />
             <input type="button" value="Open a local file" class="ds-button-bg-white btn" onclick="LoadImages();" />
             <br />
@@ -21,16 +22,18 @@
                     <li>
                         <p style="margin: 0;">File Name:</p>
                         <input type="text" size="20" id="txt_fileName" value="WebTWAINImage"><b> . </b>
-                        <select size="1" id="fileType" onchange="fileType_onchange();">     
-                        <option value="pdf">pdf</option>
-                        <option value="tif">tif</option>
-                        <option value="jpg">jpg</option>
-                        <option value="png">png</option>
-                        <option value="bmp">bmp</option></select>
+                        <select size="1" id="fileType" onchange="fileType_onchange();">
+                            <option value="pdf">pdf</option>
+                            <option value="tif">tif</option>
+                            <option value="jpg">jpg</option>
+                            <option value="png">png</option>
+                            <option value="bmp">bmp</option>
+                        </select>
                     </li>
-                        <li>
+                    <li>
                         Pages:
-                        <label for="CurrentPage" style="margin-left:5px;"><input type="radio" id="CurrentPage" name="Pages">Current Page </label>
+                        <label for="CurrentPage" style="margin-left:5px;"><input type="radio" id="CurrentPage"
+                                name="Pages">Current Page </label>
                         <label for="AllPages"><input type="radio" id="AllPages" name="Pages" checked>All Pages</label>
                     </li>
                     <li>
@@ -38,65 +41,68 @@
                     </li>
                 </ul>
             </div>
-		</div>
-		<div class="ds-div-scanPage-column ds-div-scanPage-column1">
-			<div id="dwtcontrolContainer" style="width: 100%; height: 100%;"></div>
-		</div>
-	</div>
+        </div>
+        <div class="ds-div-scanPage-column ds-div-scanPage-column1">
+            <div id="dwtcontrolContainer" style="width: 100%; height: 100%;"></div>
+        </div>
+    </div>
     <style>
-		.ds-div-download {
-			bottom: 2px;
-		}
+        .ds-div-download {
+            bottom: 2px;
+        }
+
         .ds-div-scanPage-column0 label {
-			width: 140px;
-			display: inline-block;
-		}
+            width: 140px;
+            display: inline-block;
+        }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/dwt@latest/dist/dynamsoft.webtwain.min.js"></script>
-    <script type="text/javascript" src="../js/util.js"></script>
     <script type="text/javascript">
-		init([{ ContainerId: 'dwtcontrolContainer',  Width: '100%',  Height:'100%'}], true);
+        Dynamsoft.DWT.Containers = [{ ContainerId: 'dwtcontrolContainer', Width: '100%', Height: '100%' }];
+        Dynamsoft.DWT.ProductKey = "DLS2eyJvcmdhbml6YXRpb25JRCI6IjIwMDAwMSJ9";
+        Dynamsoft.DWT.ResourcesPath = 'https://cdn.jsdelivr.net/npm/dwt@latest/dist';
+        Dynamsoft.DWT.AutoLoad = true;
 
         var DWTObject;
         Dynamsoft.DWT.RegisterEvent("OnWebTwainReady", function () {
             DWTObject = Dynamsoft.DWT.GetWebTwain('dwtcontrolContainer'); // Get the Dynamic Web TWAIN object that is embeded in the div with id 'dwtcontrolContainer'
-			if (DWTObject) {
-                deviceList=[];
-				DWTObject.GetDevicesAsync().then(function(devices){
-					for (var i = 0; i < devices.length; i++) { // Get how many sources are installed in the system
-						document.getElementById('source').options.add(new Option(devices[i].displayName, i)); // Add the sources in a drop-down list
-						deviceList.push(devices[i]);
+            if (DWTObject) {
+                deviceList = [];
+                DWTObject.GetDevicesAsync().then(function (devices) {
+                    for (var i = 0; i < devices.length; i++) { // Get how many sources are installed in the system
+                        document.getElementById('source').options.add(new Option(devices[i].displayName, i)); // Add the sources in a drop-down list
+                        deviceList.push(devices[i]);
                     }
-				}).catch(function (exp) {
-					alert(exp.message);
-				});
+                }).catch(function (exp) {
+                    alert(exp.message);
+                });
             }
         });
 
         function AcquireImage() {
             if (DWTObject) {
                 var ddlSource = document.getElementById('source');
-				DWTObject.SelectDeviceAsync(deviceList[ddlSource.selectedIndex]).then(function () {
-						return DWTObject.AcquireImageAsync({
-						    IfCloseSourceAfterAcquire: true // Scanner source will be closed automatically after the scan.
-						});
-					}).catch(function (exp) {
-						alert(exp.message);
-				});
+                DWTObject.SelectDeviceAsync(deviceList[ddlSource.selectedIndex]).then(function () {
+                    return DWTObject.AcquireImageAsync({
+                        IfCloseSourceAfterAcquire: true // Scanner source will be closed automatically after the scan.
+                    });
+                }).catch(function (exp) {
+                    alert(exp.message);
+                });
             }
         }
 
         function LoadImages() {
-            if (DWTObject) {			
-				// Load images in all supported formats (.bmp, .jpg, .tif, .png, .pdf). OnSuccess or OnFailure will be called after the operation
-                DWTObject.LoadImageEx("", Dynamsoft.DWT.EnumDWT_ImageType.IT_ALL, function(){
-					console.log('successful');
-				}, function(errorCode, errorString){
-					 alert(errorString);
-				}); 
+            if (DWTObject) {
+                // Load images in all supported formats (.bmp, .jpg, .tif, .png, .pdf). OnSuccess or OnFailure will be called after the operation
+                DWTObject.LoadImageEx("", Dynamsoft.DWT.EnumDWT_ImageType.IT_ALL, function () {
+                    console.log('successful');
+                }, function (errorCode, errorString) {
+                    alert(errorString);
+                });
             }
         }
-        
+
         function SaveWithFileDialog() {
             if (DWTObject.HowManyImagesInBuffer == 0) {
                 alert("There is no image in the buffer.")
@@ -124,12 +130,12 @@
             var allPages = document.getElementById("AllPages");
             if (allPages && allPages.checked == true) {
                 if (strPageType_save == "tif") {  //tiff
-                        DWTObject.SaveAllAsMultiPageTIFF(strFilePath, OnSuccess, OnFailure);
-                    }
-                    else if (strPageType_save == "pdf") { //pdf
-                        DWTObject.SaveAllAsPDF(strFilePath, OnSuccess, OnFailure);
-                    }
-            }  else {
+                    DWTObject.SaveAllAsMultiPageTIFF(strFilePath, OnSuccess, OnFailure);
+                }
+                else if (strPageType_save == "pdf") { //pdf
+                    DWTObject.SaveAllAsPDF(strFilePath, OnSuccess, OnFailure);
+                }
+            } else {
                 switch (strPageType_save) {
                     case "bmp": DWTObject.SaveAsBMP(strFilePath, DWTObject.CurrentImageIndexInBuffer); break;
                     case "jpg": DWTObject.SaveAsJPEG(strFilePath, DWTObject.CurrentImageIndexInBuffer); break;
@@ -142,7 +148,7 @@
                     console.log('successful');
                 } else {
                     alert(DWTObject.ErrorString);
-                }  
+                }
             }
         }
 
@@ -169,12 +175,13 @@
                 if (currentPage) {
                     currentPage.disabled = true;
                     currentPage.checked = true;
-                }      
+                }
                 if (allPages)
                     allPages.disabled = true;
             }
         }
     </script>
-	
+
 </body>
+
 </html>

@@ -124,11 +124,14 @@
             bottom: 2px;
         }
     </style>
-    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"
+        integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/dwt@latest/dist/dynamsoft.webtwain.min.js"></script>
-    <script type="text/javascript" src="../../js/util.js"></script>
-	<script type="text/javascript">
-		init([{ ContainerId: 'dwtcontrolContainer',  Width: '100%',  Height:'100%'}], true);
+    <script type="text/javascript">
+        Dynamsoft.DWT.Containers = [{ ContainerId: 'dwtcontrolContainer', Width: '100%', Height: '100%' }];
+        Dynamsoft.DWT.ProductKey = "DLS2eyJvcmdhbml6YXRpb25JRCI6IjIwMDAwMSJ9";
+        Dynamsoft.DWT.ResourcesPath = 'https://cdn.jsdelivr.net/npm/dwt@latest/dist';
+        Dynamsoft.DWT.AutoLoad = true;
 
         var DWTObject, extrFieldsCount = 0;
 

@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Reading MagData During Scan</title>
+	<title>Reading MagData During Scan</title>
 	<link rel="stylesheet" href="../css/global.css" />
 	<link rel="stylesheet" href="../css/scan.css" />
 </head>
@@ -12,12 +12,12 @@
 		<div class="ds-div-title">Reading MagData During Scan</div>
 		<p>This demo requires a scanner with MagData reading capabilities.</p>
 	</div>
-	<div class="ds-div-scanPageDemo" >
+	<div class="ds-div-scanPageDemo">
 		<div class="ds-div-scanPage-column ds-div-scanPage-column0">
 			<input type="button" value="Scan" class="ds-button-bg-black" onclick="AcquireImage();" />
 			<div id="MagData" class="clearfix"><span class="lblMagData">MagData Info:</span><br>
 				<div id="DWTMagData"></div>
-			</div>						
+			</div>
 		</div>
 		<div class="ds-div-scanPage-column ds-div-scanPage-column1">
 			<div id="dwtcontrolContainer" style="width: 100%; height: 100%;"></div>
@@ -32,42 +32,44 @@
 			word-wrap: break-word;
 		}
 	</style>
-    <script src="https://cdn.jsdelivr.net/npm/dwt@latest/dist/dynamsoft.webtwain.min.js"></script>
-    <script type="text/javascript" src="../js/util.js"></script>
-    <script type="text/javascript">
-		init([{ ContainerId: 'dwtcontrolContainer',  Width: '100%',  Height:'100%'}], true);
+	<script src="https://cdn.jsdelivr.net/npm/dwt@latest/dist/dynamsoft.webtwain.min.js"></script>
+	<script type="text/javascript">
+		Dynamsoft.DWT.Containers = [{ ContainerId: 'dwtcontrolContainer', Width: '100%', Height: '100%' }];
+		Dynamsoft.DWT.ProductKey = "DLS2eyJvcmdhbml6YXRpb25JRCI6IjIwMDAwMSJ9";
+		Dynamsoft.DWT.ResourcesPath = 'https://cdn.jsdelivr.net/npm/dwt@latest/dist';
+		Dynamsoft.DWT.AutoLoad = true;
 
 		var DWTObject;
 		Dynamsoft.DWT.RegisterEvent("OnWebTwainReady", function () {
 			DWTObject = Dynamsoft.DWT.GetWebTwain('dwtcontrolContainer'); // Get the Dynamic Web TWAIN object that is embeded in the div with id 'dwtcontrolContainer'
 			DWTObject.RegisterEvent("OnPostTransferAsync", function (outputInfo) {
-			  console.log(outputInfo);  
-			  var magData = {};
-			  var dwtMagData = document.getElementById("DWTMagData");
-			  if(outputInfo && outputInfo.extendedImageInfo && outputInfo.extendedImageInfo.others && outputInfo.extendedImageInfo.others.TWEI_MAGDATA) {
+				console.log(outputInfo);
+				var magData = {};
+				var dwtMagData = document.getElementById("DWTMagData");
+				if (outputInfo && outputInfo.extendedImageInfo && outputInfo.extendedImageInfo.others && outputInfo.extendedImageInfo.others.TWEI_MAGDATA) {
 					magData.TWEI_MAGTYPE = outputInfo.extendedImageInfo.others.TWEI_MAGTYPE;
 					magData.TWEI_MAGDATA = outputInfo.extendedImageInfo.others.TWEI_MAGDATA;
 					dwtMagData.innerText = JSON.stringify(magData);
-			  }
+				}
 			});
-		}); 
+		});
 
 		function AcquireImage() {
-            if (DWTObject) {
-				DWTObject.SelectSourceAsync().then(function(){
+			if (DWTObject) {
+				DWTObject.SelectSourceAsync().then(function () {
 					return DWTObject.AcquireImageAsync({
-							IfShowUI: false,
-					        IfCloseSourceAfterAcquire: true, // Scanner source will be closed automatically after the scan.
-							IfGetExtImageInfo: true,
-							extendedImageInfoQueryLevel:0
-						});
+						IfShowUI: false,
+						IfCloseSourceAfterAcquire: true, // Scanner source will be closed automatically after the scan.
+						IfGetExtImageInfo: true,
+						extendedImageInfoQueryLevel: 0
+					});
 				}).catch(function (exp) {
 					alert(exp.message);
 				});
-            }
-        }
-    </script>
-  	
+			}
+		}
+	</script>
+
 </body>
 
 </html>

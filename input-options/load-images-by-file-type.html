@@ -4,23 +4,23 @@
 <head>
     <title>Loading Images by File Type</title>
     <link rel="stylesheet" href="../css/global.css" />
-	<link rel="stylesheet" href="../css/scan.css" />
+    <link rel="stylesheet" href="../css/scan.css" />
 </head>
 
 <body>
     <div class="ds-div-scanPageHeader">
-		<div class="ds-div-title">Loading Images by File Type</div>
+        <div class="ds-div-title">Loading Images by File Type</div>
         <p>This demo only supports Windows and MacOS.</p>
-	</div>
-	<div class="ds-div-scanPageDemo" >
-		<div class="ds-div-scanPage-column ds-div-scanPage-column0">
+    </div>
+    <div class="ds-div-scanPageDemo">
+        <div class="ds-div-scanPage-column ds-div-scanPage-column0">
             <div><span>Filter by:</span><select size="1" id="filterBy">
-				<option value="0">BMP,TIF,JPG,PNG,PDF</option>
-				<option value="1">PDF</option>
-				<option value="2">PNG</option>
-				<option value="3">JPG</option>
-				<option value="4">TIF</option>
-			</select></div>
+                    <option value="0">BMP,TIF,JPG,PNG,PDF</option>
+                    <option value="1">PDF</option>
+                    <option value="2">PNG</option>
+                    <option value="3">JPG</option>
+                    <option value="4">TIF</option>
+                </select></div>
             <input type="button" value="Load" class="ds-button-bg-black" onclick="LoadImage();" />
         </div>
         <div class="ds-div-scanPage-column ds-div-scanPage-column1">
@@ -28,22 +28,24 @@
         </div>
     </div>
     <style>
-		.ds-div-download {
-			bottom: 2px;
-		}
+        .ds-div-download {
+            bottom: 2px;
+        }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/dwt@latest/dist/dynamsoft.webtwain.min.js"></script>
-    <script type="text/javascript" src="../js/util.js"></script>
     <script type="text/javascript">
-		init([{ ContainerId: 'dwtcontrolContainer',  Width: '100%',  Height:'100%'}], true);
+        Dynamsoft.DWT.Containers = [{ ContainerId: 'dwtcontrolContainer', Width: '100%', Height: '100%' }];
+        Dynamsoft.DWT.ProductKey = "DLS2eyJvcmdhbml6YXRpb25JRCI6IjIwMDAwMSJ9";
+        Dynamsoft.DWT.ResourcesPath = 'https://cdn.jsdelivr.net/npm/dwt@latest/dist';
+        Dynamsoft.DWT.AutoLoad = true;
 
         var DWTObject;
         Dynamsoft.DWT.RegisterEvent("OnWebTwainReady", function () {
             DWTObject = Dynamsoft.DWT.GetWebTwain('dwtcontrolContainer'); // Get the Dynamic Web TWAIN object that is embeded in the div with id 'dwtcontrolContainer'
             DWTObject.RegisterEvent("OnGetFilePath",
                 function (isSave, filesCount, index, directory, fileName) {
-                    if(filesCount > 0)
-                        DWTObject.LoadImage(directory + "/" + fileName, function(){console.log("Successful.");}, function(ec,es){console.log(es);});
+                    if (filesCount > 0)
+                        DWTObject.LoadImage(directory + "/" + fileName, function () { console.log("Successful."); }, function (ec, es) { console.log(es); });
                 }
             );
         });
@@ -51,41 +53,41 @@
         function LoadImage() {
             if (DWTObject) {
                 if (!Dynamsoft.navInfoSync.bWin && !Dynamsoft.navInfoSync.bMac) {
-					alert("This demo only supports Windows or MacOS.");
+                    alert("This demo only supports Windows or MacOS.");
                     return;
-				}
+                }
 
                 var filterbyString = "BMP,TIF,JPG,PNG,PDF|*.bmp;*.tif;*.png;*.jpg;*.pdf;*.tiff;*.jpeg";
                 var filterby = document.getElementById("filterBy");
-                switch(filterBy.selectedIndex) {
-                    case 0: 
-                        if(Dynamsoft.navInfoSync.bMac)
+                switch (filterBy.selectedIndex) {
+                    case 0:
+                        if (Dynamsoft.navInfoSync.bMac)
                             filterbyString = "TIF,TIFF,JPG,JPEG,PNG,PDF";
-                        else 
+                        else
                             filterbyString = "BMP,TIF,JPG,PNG,PDF|*.bmp;*.tif;*.png;*.jpg;*.pdf;*.tiff;*.jpeg";
                         break;
-                    case 1: 
-                        if(Dynamsoft.navInfoSync.bMac)
+                    case 1:
+                        if (Dynamsoft.navInfoSync.bMac)
                             filterbyString = "PDF";
-                        else 
+                        else
                             filterbyString = "PDF|*.pdf";
                         break;
-                    case 2: 
-                        if(Dynamsoft.navInfoSync.bMac)
+                    case 2:
+                        if (Dynamsoft.navInfoSync.bMac)
                             filterbyString = "PNG";
-                        else 
+                        else
                             filterbyString = "PNG|*.png";
                         break;
-                    case 3: 
-                        if(Dynamsoft.navInfoSync.bMac)
+                    case 3:
+                        if (Dynamsoft.navInfoSync.bMac)
                             filterbyString = "JPG";
-                        else 
+                        else
                             filterbyString = "JPG|*.jpg;*.jpeg";
                         break;
-                    case 4: 
-                        if(Dynamsoft.navInfoSync.bMac)
+                    case 4:
+                        if (Dynamsoft.navInfoSync.bMac)
                             filterbyString = "TIF,TIFF";
-                        else 
+                        else
                             filterbyString = "TIF|*.tif;*.tiff";
                         break;
                 }
@@ -103,7 +105,7 @@
             }
         }
     </script>
-    
+
 </body>
 
 </html>

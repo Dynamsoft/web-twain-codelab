@@ -3,35 +3,38 @@
 
 <head>
     <title>Converting between Image and Base64</title>
-	<link rel="stylesheet" href="../css/global.css" />
-	<link rel="stylesheet" href="../css/scan.css" />
+    <link rel="stylesheet" href="../css/global.css" />
+    <link rel="stylesheet" href="../css/scan.css" />
 </head>
+
 <body>
-	<div class="ds-div-scanPageHeader">
-		<div class="ds-div-title">Converting between Image and Base64</div>
-	</div>
-	<div class="ds-div-scanPageDemo-button">
+    <div class="ds-div-scanPageHeader">
+        <div class="ds-div-title">Converting between Image and Base64</div>
+    </div>
+    <div class="ds-div-scanPageDemo-button">
         <input type="button" value="Scan" class="ds-button-bg-black" onclick="AcquireImage();" />
         <input type="button" value="Open a local file" class="ds-button-bg-white btn" onclick="LoadImages();" />
-	</div>
-	<div class="ds-div-scanPageDemo">
-		<div class="ds-div-scanPage-column ds-div-scanPage-column0">
+    </div>
+    <div class="ds-div-scanPageDemo">
+        <div class="ds-div-scanPage-column ds-div-scanPage-column0">
             <div id="dwtcontrolContainer" style="width: 100%;height: 100%;"></div>
         </div>
-		<div class="ds-div-scanPage-column ds-div-scanPage-column1">
+        <div class="ds-div-scanPage-column ds-div-scanPage-column1">
             <div>
-                <input type="button" class="ds-button-bg-black" value="ConvertToBase64 >>" onclick="ConvertToBase64();" />
+                <input type="button" class="ds-button-bg-black" value="ConvertToBase64 >>"
+                    onclick="ConvertToBase64();" />
                 <input type="button" class="ds-button-bg-black" value="<< LoadBase64" onclick="LoadBase64();" />
             </div>
         </div>
-		<div class="ds-div-scanPage-column ds-div-scanPage-column2">
-            <textarea id="txtBase64" style="border: 1px solid rgb(204, 204, 204);" placeholder="" ></textarea>
+        <div class="ds-div-scanPage-column ds-div-scanPage-column2">
+            <textarea id="txtBase64" style="border: 1px solid rgb(204, 204, 204);" placeholder=""></textarea>
         </div>
-	</div>
-	<style>
+    </div>
+    <style>
         .ds-div-download {
-			bottom: 2px;
-		}
+            bottom: 2px;
+        }
+
         .ds-div-scanPage-column0 {
             width: 400px;
             min-width: 400px;
@@ -39,18 +42,22 @@
             padding: 0;
             border: 0;
         }
+
         .ds-div-scanPage-column1 {
             vertical-align: middle;
             width: 180px;
             min-width: 180px;
             padding: 10% 7px;
         }
+
         .ds-div-scanPage-column2 {
             width: calc(100% - 580px);
             min-width: 400px;
             padding: 0;
         }
-        .ds-button-bg-black, .ds-button-bg-white {
+
+        .ds-button-bg-black,
+        .ds-button-bg-white {
             width: 165px;
         }
 
@@ -64,13 +71,16 @@
             margin-top: 0px;
         }
 
-        .ds-div-scanPageHeader, .ds-div-scanPageNote,
-        .ds-div-scanPageDemo, .ds-div-scanPageDemo-button {
+        .ds-div-scanPageHeader,
+        .ds-div-scanPageNote,
+        .ds-div-scanPageDemo,
+        .ds-div-scanPageDemo-button {
             min-width: 1000px;
             width: 1050px;
         }
 
-        .ds-button-bg-black, .ds-button-bg-white {
+        .ds-button-bg-black,
+        .ds-button-bg-white {
             margin: 15px 6px 0 0;
             padding: 5px 5px;
             font-size: 14px;
@@ -78,9 +88,11 @@
         }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/dwt@latest/dist/dynamsoft.webtwain.min.js"></script>
-    <script type="text/javascript" src="../js/util.js"></script>
     <script type="text/javascript">
-		init([{ ContainerId: 'dwtcontrolContainer',  Width: '100%',  Height:'100%'}], true);
+        Dynamsoft.DWT.Containers = [{ ContainerId: 'dwtcontrolContainer', Width: '100%', Height: '100%' }];
+        Dynamsoft.DWT.ProductKey = "DLS2eyJvcmdhbml6YXRpb25JRCI6IjIwMDAwMSJ9";
+        Dynamsoft.DWT.ResourcesPath = 'https://cdn.jsdelivr.net/npm/dwt@latest/dist';
+        Dynamsoft.DWT.AutoLoad = true;
 
         var DWTObject;
         Dynamsoft.DWT.RegisterEvent("OnWebTwainReady", function () {
@@ -90,34 +102,34 @@
         function AcquireImage() {
             if (DWTObject) {
                 DWTObject.SelectSourceAsync().then(function () {
-						return DWTObject.AcquireImageAsync({
-						    IfCloseSourceAfterAcquire: true // Scanner source will be closed automatically after the scan.
-						});
-					}).catch(function (exp) {
-						alert(exp.message);
-				});
+                    return DWTObject.AcquireImageAsync({
+                        IfCloseSourceAfterAcquire: true // Scanner source will be closed automatically after the scan.
+                    });
+                }).catch(function (exp) {
+                    alert(exp.message);
+                });
             }
         }
 
         function LoadImages() {
-            if (DWTObject) {			
-				// Load images in all supported formats (.bmp, .jpg, .tif, .png, .pdf). OnSuccess or OnFailure will be called after the operation
-                DWTObject.LoadImageEx("", Dynamsoft.DWT.EnumDWT_ImageType.IT_ALL, function(){
-					console.log('successful');
-				}, function(errorCode, errorString){
-					 alert(errorString);
-				}); 
+            if (DWTObject) {
+                // Load images in all supported formats (.bmp, .jpg, .tif, .png, .pdf). OnSuccess or OnFailure will be called after the operation
+                DWTObject.LoadImageEx("", Dynamsoft.DWT.EnumDWT_ImageType.IT_ALL, function () {
+                    console.log('successful');
+                }, function (errorCode, errorString) {
+                    alert(errorString);
+                });
             }
         }
 
-        function ConvertToBase64(){
+        function ConvertToBase64() {
             if (DWTObject) {
                 DWTObject.ConvertToBase64(
                     [DWTObject.CurrentImageIndexInBuffer],
                     Dynamsoft.DWT.EnumDWT_ImageType.IT_PNG,
                     function (result, indices, type) {
                         var txtBase64 = document.getElementById("txtBase64");
-					    txtBase64.value = result.getData(0, result.getLength());
+                        txtBase64.value = result.getData(0, result.getLength());
                     },
                     function (errorCode, errorString) {
                         alert(errorString);
@@ -126,13 +138,13 @@
             }
         }
 
-        function LoadBase64(){
+        function LoadBase64() {
             if (DWTObject) {
                 var txtBase64 = document.getElementById("txtBase64");
-                if(txtBase64.value.length > 0) {
-                    DWTObject.LoadImageFromBase64Binary(txtBase64.value,  Dynamsoft.DWT.EnumDWT_ImageType.IT_PNG, function(){
+                if (txtBase64.value.length > 0) {
+                    DWTObject.LoadImageFromBase64Binary(txtBase64.value, Dynamsoft.DWT.EnumDWT_ImageType.IT_PNG, function () {
                         console.log("Successful.");
-                    }, function(errorCode, errorString){
+                    }, function (errorCode, errorString) {
                         alert(errorString);
                     });
                 } else {
@@ -142,6 +154,7 @@
             }
         }
     </script>
-	
+
 </body>
+
 </html>
