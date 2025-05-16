@@ -2,6 +2,8 @@
 
 Samples for Dynamic Web TWAIN demonstrating its features. You can find online demos here: <https://demo.dynamsoft.com/web-twain/>
 
+Check out more samples in this repo: <https://github.com/Dynamsoft/web-twain-samples>
+
 ## Scan
 
 - [Remove Blank Page](scan/auto-remove-blank-page.html)
