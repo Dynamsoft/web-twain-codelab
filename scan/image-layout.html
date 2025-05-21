@@ -2,222 +2,222 @@
 <html>
 
 <head>
-	<title>Setting Image Layout Rectangle</title>
-	<link rel="stylesheet" href="../css/global.css" />
-	<link rel="stylesheet" href="../css/scan.css" />
+    <title>Setting Image Layout Rectangle</title>
+    <link rel="stylesheet" href="../css/global.css" />
+    <link rel="stylesheet" href="../css/scan.css" />
 </head>
 
 <body>
-	<div class="ds-div-scanPageHeader">
-		<div class="ds-div-title">Setting Image Layout Rectangle</div>
-		<p>This demo sets the image layout rectangle, which is the boundary of the scanning area being acquired from the
-			data source. This rectangle is defined by its four rectangular vertices. Note that (1) this feature must be
-			supported by the scanner to be successfully implemented, and (2) this demo only supports TWAIN drivers on
-			Windows and MacOS.</p>
-	</div>
-	<div class="ds-div-scanPageDemo">
-		<div class="ds-div-scanPage-column ds-div-scanPage-column0">
-			<div><label for="left">Select Source:</label><select size="1" id="source"></select></div>
-			<div><label for="left">Unit:</label><select size="1" id="unitType" onchange="ChangeUnits();">
-					<option value="0">inches</option>
-					<option value="1">centimeters</option>
-					<option value="2">picas</option>
-					<option value="3">points</option>
-					<option value="4">twips</option>
-					<option value="5" selected>Pixels</option>
-					<option value="6">millimeters</option>
-				</select>
-			</div>
-			<div><label for="left">Left:</label><input type="text" id='left' value='0'></div>
-			<div><label for="top">Top:</label><input type="text" id='top' value='0'></div>
-			<div><label for="right">Right:</label><input type="text" id='right' value='1700'></div>
-			<div><label for="bottom">Bottom:</label><input type="text" id='bottom' value='2200'></div>
-			<input type="button" value="Scan" class="ds-button-bg-black" style="margin-bottom: 20px;"
-				onclick="AcquireImage();" />
-		</div>
-		<div class="ds-div-scanPage-column ds-div-scanPage-column1">
-			<div id="dwtcontrolContainer" style="width: 100%; height: 100%;"></div>
-		</div>
-	</div>
-	<style>
-		.ds-div-scanPage-column0>div {
-			margin: 7px;
-		}
+    <div class="ds-div-scanPageHeader">
+        <div class="ds-div-title">Setting Image Layout Rectangle</div>
+        <p>This demo sets the image layout rectangle, which is the boundary of the scanning area being acquired from the
+            data source. This rectangle is defined by its four rectangular vertices. Note that (1) this feature must be
+            supported by the scanner to be successfully implemented, and (2) this demo only supports TWAIN drivers on
+            Windows and MacOS.</p>
+    </div>
+    <div class="ds-div-scanPageDemo">
+        <div class="ds-div-scanPage-column ds-div-scanPage-column0">
+            <div><label for="left">Select Source:</label><select size="1" id="source"></select></div>
+            <div><label for="left">Unit:</label><select size="1" id="unitType" onchange="ChangeUnits();">
+                    <option value="0">inches</option>
+                    <option value="1">centimeters</option>
+                    <option value="2">picas</option>
+                    <option value="3">points</option>
+                    <option value="4">twips</option>
+                    <option value="5" selected>Pixels</option>
+                    <option value="6">millimeters</option>
+                </select>
+            </div>
+            <div><label for="left">Left:</label><input type="text" id='left' value='0'></div>
+            <div><label for="top">Top:</label><input type="text" id='top' value='0'></div>
+            <div><label for="right">Right:</label><input type="text" id='right' value='1700'></div>
+            <div><label for="bottom">Bottom:</label><input type="text" id='bottom' value='2200'></div>
+            <input type="button" value="Scan" class="ds-button-bg-black" style="margin-bottom: 20px;"
+                onclick="AcquireImage();" />
+        </div>
+        <div class="ds-div-scanPage-column ds-div-scanPage-column1">
+            <div id="dwtcontrolContainer" style="width: 100%; height: 100%;"></div>
+        </div>
+    </div>
+    <style>
+        .ds-div-scanPage-column0>div {
+            margin: 7px;
+        }
 
-		.ds-div-scanPage-column0 label {
-			width: 120px;
-			display: inline-block;
-		}
+        .ds-div-scanPage-column0 label {
+            width: 120px;
+            display: inline-block;
+        }
 
-		input[type="text"] {
-			width: 280px;
-		}
-	</style>
-	<script src="https://cdn.jsdelivr.net/npm/dwt@latest/dist/dynamsoft.webtwain.min.js"></script>
-	<script type="text/javascript">
-		Dynamsoft.DWT.Containers = [{ ContainerId: 'dwtcontrolContainer', Width: '100%', Height: '100%' }];
-		Dynamsoft.DWT.ProductKey = "DLS2eyJvcmdhbml6YXRpb25JRCI6IjIwMDAwMSJ9";
-		Dynamsoft.DWT.ResourcesPath = 'https://cdn.jsdelivr.net/npm/dwt@latest/dist';
+        input[type="text"] {
+            width: 280px;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/dwt@latest/dist/dynamsoft.webtwain.min.js"></script>
+    <script type="text/javascript">
+        Dynamsoft.DWT.Containers = [{ ContainerId: 'dwtcontrolContainer', Width: '100%', Height: '100%' }];
+        Dynamsoft.DWT.ProductKey = "DLS2eyJvcmdhbml6YXRpb25JRCI6IjIwMDAwMSJ9";
+        Dynamsoft.DWT.ResourcesPath = 'https://cdn.jsdelivr.net/npm/dwt@latest/dist';
         Dynamsoft.DWT.ServiceInstallerLocation = 'https://download2.dynamsoft.com/Demo/DWT/Resources/dist/';
-		Dynamsoft.DWT.AutoLoad = true;
+        Dynamsoft.DWT.AutoLoad = true;
 
-		var DWTObject, deviceList, currentUnit = Dynamsoft.DWT.EnumDWT_UnitType.TWUN_PIXELS;
-		Dynamsoft.DWT.RegisterEvent("OnWebTwainReady", function () {
-			DWTObject = Dynamsoft.DWT.GetWebTwain('dwtcontrolContainer'); // Get the Dynamic Web TWAIN object that is embeded in the div with id 'dwtcontrolContainer'
-			if (DWTObject) {
-				deviceList = [];
-				DWTObject.GetDevicesAsync(Dynamsoft.DWT.EnumDWT_DeviceType.TWAINX64SCANNER | Dynamsoft.DWT.EnumDWT_DeviceType.TWAINSCANNER).then(function (devices) {
-					for (var i = 0; i < devices.length; i++) { // Get how many sources are installed in the system
-						document.getElementById('source').options.add(new Option(devices[i].displayName, i)); // Add the sources in a drop-down list
-						deviceList.push(devices[i]);
-					}
-				}).catch(function (exp) {
-					alert(exp.message);
-				});
+        var DWTObject, deviceList, currentUnit = Dynamsoft.DWT.EnumDWT_UnitType.TWUN_PIXELS;
+        Dynamsoft.DWT.RegisterEvent("OnWebTwainReady", function () {
+            DWTObject = Dynamsoft.DWT.GetWebTwain('dwtcontrolContainer'); // Get the Dynamic Web TWAIN object that is embeded in the div with id 'dwtcontrolContainer'
+            if (DWTObject) {
+                deviceList = [];
+                DWTObject.GetDevicesAsync(Dynamsoft.DWT.EnumDWT_DeviceType.TWAINX64SCANNER | Dynamsoft.DWT.EnumDWT_DeviceType.TWAINSCANNER).then(function (devices) {
+                    for (var i = 0; i < devices.length; i++) { // Get how many sources are installed in the system
+                        document.getElementById('source').options.add(new Option(devices[i].displayName, i)); // Add the sources in a drop-down list
+                        deviceList.push(devices[i]);
+                    }
+                }).catch(function (exp) {
+                    alert(exp.message);
+                });
 
-				DWTObject.Viewer.on("pageAreaSelected", function (sImageIndex, rect) {
-					console.log(rect);
+                DWTObject.Viewer.on("pageAreaSelected", function (sImageIndex, rect) {
+                    console.log(rect);
 
-					var ddlUnits = document.getElementById('unitType');
-					document.getElementById('left').value = ConvertUnits(Number(rect[0].x), Dynamsoft.DWT.EnumDWT_UnitType.TWUN_PIXELS, parseInt(ddlUnits.value), 200);
-					document.getElementById('top').value = ConvertUnits(Number(rect[0].y), Dynamsoft.DWT.EnumDWT_UnitType.TWUN_PIXELS, parseInt(ddlUnits.value), 200);
-					document.getElementById('right').value = ConvertUnits(Number(rect[0].x + rect[0].width), Dynamsoft.DWT.EnumDWT_UnitType.TWUN_PIXELS, parseInt(ddlUnits.value), 200);
-					document.getElementById('bottom').value = ConvertUnits(Number(rect[0].y + rect[0].height), Dynamsoft.DWT.EnumDWT_UnitType.TWUN_PIXELS, parseInt(ddlUnits.value), 200);
-				});
-			}
-		});
+                    var ddlUnits = document.getElementById('unitType');
+                    document.getElementById('left').value = ConvertUnits(Number(rect[0].x), Dynamsoft.DWT.EnumDWT_UnitType.TWUN_PIXELS, parseInt(ddlUnits.value), 200);
+                    document.getElementById('top').value = ConvertUnits(Number(rect[0].y), Dynamsoft.DWT.EnumDWT_UnitType.TWUN_PIXELS, parseInt(ddlUnits.value), 200);
+                    document.getElementById('right').value = ConvertUnits(Number(rect[0].x + rect[0].width), Dynamsoft.DWT.EnumDWT_UnitType.TWUN_PIXELS, parseInt(ddlUnits.value), 200);
+                    document.getElementById('bottom').value = ConvertUnits(Number(rect[0].y + rect[0].height), Dynamsoft.DWT.EnumDWT_UnitType.TWUN_PIXELS, parseInt(ddlUnits.value), 200);
+                });
+            }
+        });
 
-		function AcquireImage() {
-			if (DWTObject) {
-				var ddlSource = document.getElementById('source');
-				DWTObject.SelectDeviceAsync(deviceList[ddlSource.selectedIndex]).then(function () {
-					return DWTObject.OpenSourceAsync();
-				}).then(function () {
-					DWTObject.Unit = document.getElementById('unitType').value;
-					DWTObject.SetImageLayout(parseInt(document.getElementById('left').value), parseInt(document.getElementById('top').value),
-						parseInt(document.getElementById('right').value), parseInt(document.getElementById('bottom').value));
-					return DWTObject.AcquireImageAsync({
-						IfShowUI: false,
-						Resolution: 200,
-						IfCloseSourceAfterAcquire: true // Scanner source will be disabled/closed automatically after the scan.
-					});
-				}).catch(function (exp) {
-					console.error(exp);
-					DWTObject.CloseSourceAsync();
-				});
-			}
-		}
+        function AcquireImage() {
+            if (DWTObject) {
+                var ddlSource = document.getElementById('source');
+                DWTObject.SelectDeviceAsync(deviceList[ddlSource.selectedIndex]).then(function () {
+                    return DWTObject.OpenSourceAsync();
+                }).then(function () {
+                    DWTObject.Unit = document.getElementById('unitType').value;
+                    DWTObject.SetImageLayout(parseInt(document.getElementById('left').value), parseInt(document.getElementById('top').value),
+                        parseInt(document.getElementById('right').value), parseInt(document.getElementById('bottom').value));
+                    return DWTObject.AcquireImageAsync({
+                        IfShowUI: false,
+                        Resolution: 200,
+                        IfCloseSourceAfterAcquire: true // Scanner source will be disabled/closed automatically after the scan.
+                    });
+                }).catch(function (exp) {
+                    console.error(exp);
+                    DWTObject.CloseSourceAsync();
+                });
+            }
+        }
 
-		function ChangeUnits() {
-			var left = document.getElementById('left'),
-				top = document.getElementById('top'),
-				right = document.getElementById('right'),
-				bottom = document.getElementById('bottom');
-			var ddlUnits = document.getElementById('unitType');
+        function ChangeUnits() {
+            var left = document.getElementById('left'),
+                top = document.getElementById('top'),
+                right = document.getElementById('right'),
+                bottom = document.getElementById('bottom');
+            var ddlUnits = document.getElementById('unitType');
 
-			left.value = ConvertUnits(Number(left.value), currentUnit, parseInt(ddlUnits.value), 200);
-			top.value = ConvertUnits(Number(top.value), currentUnit, parseInt(ddlUnits.value), 200);
-			right.value = ConvertUnits(Number(right.value), currentUnit, parseInt(ddlUnits.value), 200);
-			bottom.value = ConvertUnits(Number(bottom.value), currentUnit, parseInt(ddlUnits.value), 200);
-			currentUnit = parseInt(ddlUnits.value);
-		}
+            left.value = ConvertUnits(Number(left.value), currentUnit, parseInt(ddlUnits.value), 200);
+            top.value = ConvertUnits(Number(top.value), currentUnit, parseInt(ddlUnits.value), 200);
+            right.value = ConvertUnits(Number(right.value), currentUnit, parseInt(ddlUnits.value), 200);
+            bottom.value = ConvertUnits(Number(bottom.value), currentUnit, parseInt(ddlUnits.value), 200);
+            currentUnit = parseInt(ddlUnits.value);
+        }
 
-		function ConvertUnits(val, fromUnits, toUnits, resolution) {
-			var result = val;	//assume we don't have to convert
+        function ConvertUnits(val, fromUnits, toUnits, resolution) {
+            var result = val;    //assume we don't have to convert
 
-			if (fromUnits != toUnits)	//if we do have to convert
-			{
-				//see what we're converting from, and convert to inches
-				switch (fromUnits) {
-					case Dynamsoft.DWT.EnumDWT_UnitType.TWUN_INCHES:
-						// nothing to do
-						break;
+            if (fromUnits != toUnits)    //if we do have to convert
+            {
+                //see what we're converting from, and convert to inches
+                switch (fromUnits) {
+                    case Dynamsoft.DWT.EnumDWT_UnitType.TWUN_INCHES:
+                        // nothing to do
+                        break;
 
-					case Dynamsoft.DWT.EnumDWT_UnitType.TWUN_CENTIMETERS:
-						result = val / 2.54;
-						break;
+                    case Dynamsoft.DWT.EnumDWT_UnitType.TWUN_CENTIMETERS:
+                        result = val / 2.54;
+                        break;
 
-					case Dynamsoft.DWT.EnumDWT_UnitType.TWUN_MILLIMETERS:
-						result = val / 25.4;
-						break;
+                    case Dynamsoft.DWT.EnumDWT_UnitType.TWUN_MILLIMETERS:
+                        result = val / 25.4;
+                        break;
 
-					case Dynamsoft.DWT.EnumDWT_UnitType.TWUN_PICAS:
-						result = val / 6.0;
-						break;
+                    case Dynamsoft.DWT.EnumDWT_UnitType.TWUN_PICAS:
+                        result = val / 6.0;
+                        break;
 
-					case Dynamsoft.DWT.EnumDWT_UnitType.TWUN_POINTS:
-						result = val / 72.0;
-						break;
+                    case Dynamsoft.DWT.EnumDWT_UnitType.TWUN_POINTS:
+                        result = val / 72.0;
+                        break;
 
-					case Dynamsoft.DWT.EnumDWT_UnitType.TWUN_TWIPS:
-						result = val / 1440.0;
-						break;
+                    case Dynamsoft.DWT.EnumDWT_UnitType.TWUN_TWIPS:
+                        result = val / 1440.0;
+                        break;
 
-					case Dynamsoft.DWT.EnumDWT_UnitType.TWUN_PIXELS:
-						if (resolution != 0) {
-							result = val / resolution;
-						}
-						break;
+                    case Dynamsoft.DWT.EnumDWT_UnitType.TWUN_PIXELS:
+                        if (resolution != 0) {
+                            result = val / resolution;
+                        }
+                        break;
 
-					case Dynamsoft.DWT.EnumDWT_UnitType.TWUN_1000INCHES:
-						result = val / 1000.0;
-						break;
+                    case Dynamsoft.DWT.EnumDWT_UnitType.TWUN_1000INCHES:
+                        result = val / 1000.0;
+                        break;
 
-					default:
-						// problem
-						break;
-				}
+                    default:
+                        // problem
+                        break;
+                }
 
-				// We are now in inches
-				// see what we're converting to, and convert the result to those units
-				switch (toUnits) {
-					case Dynamsoft.DWT.EnumDWT_UnitType.TWUN_INCHES:
-						// nothing to do
-						break;
+                // We are now in inches
+                // see what we're converting to, and convert the result to those units
+                switch (toUnits) {
+                    case Dynamsoft.DWT.EnumDWT_UnitType.TWUN_INCHES:
+                        // nothing to do
+                        break;
 
-					case Dynamsoft.DWT.EnumDWT_UnitType.TWUN_CENTIMETERS:
-						result *= 2.54;
-						break;
+                    case Dynamsoft.DWT.EnumDWT_UnitType.TWUN_CENTIMETERS:
+                        result *= 2.54;
+                        break;
 
-					case Dynamsoft.DWT.EnumDWT_UnitType.TWUN_MILLIMETERS:
-						result *= 25.4;
-						break;
+                    case Dynamsoft.DWT.EnumDWT_UnitType.TWUN_MILLIMETERS:
+                        result *= 25.4;
+                        break;
 
-					case Dynamsoft.DWT.EnumDWT_UnitType.TWUN_PICAS:
-						result *= 6.0;
-						break;
+                    case Dynamsoft.DWT.EnumDWT_UnitType.TWUN_PICAS:
+                        result *= 6.0;
+                        break;
 
-					case Dynamsoft.DWT.EnumDWT_UnitType.TWUN_POINTS:
-						result *= 72.0;
-						break;
+                    case Dynamsoft.DWT.EnumDWT_UnitType.TWUN_POINTS:
+                        result *= 72.0;
+                        break;
 
-					case Dynamsoft.DWT.EnumDWT_UnitType.TWUN_TWIPS:
-						result *= 1440.0;
-						break;
+                    case Dynamsoft.DWT.EnumDWT_UnitType.TWUN_TWIPS:
+                        result *= 1440.0;
+                        break;
 
-					case Dynamsoft.DWT.EnumDWT_UnitType.TWUN_PIXELS:
-						result *= resolution;
-						break;
+                    case Dynamsoft.DWT.EnumDWT_UnitType.TWUN_PIXELS:
+                        result *= resolution;
+                        break;
 
-					case Dynamsoft.DWT.EnumDWT_UnitType.TWUN_1000INCHES:
-						result *= 1000;
-						break;
+                    case Dynamsoft.DWT.EnumDWT_UnitType.TWUN_1000INCHES:
+                        result *= 1000;
+                        break;
 
-					default:
-						// problem
-						break;
-				}
-			}
+                    default:
+                        // problem
+                        break;
+                }
+            }
 
-			let decimalPlaces = result.toString().split('.')[1];
-			if (decimalPlaces && decimalPlaces.length > 2) {
-				return result.toFixed(2);
-			} else {
-				return result;	//return the result
-			}
-		}
-	</script>
-	</script>
+            let decimalPlaces = result.toString().split('.')[1];
+            if (decimalPlaces && decimalPlaces.length > 2) {
+                return result.toFixed(2);
+            } else {
+                return result;    //return the result
+            }
+        }
+    </script>
+    </script>
 
 </body>
 

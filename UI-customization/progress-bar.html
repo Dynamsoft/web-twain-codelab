@@ -2,91 +2,91 @@
 <html>
 
 <head>
-	<title>Progress Bar</title>
-	<link rel="stylesheet" href="../css/global.css" />
-	<link rel="stylesheet" href="../css/scan.css" />
+    <title>Progress Bar</title>
+    <link rel="stylesheet" href="../css/global.css" />
+    <link rel="stylesheet" href="../css/scan.css" />
 </head>
 
 <body>
 
-	<div class="ds-div-scanPageHeader">
-		<div class="ds-div-title">Progress Bar</div>
-	</div>
-	<div class="ds-div-scanPageDemo">
-		<div class="ds-div-scanPage-column ds-div-scanPage-column0">
-			<div><input type="checkbox" id="chkShowLoadingbar" onchange="ShowLoadingBar();" checked><label
-					for="chkShowLoadingbar">Progress Bar</label></div>
-			<input type="button" value="Load" class="ds-button-bg-black" onclick="LoadImage();" />
-			<input type="button" value="Upload" class="ds-button-bg-white" onclick="Upload();" />
-		</div>
-		<div class="ds-div-scanPage-column ds-div-scanPage-column1">
-			<div id="dwtcontrolContainer" style="width: 100%; height: 100%;"></div>
-		</div>
-	</div>
-	<style>
-		.ds-div-download {
-			bottom: 2px;
-		}
-	</style>
-	<script src="https://cdn.jsdelivr.net/npm/dwt@latest/dist/dynamsoft.webtwain.min.js"></script>
-	<script type="text/javascript">
-		Dynamsoft.DWT.Containers = [{ ContainerId: 'dwtcontrolContainer', Width: '100%', Height: '100%' }];
-		Dynamsoft.DWT.ProductKey = "DLS2eyJvcmdhbml6YXRpb25JRCI6IjIwMDAwMSJ9";
-		Dynamsoft.DWT.ResourcesPath = 'https://cdn.jsdelivr.net/npm/dwt@latest/dist';
+    <div class="ds-div-scanPageHeader">
+        <div class="ds-div-title">Progress Bar</div>
+    </div>
+    <div class="ds-div-scanPageDemo">
+        <div class="ds-div-scanPage-column ds-div-scanPage-column0">
+            <div><input type="checkbox" id="chkShowLoadingbar" onchange="ShowLoadingBar();" checked><label
+                    for="chkShowLoadingbar">Progress Bar</label></div>
+            <input type="button" value="Load" class="ds-button-bg-black" onclick="LoadImage();" />
+            <input type="button" value="Upload" class="ds-button-bg-white" onclick="Upload();" />
+        </div>
+        <div class="ds-div-scanPage-column ds-div-scanPage-column1">
+            <div id="dwtcontrolContainer" style="width: 100%; height: 100%;"></div>
+        </div>
+    </div>
+    <style>
+        .ds-div-download {
+            bottom: 2px;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/dwt@latest/dist/dynamsoft.webtwain.min.js"></script>
+    <script type="text/javascript">
+        Dynamsoft.DWT.Containers = [{ ContainerId: 'dwtcontrolContainer', Width: '100%', Height: '100%' }];
+        Dynamsoft.DWT.ProductKey = "DLS2eyJvcmdhbml6YXRpb25JRCI6IjIwMDAwMSJ9";
+        Dynamsoft.DWT.ResourcesPath = 'https://cdn.jsdelivr.net/npm/dwt@latest/dist';
         Dynamsoft.DWT.ServiceInstallerLocation = 'https://download2.dynamsoft.com/Demo/DWT/Resources/dist/';
-		Dynamsoft.DWT.AutoLoad = true;
+        Dynamsoft.DWT.AutoLoad = true;
 
-		var DWTObject;
-		Dynamsoft.DWT.RegisterEvent("OnWebTwainReady", function () {
-			DWTObject = Dynamsoft.DWT.GetWebTwain('dwtcontrolContainer'); // Get the Dynamic Web TWAIN object that is embeded in the div with id 'dwtcontrolContainer'
-			var chkShowLoadingbar = document.getElementById('chkShowLoadingbar');
-			chkShowLoadingbar.checked = true;
-		});
+        var DWTObject;
+        Dynamsoft.DWT.RegisterEvent("OnWebTwainReady", function () {
+            DWTObject = Dynamsoft.DWT.GetWebTwain('dwtcontrolContainer'); // Get the Dynamic Web TWAIN object that is embeded in the div with id 'dwtcontrolContainer'
+            var chkShowLoadingbar = document.getElementById('chkShowLoadingbar');
+            chkShowLoadingbar.checked = true;
+        });
 
-		function ShowLoadingBar() {
-			var chkShowLoadingbar = document.getElementById('chkShowLoadingbar');
-			if (DWTObject) {
-				if (chkShowLoadingbar.checked) {
-					DWTObject.IfShowProgressBar = true;
-				} else {
-					DWTObject.IfShowProgressBar = false;
-				}
-			}
-		}
+        function ShowLoadingBar() {
+            var chkShowLoadingbar = document.getElementById('chkShowLoadingbar');
+            if (DWTObject) {
+                if (chkShowLoadingbar.checked) {
+                    DWTObject.IfShowProgressBar = true;
+                } else {
+                    DWTObject.IfShowProgressBar = false;
+                }
+            }
+        }
 
-		function LoadImage() {
-			if (DWTObject) {
-				DWTObject.LoadImageEx("", -1, function () { }, function (ec, es) { console.log(es); });
-			}
-		}
+        function LoadImage() {
+            if (DWTObject) {
+                DWTObject.LoadImageEx("", -1, function () { }, function (ec, es) { console.log(es); });
+            }
+        }
 
-		function Upload() {
-			if (DWTObject && DWTObject.HowManyImagesInBuffer > 0) {
-				var strUrl = "https://demo.dynamsoft.com/sample-uploads/";
-				var imgAry = [DWTObject.CurrentImageIndexInBuffer];
-				DWTObject.HTTPUpload(
-					strUrl,
-					imgAry,
-					Dynamsoft.DWT.EnumDWT_ImageType.IT_PNG,
-					Dynamsoft.DWT.EnumDWT_UploadDataFormat.Binary,
-					"WebTWAINImage.png",
-					onUploadSuccess,
-					onUploadFailure
-				);
-			} else {
-				alert("There is no image in buffer.");
-			}
-		}
+        function Upload() {
+            if (DWTObject && DWTObject.HowManyImagesInBuffer > 0) {
+                var strUrl = "https://demo.dynamsoft.com/sample-uploads/";
+                var imgAry = [DWTObject.CurrentImageIndexInBuffer];
+                DWTObject.HTTPUpload(
+                    strUrl,
+                    imgAry,
+                    Dynamsoft.DWT.EnumDWT_ImageType.IT_PNG,
+                    Dynamsoft.DWT.EnumDWT_UploadDataFormat.Binary,
+                    "WebTWAINImage.png",
+                    onUploadSuccess,
+                    onUploadFailure
+                );
+            } else {
+                alert("There is no image in buffer.");
+            }
+        }
 
-		function onUploadSuccess() {
-			alert('Upload successful');
-		}
+        function onUploadSuccess() {
+            alert('Upload successful');
+        }
 
-		function onUploadFailure(errorCode, errorString, sHttpResponse) {
-			alert(sHttpResponse.length > 0 ? sHttpResponse : errorString);
-		}
+        function onUploadFailure(errorCode, errorString, sHttpResponse) {
+            alert(sHttpResponse.length > 0 ? sHttpResponse : errorString);
+        }
 
-	</script>
+    </script>
 
 </body>
 

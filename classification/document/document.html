@@ -2,1140 +2,1140 @@
 <html>
 
 <head>
-	<title>Organizing Scanned Images by Documents</title>
-	<link rel="stylesheet" href="../../css/global.css" />
-	<link rel="stylesheet" href="../../css/scan.css" />
+    <title>Organizing Scanned Images by Documents</title>
+    <link rel="stylesheet" href="../../css/global.css" />
+    <link rel="stylesheet" href="../../css/scan.css" />
 </head>
 
 <body>
-	<div class="contextmenu" id="context">
-		<ul>
-			<div id="divDocumentSetting">
-				<li><a onclick="OnRenameDocument();">Rename</a></li>
-				<li style="border-bottom: 1px solid #999;"><a onclick="OnDeleteDocument();">Delete</a> </li>
-			</div>
-			<li><a onclick="OnSaveImages();">Save Images</a></li>
-			<li><a onclick="OnUploadImages();">Upload Images</a></li>
-			<li><a onclick="OnCopyDocument_clicked();">Copy Images</a></li>
-			<li><a onclick="OnMoveDocument_clicked();">Move Images</a></li>
-		</ul>
-	</div>
-	<div class="ds-div-scanPageHeader">
-		<div class="ds-div-title">Organizing Scanned Images by Documents</div>
-	</div>
-	<div class="ds-div-scanPageDemo-button">
-		<input type="button" value="Scan" class="ds-button-bg-black btn" onclick="AcquireImage();" />
-		<input type="button" value="Open a local file" class="ds-button-bg-white btn" onclick="LoadImages();" />
-		<div id="divErrorMessage"></div>
-	</div>
-	<div class="ds-div-scanPageDemo">
-		<div class="ds-div-scanPage-column ds-div-scanPage-column0">
-			<div class="container">
-				<div style="display: block; position: absolute;" class="container">
-					<div class="leftContainer">
-						<div id="documentContainer" class="DWTcontainer">
-							<div id="extra-documents-div-id" class="section" onclick="ConfirmDocument();">
-								<div id="div-extra-documents">
-									<div class="div-documents-item" style="display: none;"
-										onclick="SelectDocument(this, false);" oncontextmenu="ShowMenu(this);">
-										<span class="span-document w90p" style="display: none;">DocumentName</span>
-										<input type="text" class="input-document w90p" placeholder="DocumentName"
-											onclick="ModifyDocument();" onBlur="ConfirmDocument();" />
-										<div class="divEdit" style="display:none;">
-											<ul class="operateGrp">
-												<li><img class="menuIcon" src="Images/upload.png" title="Upload Images"
-														alt="Upload Images" id="Img1" onclick="OnUploadImages();" />
-												</li>
-												<li><img class="menuIcon" src="Images/save.png" title="Save Images"
-														alt="Save Images" id="Img2" onclick="OnSaveImages();" /></li>
-												<li><img class="menuIcon" src="Images/delete.png" title="Delete"
-														alt="Delete" id="DW_btnDelete" onclick="OnDeleteDocument();" />
-												</li>
-												<li><img class="menuIcon" src="Images/rename.png" title="Rename"
-														alt="Rename" id="DW_btnRename"
-														onclick="OnRenameDocument_click();" /></li>
-												<li><img class="menuIcon" src="Images/copy.png" title="Copy" alt="Copy"
-														id="DW_btnCopy" onclick="OnCopyDocument_clicked();" /></li>
-												<li><img class="menuIcon" src="Images/move.png" title="Move" alt="Move"
-														id="DW_btnMove" onclick="OnMoveDocument_clicked();" /></li>
-											</ul>
-										</div>
-									</div>
-								</div>
-								<div>
-									<div type="text" class="addBtn" onclick="AddDocuments()">&plus;</div>
-									<div class="processcontainer" id="processcontainer" style="display:none">
-										<div id="processbar" style="width:0%;"></div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div id="lblUploadedFiles"> Uploaded Files</div>
-						<div class="DWTcontainer_upload">
-							<table id='div-uploadedFile'>
-							</table>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="ds-div-scanPage-column ds-div-scanPage-column1">
-			<div id="dwtcontrolContainer" style="width:100%;height:100%;"></div>
-		</div>
-		<div class="ds-div-scanPage-column ds-div-scanPage-column2">
-			<div id="dwtcontrolContainerLargeViewer" style="width:100%;height:100%;"></div>
-		</div>
-	</div>
-	<style>
-		.span-document {
-			margin: 5px 0 5px 20px;
-			cursor: default;
-		}
+    <div class="contextmenu" id="context">
+        <ul>
+            <div id="divDocumentSetting">
+                <li><a onclick="OnRenameDocument();">Rename</a></li>
+                <li style="border-bottom: 1px solid #999;"><a onclick="OnDeleteDocument();">Delete</a> </li>
+            </div>
+            <li><a onclick="OnSaveImages();">Save Images</a></li>
+            <li><a onclick="OnUploadImages();">Upload Images</a></li>
+            <li><a onclick="OnCopyDocument_clicked();">Copy Images</a></li>
+            <li><a onclick="OnMoveDocument_clicked();">Move Images</a></li>
+        </ul>
+    </div>
+    <div class="ds-div-scanPageHeader">
+        <div class="ds-div-title">Organizing Scanned Images by Documents</div>
+    </div>
+    <div class="ds-div-scanPageDemo-button">
+        <input type="button" value="Scan" class="ds-button-bg-black btn" onclick="AcquireImage();" />
+        <input type="button" value="Open a local file" class="ds-button-bg-white btn" onclick="LoadImages();" />
+        <div id="divErrorMessage"></div>
+    </div>
+    <div class="ds-div-scanPageDemo">
+        <div class="ds-div-scanPage-column ds-div-scanPage-column0">
+            <div class="container">
+                <div style="display: block; position: absolute;" class="container">
+                    <div class="leftContainer">
+                        <div id="documentContainer" class="DWTcontainer">
+                            <div id="extra-documents-div-id" class="section" onclick="ConfirmDocument();">
+                                <div id="div-extra-documents">
+                                    <div class="div-documents-item" style="display: none;"
+                                        onclick="SelectDocument(this, false);" oncontextmenu="ShowMenu(this);">
+                                        <span class="span-document w90p" style="display: none;">DocumentName</span>
+                                        <input type="text" class="input-document w90p" placeholder="DocumentName"
+                                            onclick="ModifyDocument();" onBlur="ConfirmDocument();" />
+                                        <div class="divEdit" style="display:none;">
+                                            <ul class="operateGrp">
+                                                <li><img class="menuIcon" src="Images/upload.png" title="Upload Images"
+                                                        alt="Upload Images" id="Img1" onclick="OnUploadImages();" />
+                                                </li>
+                                                <li><img class="menuIcon" src="Images/save.png" title="Save Images"
+                                                        alt="Save Images" id="Img2" onclick="OnSaveImages();" /></li>
+                                                <li><img class="menuIcon" src="Images/delete.png" title="Delete"
+                                                        alt="Delete" id="DW_btnDelete" onclick="OnDeleteDocument();" />
+                                                </li>
+                                                <li><img class="menuIcon" src="Images/rename.png" title="Rename"
+                                                        alt="Rename" id="DW_btnRename"
+                                                        onclick="OnRenameDocument_click();" /></li>
+                                                <li><img class="menuIcon" src="Images/copy.png" title="Copy" alt="Copy"
+                                                        id="DW_btnCopy" onclick="OnCopyDocument_clicked();" /></li>
+                                                <li><img class="menuIcon" src="Images/move.png" title="Move" alt="Move"
+                                                        id="DW_btnMove" onclick="OnMoveDocument_clicked();" /></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div type="text" class="addBtn" onclick="AddDocuments()">&plus;</div>
+                                    <div class="processcontainer" id="processcontainer" style="display:none">
+                                        <div id="processbar" style="width:0%;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="lblUploadedFiles"> Uploaded Files</div>
+                        <div class="DWTcontainer_upload">
+                            <table id='div-uploadedFile'>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ds-div-scanPage-column ds-div-scanPage-column1">
+            <div id="dwtcontrolContainer" style="width:100%;height:100%;"></div>
+        </div>
+        <div class="ds-div-scanPage-column ds-div-scanPage-column2">
+            <div id="dwtcontrolContainerLargeViewer" style="width:100%;height:100%;"></div>
+        </div>
+    </div>
+    <style>
+        .span-document {
+            margin: 5px 0 5px 20px;
+            cursor: default;
+        }
 
-		.input-document {
-			margin-left: 5%;
-		}
+        .input-document {
+            margin-left: 5%;
+        }
 
-		.contextmenu {
-			width: 180px;
-			border: 1px solid #999;
-			box-shadow: 3px 3px 3px #ccc;
-			background-color: #fff;
-			position: absolute;
-			top: 10px;
-			left: 10px;
-			display: none;
-			z-index: 9999;
-		}
+        .contextmenu {
+            width: 180px;
+            border: 1px solid #999;
+            box-shadow: 3px 3px 3px #ccc;
+            background-color: #fff;
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            display: none;
+            z-index: 9999;
+        }
 
-		.contextmenu li {
-			height: 40px;
-			line-height: 40px;
-		}
+        .contextmenu li {
+            height: 40px;
+            line-height: 40px;
+        }
 
-		.contextmenu li a {
-			display: block;
-			padding: 0 25px;
-			cursor: default;
-		}
+        .contextmenu li a {
+            display: block;
+            padding: 0 25px;
+            cursor: default;
+        }
 
-		.contextmenu li a:hover {
-			background-color: #ccc;
-			font-weight: bold;
-			color: #fff;
-		}
+        .contextmenu li a:hover {
+            background-color: #ccc;
+            font-weight: bold;
+            color: #fff;
+        }
 
-		.tc {
-			text-align: center;
-		}
+        .tc {
+            text-align: center;
+        }
 
-		#tipTop {
-			position: relative;
-			height: auto;
-			min-height: 60px;
-			font-size: 16px;
-			line-height: 60px;
-			background: #D8EDF8;
-			color: #3a87ad;
-			text-align: center;
-		}
+        #tipTop {
+            position: relative;
+            height: auto;
+            min-height: 60px;
+            font-size: 16px;
+            line-height: 60px;
+            background: #D8EDF8;
+            color: #3a87ad;
+            text-align: center;
+        }
 
-		#tipTop .close {
-			position: absolute;
-			right: 20px;
-			top: 20px;
-			width: 20px;
-			height: 20px;
-			line-height: 20px;
-			cursor: pointer;
-			font-size: 24px;
-			font-weight: bold;
-		}
+        #tipTop .close {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            width: 20px;
+            height: 20px;
+            line-height: 20px;
+            cursor: pointer;
+            font-size: 24px;
+            font-weight: bold;
+        }
 
-		.divEdit {
-			float: right;
-			width: 126px;
-			height: 20px;
-			margin-top: 5px;
-		}
+        .divEdit {
+            float: right;
+            width: 126px;
+            height: 20px;
+            margin-top: 5px;
+        }
 
-		.menuIcon {
-			width: 16px;
-			height: 16px;
-			float: right;
-			margin-right: 5px;
-		}
+        .menuIcon {
+            width: 16px;
+            height: 16px;
+            float: right;
+            margin-right: 5px;
+        }
 
-		.DWTcontainer,
-		.DWTcontainer_upload {
-			position: relative;
-			overflow: auto;
-			border: 1px solid #ccc;
-			color: #606060;
-		}
+        .DWTcontainer,
+        .DWTcontainer_upload {
+            position: relative;
+            overflow: auto;
+            border: 1px solid #ccc;
+            color: #606060;
+        }
 
-		.processcontainer {
-			width: 220px;
-			border: 1px solid #bbb;
-			height: 15px;
-			margin-top: 10px;
-			margin-left: 15px;
-		}
+        .processcontainer {
+            width: 220px;
+            border: 1px solid #bbb;
+            height: 15px;
+            margin-top: 10px;
+            margin-left: 15px;
+        }
 
-		#processbar {
-			background: #8ab4f8;
-			float: left;
-			height: 100%;
-			text-align: center;
-			line-height: 150%;
-		}
+        #processbar {
+            background: #8ab4f8;
+            float: left;
+            height: 100%;
+            text-align: center;
+            line-height: 150%;
+        }
 
-		.w80p {
-			width: 80%;
-		}
+        .w80p {
+            width: 80%;
+        }
 
-		.w90p {
-			width: 90%;
-		}
+        .w90p {
+            width: 90%;
+        }
 
-		table {
-			border-collapse: collapse;
-			border-spacing: 0;
-			width: 100%;
-			display: table
-		}
+        table {
+            border-collapse: collapse;
+            border-spacing: 0;
+            width: 100%;
+            display: table
+        }
 
-		table,
-		th,
-		td {
-			border: none
-		}
+        table,
+        th,
+        td {
+            border: none
+        }
 
-		.tc {
-			text-align: center;
-		}
+        .tc {
+            text-align: center;
+        }
 
-		.ds-div-copy-document,
-		.ds-div-move-document {
-			height: 250px;
-		}
+        .ds-div-copy-document,
+        .ds-div-move-document {
+            height: 250px;
+        }
 
-		.ds-div-copy-document input[type="text"],
-		.ds-div-move-document input[type="text"] {
-			height: 30px;
-			width: 300px;
-		}
+        .ds-div-copy-document input[type="text"],
+        .ds-div-move-document input[type="text"] {
+            height: 30px;
+            width: 300px;
+        }
 
-		.ds-div-copy-document select,
-		.ds-div-move-document select {
-			height: 30px;
-			width: 300px;
-		}
+        .ds-div-copy-document select,
+        .ds-div-move-document select {
+            height: 30px;
+            width: 300px;
+        }
 
-		.ds-div-copy-document span,
-		.ds-div-move-document span {
-			width: 100px;
-			display: inline-block;
-		}
+        .ds-div-copy-document span,
+        .ds-div-move-document span {
+            width: 100px;
+            display: inline-block;
+        }
 
-		.ds-div-copy-document .ds-button,
-		.ds-div-move-document .ds-button {
-			margin: 10px 0 0 120px;
-		}
+        .ds-div-copy-document .ds-button,
+        .ds-div-move-document .ds-button {
+            margin: 10px 0 0 120px;
+        }
 
-		.ds-div-copy-document>div,
-		.ds-div-move-document>div {
-			margin: 0 0 10px 0;
-			height: 30px;
-			line-height: 30px;
-		}
+        .ds-div-copy-document>div,
+        .ds-div-move-document>div {
+            margin: 0 0 10px 0;
+            height: 30px;
+            line-height: 30px;
+        }
 
-		#txtMoveIndecies,
-		#txtCopyIndecies {
-			width: 209px;
-		}
+        #txtMoveIndecies,
+        #txtCopyIndecies {
+            width: 209px;
+        }
 
-		#divErrorMessage {
-			color: red;
-		}
+        #divErrorMessage {
+            color: red;
+        }
 
-		.div-documents-item {
-			padding: 3px;
-		}
+        .div-documents-item {
+            padding: 3px;
+        }
 
-		#extra-documents-div-id .addBtn {
-			border: 1px dashed #999;
-			color: #999;
-			font-size: 36px;
-			text-align: center;
-			cursor: pointer;
-			padding: 3px;
-			float: left;
-		}
+        #extra-documents-div-id .addBtn {
+            border: 1px dashed #999;
+            color: #999;
+            font-size: 36px;
+            text-align: center;
+            cursor: pointer;
+            padding: 3px;
+            float: left;
+        }
 
-		.ds-div-scanPage-column {
-			padding: 0;
-			border: 0;
-			background-color: #FFF;
-		}
+        .ds-div-scanPage-column {
+            padding: 0;
+            border: 0;
+            background-color: #FFF;
+        }
 
-		.ds-div-title {
-			margin: 0;
-			padding: 0;
-		}
+        .ds-div-title {
+            margin: 0;
+            padding: 0;
+        }
 
-		.ds-div-scanPageDemo-button {
-			padding: 0;
-			border: 0;
-		}
+        .ds-div-scanPageDemo-button {
+            padding: 0;
+            border: 0;
+        }
 
-		.ds-div-scanPageHeader {
-			padding: 10px 0;
-		}
+        .ds-div-scanPageHeader {
+            padding: 10px 0;
+        }
 
-		.btn {
-			padding-top: 0;
-			padding-bottom: 0;
-			height: 35px;
-		}
+        .btn {
+            padding-top: 0;
+            padding-bottom: 0;
+            height: 35px;
+        }
 
-		.ds-button-bg-black,
-		.ds-button-bg-black-thin,
-		.ds-button-bg-white,
-		.ds-button-bg-white-thin {
-			margin: 0;
-		}
+        .ds-button-bg-black,
+        .ds-button-bg-black-thin,
+        .ds-button-bg-white,
+        .ds-button-bg-white-thin {
+            margin: 0;
+        }
 
-		.ds-div-scanPageTry {
-			margin: 2px auto;
-			padding: 0;
-			height: 105px;
-		}
+        .ds-div-scanPageTry {
+            margin: 2px auto;
+            padding: 0;
+            height: 105px;
+        }
 
-		.ds-div-scanPageTry h3 {
-			line-height: 20px;
-			padding: 0;
-			margin: 7px 0 0 0;
-		}
+        .ds-div-scanPageTry h3 {
+            line-height: 20px;
+            padding: 0;
+            margin: 7px 0 0 0;
+        }
 
-		.ds-div-scanPageTry div {
-			line-height: 20px;
-		}
+        .ds-div-scanPageTry div {
+            line-height: 20px;
+        }
 
-		.ds-div-download {
-			bottom: 2px;
-		}
+        .ds-div-download {
+            bottom: 2px;
+        }
 
-		#lblUploadedFiles {
-			padding: 5px 0;
-			line-height: 20px;
-		}
+        #lblUploadedFiles {
+            padding: 5px 0;
+            line-height: 20px;
+        }
 
-		.ds-div-download {
-			bottom: 2px;
-		}
+        .ds-div-download {
+            bottom: 2px;
+        }
 
-		.ds-div-scanPageAPI,
-		.ds-div-scanPageHeader,
-		.ds-div-scanPageDemo,
-		.ds-div-scanPageDemo-button,
-		.ds-div-scanPageTry {
-			min-width: 1460px;
-			width: 1460px;
-		}
+        .ds-div-scanPageAPI,
+        .ds-div-scanPageHeader,
+        .ds-div-scanPageDemo,
+        .ds-div-scanPageDemo-button,
+        .ds-div-scanPageTry {
+            min-width: 1460px;
+            width: 1460px;
+        }
 
-		.ds-div-scanPage-column0 {
-			width: 340px;
-		}
+        .ds-div-scanPage-column0 {
+            width: 340px;
+        }
 
-		.ds-div-scanPage-column1 {
-			width: 200px;
-		}
+        .ds-div-scanPage-column1 {
+            width: 200px;
+        }
 
-		.ds-div-scanPage-column2 {
-			width: calc(100% - 540px);
-		}
+        .ds-div-scanPage-column2 {
+            width: calc(100% - 540px);
+        }
 
-		.DWTcontainer,
-		.DWTcontainer_upload {
-			width: 335px;
-			font-size: 12px;
-			line-height: 18px;
-		}
+        .DWTcontainer,
+        .DWTcontainer_upload {
+            width: 335px;
+            font-size: 12px;
+            line-height: 18px;
+        }
 
-		.DWTcontainer {
-			height: 285px;
-		}
+        .DWTcontainer {
+            height: 285px;
+        }
 
-		.DWTcontainer_upload {
-			height: 330px;
-		}
+        .DWTcontainer_upload {
+            height: 330px;
+        }
 
-		.ds-div-scanPageDemo {
-			height: 645px;
-			min-height: 645px;
-		}
+        .ds-div-scanPageDemo {
+            height: 645px;
+            min-height: 645px;
+        }
 
-		#extra-documents-div-id .addBtn {
-			width: 310px;
-			margin: 5px 0 5px 12px;
-		}
+        #extra-documents-div-id .addBtn {
+            width: 310px;
+            margin: 5px 0 5px 12px;
+        }
 
-		.ds-div-scanPage-column0 span {
-			width: 105px;
-		}
+        .ds-div-scanPage-column0 span {
+            width: 105px;
+        }
 
-		#div-extra-documents {
-			max-height: 240px;
-		}
-	</style>
-	<script src="https://cdn.jsdelivr.net/npm/dwt@latest/dist/dynamsoft.webtwain.min.js"></script>
-	<script type="text/javascript">
-		Dynamsoft.DWT.Containers = [{ ContainerId: 'dwtcontrolContainer', Width: '100%', Height: '100%' }];
-		Dynamsoft.DWT.ProductKey = "DLS2eyJvcmdhbml6YXRpb25JRCI6IjIwMDAwMSJ9";
-		Dynamsoft.DWT.ResourcesPath = 'https://cdn.jsdelivr.net/npm/dwt@latest/dist';
+        #div-extra-documents {
+            max-height: 240px;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/dwt@latest/dist/dynamsoft.webtwain.min.js"></script>
+    <script type="text/javascript">
+        Dynamsoft.DWT.Containers = [{ ContainerId: 'dwtcontrolContainer', Width: '100%', Height: '100%' }];
+        Dynamsoft.DWT.ProductKey = "DLS2eyJvcmdhbml6YXRpb25JRCI6IjIwMDAwMSJ9";
+        Dynamsoft.DWT.ResourcesPath = 'https://cdn.jsdelivr.net/npm/dwt@latest/dist';
         Dynamsoft.DWT.ServiceInstallerLocation = 'https://download2.dynamsoft.com/Demo/DWT/Resources/dist/';
-		Dynamsoft.DWT.AutoLoad = true;
-
-		var showOverflowYCount = 7;
-		if (screen.width > 1281) { //1440
-			showOverflowYCount = 7;
-		} else {  //1028
-			showOverflowYCount = 5;
-		}
-		var DWTObject, extrDocumentsCount = 0, blankField = "", bOnAddDocument = false, bOnModifyDocument = false, bShowMenu = false, currentDocument,
-			CurrentPathName = unescape(location.pathname),
-			CurrentPath = CurrentPathName.substring(0, CurrentPathName.lastIndexOf("/") + 1);
-
-		if (screen.width > 2560) {
-			showOverflowYCount = 15;
-		}
-
-		Dynamsoft.DWT.RegisterEvent("OnWebTwainReady", function () {
-			blankField = document.getElementsByClassName('div-documents-item')[0].cloneNode(true);
-			DWTObject = Dynamsoft.DWT.GetWebTwain('dwtcontrolContainer'); // Get the Dynamic Web TWAIN object that is embeded in the div with id 'dwtcontrolContainer'
-			if (DWTObject) {
-				if (location.protocol == 'file:' && !Dynamsoft.navInfoSync.bWin) {
-					alert('The project requires an HTTP server environment to enable uploading.');
-					return;
-				}
-
-				DWTObject.Viewer.cursor = "default";
-				Dynamsoft.DWT.CustomizableDisplayInfo.buttons.visibility.close = false;
-
-				Dynamsoft.FileUploader.Init('', function (obj) { dsUploadManager = obj }, function () { });
-
-				var imageEditor = DWTObject.Viewer.createImageEditor({ element: document.getElementById("dwtcontrolContainerLargeViewer"), width: '100%', height: '100%', buttons: { visibility: { close: false } } });
-				imageEditor.show();
-				DWTObject.Viewer.setViewMode(1, 4); // Set the view mode to 1 by 4
-
-				AddDocumentsInner("Web-TWAIN");
-				AddDocumentsInner("Barcode-Reader");
-				AddDocumentsInner("Document-Viewer");
-
-				DWTObject.CreateDocument("Web-TWAIN");
-				DWTObject.OpenDocument("Web-TWAIN");
-
-				DWTObject.IfSSL = Dynamsoft.Lib.detect.ssl;
-				var _strPort = location.port == "" ? 80 : location.port;
-				if (Dynamsoft.Lib.detect.ssl == true)
-					_strPort = location.port == "" ? 443 : location.port;
-				DWTObject.HTTPPort = _strPort;
-
-				if (location.protocol == 'file:') {
-					var loadPath = CurrentPath.substring(1, CurrentPath.length);
-					DWTObject.LoadImageEx(loadPath + "Images/Images1.pdf", Dynamsoft.DWT.EnumDWT_ImageType.IT_PDF, function () {
-
-						DWTObject.CreateDocument("Barcode-Reader");
-						DWTObject.OpenDocument("Barcode-Reader");
-
-						DWTObject.LoadImageEx(loadPath + "Images/Images2.pdf", Dynamsoft.DWT.EnumDWT_ImageType.IT_PDF, function () {
-
-							DWTObject.CreateDocument("Document-Viewer");
-							DWTObject.OpenDocument("Document-Viewer");
-
-							DWTObject.LoadImageEx(loadPath + "Images/Images3.pdf", Dynamsoft.DWT.EnumDWT_ImageType.IT_PDF, function () {
-								SetSelectDocument(document.getElementsByClassName('div-documents-item')[0]);
-							},
-								function () {
-									console.log('failed to download the sample image!');
-								}
-							);
-						},
-							function () {
-								console.log('failed to download the sample image!');
-							}
-						);
-					},
-						function () {
-							console.log('failed to download the sample image!');
-						}
-					);
-				} else {
-					DWTObject.HTTPDownload(location.hostname, CurrentPath + "Images/Images1.pdf", function () {
-
-						DWTObject.CreateDocument("Barcode-Reader");
-						DWTObject.OpenDocument("Barcode-Reader");
-
-						DWTObject.HTTPDownload(location.hostname, CurrentPath + "Images/Images2.pdf", function () {
-
-							DWTObject.CreateDocument("Document-Viewer");
-							DWTObject.OpenDocument("Document-Viewer");
-
-							DWTObject.HTTPDownload(location.hostname, CurrentPath + "Images/Images3.pdf", function () {
-								SetSelectDocument(document.getElementsByClassName('div-documents-item')[0]);
-							},
-								function () {
-									console.log('failed to download the sample image!');
-								}
-							);
-						},
-							function () {
-								console.log('failed to download the sample image!');
-							}
-						);
-					},
-						function () {
-							console.log('failed to download the sample image!');
-						}
-					);
-				}
-			}
-		});
-
-		function AcquireImage() {
-			if (DWTObject) {
-				DWTObject.SelectSourceAsync().then(function () {
-					return DWTObject.AcquireImageAsync({
-						IfCloseSourceAfterAcquire: true // Scanner source will be closed automatically after the scan.
-					});
-				}).catch(function (exp) {
-					alert(exp.message);
-				});
-			}
-		}
-
-		function LoadImages() {
-			if (DWTObject) {
-				if (DWTObject.Addon && DWTObject.Addon.PDF) {
-					DWTObject.Addon.PDF.SetReaderOptions({
-						convertMode: Dynamsoft.DWT.EnumDWT_ConvertMode.CM_RENDERALL,
-						renderOptions: {
-							resolution: 300
-						}
-					});
-				}
-				DWTObject.LoadImageEx('', 5,
-					function () {
-					},
-					function (errorCode, errorString) {
-						alert('Load Image:' + errorString);
-					}
-				);
-			}
-		}
-
-
-		function AddDocuments() {
-			if (extrDocumentsCount > 0)
-				if (ConfirmDocumentInner() == false)
-					return;
-
-			var addDocument;
-			extrDocumentsCount++;
-			var index = extrDocumentsCount - 1;
-			if (extrDocumentsCount == showOverflowYCount) {
-				document.getElementById('div-extra-documents').style.overflowY = 'scroll';
-			}
-
-			var addDocumentElement;
-			if (document.getElementsByClassName('div-documents-item')[0].style.display == "none") {
-				document.getElementsByClassName('div-documents-item')[0].style.display = '';
-				addDocument = document.getElementsByClassName('div-documents-item')[0];
-			}
-			else {
-				addDocumentElement = blankField;
-				document.getElementById('div-extra-documents').appendChild(blankField);
-				if (document.getElementsByClassName('div-documents-item')[index].style.display == "none")
-					document.getElementsByClassName('div-documents-item')[index].style.display = '';
-				addDocument = document.getElementsByClassName('div-documents-item')[index];
-				blankField = document.getElementsByClassName('div-documents-item')[index].cloneNode(true);
-			}
-			var spanDocument = document.getElementsByClassName('span-document')[index];
-			spanDocument.style.display = 'none';
-			var inputDocument = document.getElementsByClassName('input-document')[index];
-			inputDocument.style.display = '';
-			var divEdit = document.getElementsByClassName('divEdit')[index];
-			divEdit.style.display = 'none';
-
-			bOnAddDocument = true;
-			SelectDocument(addDocument, true);
-			if (addDocumentElement && addDocumentElement.children[1])
-				addDocumentElement.children[1].focus();
-
-		}
-
-		function AddDocumentsInner(value) {
-			extrDocumentsCount++;
-			var index = extrDocumentsCount - 1;
-
-			if (document.getElementsByClassName('div-documents-item')[0].style.display == "none") {
-				document.getElementsByClassName('div-documents-item')[0].style.display = '';
-			}
-			else {
-				document.getElementById('div-extra-documents').appendChild(blankField);
-				if (document.getElementsByClassName('div-documents-item')[index].style.display == "none")
-					document.getElementsByClassName('div-documents-item')[index].style.display = '';
-				blankField = document.getElementsByClassName('div-documents-item')[index].cloneNode(true);
-			}
-			var spanDocument = document.getElementsByClassName('span-document')[index];
-			spanDocument.style.display = '';
-			spanDocument.innerHTML = value;
-			var inputDocument = document.getElementsByClassName('input-document')[index];
-			inputDocument.style.display = 'none';
-			inputDocument.value = value;
-			var divEdit = document.getElementsByClassName('divEdit')[index];
-			divEdit.style.display = 'none';
-		}
-
-		function ConfirmDocument() {
-			if (bOnModifyDocument) {
-				bOnModifyDocument = false;
-				return;
-			}
-
-			if (bOnAddDocument) {
-				bOnAddDocument = false;
-				return;
-			}
-
-			ConfirmDocumentInner();
-		}
-
-		function ConfirmDocumentInner() {
-			ShowErrorMessage("");
-			if (currentDocument) {
-				var spanDocument = currentDocument.children[0];
-				var inputDocument = currentDocument.children[1];
-
-				if (spanDocument.style.display == '')
-					return true;
-
-				var oldDocumentValue = spanDocument.innerHTML;
-				var documentValue = inputDocument.value;
-				if (documentValue == "")
-					documentValue = "DocumentName";
-
-				var bFindSelf = false;
-				for (var i = 0; i < extrDocumentsCount; i++) {
-					var documentValueTemp = document.getElementsByClassName('div-documents-item')[i].children[0].innerHTML;
-
-					if (((bFindSelf == false && documentValueTemp != spanDocument.innerHTML) || bFindSelf == true) && documentValueTemp == documentValue) {
-						//alert("The name already exists, please change it to another name!");
-						ShowErrorMessage("Error: The name already exists, please change it to another name!");
-						return false;
-					}
-
-					if (documentValueTemp == spanDocument.innerHTML)
-						bFindSelf = true;
-
-				}
-
-				spanDocument.style.display = '';
-
-				var documentShowValue = documentValue;
-				if (documentValue.length >= 15)
-					documentShowValue = documentValue.substring(0, 7) + "......" + documentValue.substring(documentValue.length - 3, documentValue.length);
-				spanDocument.innerHTML = documentShowValue;
-				inputDocument.style.display = 'none';
-
-				var divEdit = currentDocument.children[2];
-				divEdit.style.display = '';
-
-				if (oldDocumentValue == documentValue)
-					return;
-
-				DWTObject.RenameDocument(oldDocumentValue, documentValue);
-
-				DWTObject.OpenDocument(documentValue);
-			}
-
-			return true;
-		}
-
-		function ModifyDocument() {
-			bOnModifyDocument = true;
-		}
-
-		function SelectDocument(obj, bOnlySelectDocument) {
-			if (obj == currentDocument)
-				return;
-			if (!bOnlySelectDocument) {
-				if (ConfirmDocumentInner() == false)
-					return;
-			}
-
-			for (var i = 0; i < extrDocumentsCount; i++) {
-				document.getElementsByClassName('div-documents-item')[i].style.background = "";
-				document.getElementsByClassName('div-documents-item')[i].children[2].style.display = "none";
-			}
-
-			SetSelectDocument(obj);
-		}
-
-		function SetSelectDocument(obj) {
-			currentDocument = obj;
-			if (obj) {
-				obj.style.background = "#e7f2fd";
-
-				var value = currentDocument.children[0].innerHTML;
-				if (obj.children[1].style.display == "none")
-					obj.children[2].style.display = "";
-				if (!DWTObject.OpenDocument(value)) {
-					if (DWTObject.ErrorCode == -2540) {
-						DWTObject.CreateDocument(value);
-						DWTObject.OpenDocument(value);
-					}
-				}
-				DWTObject.CurrentImageIndexInBuffer = 0;
-			}
-			else {
-				DWTObject.CurrentImageIndexInBuffer = 0;
-			}
-		}
-
-		function OnRenameDocument() {
-			IfShowContext(false);
-			currentDocument.children[0].style.display = 'none';
-			currentDocument.children[1].style.display = '';
-			currentDocument.children[1].value = currentDocument.children[0].innerHTML;
-			currentDocument.children[1].focus();
-			currentDocument.children[2].style.display = 'none';
-		}
-
-		function OnRenameDocument_click() {
-			ModifyDocument();
-			OnRenameDocument();
-		}
-
-
-		function OnDeleteDocument() {
-			IfShowContext(false);
-			if (confirm("Are you sure you want to delete this document?")) {
-				if (currentDocument && currentDocument.children[0] && currentDocument.children[0].innerHTML) {
-					var documentName = currentDocument.children[0].innerHTML;
-					if (documentName.length > 0) {
-						DWTObject.RemoveDocument(documentName);
-					}
-				}
-
-				if (document.getElementsByClassName('div-documents-item').length == 1) {
-					document.getElementsByClassName('div-documents-item')[0].style.display = 'none';
-					currentDocument.children[0].innerHTML = "DocumentName";
-					currentDocument.children[0].style.display = 'none';
-					currentDocument.children[1].value = "";
-					currentDocument.children[1].style.display = '';
-					currentDocument.children[2].style.display = 'none';
-					currentDocument = "";
-					SetSelectDocument("");
-				}
-				else {
-					currentDocument.remove();
-					SetSelectDocument(document.getElementsByClassName('div-documents-item')[0]);
-				}
-
-				extrDocumentsCount--;
-
-				if (extrDocumentsCount < showOverflowYCount) {
-					document.getElementById('div-extra-documents').style.overflowY = '';
-				}
-			}
-		}
-
-		function OnSaveImages() {
-			if (DWTObject.HowManyImagesInBuffer == 0) {
-				alert("There is no image in buffer.");
-				return;
-			}
-
-			var OnSuccess = function () {
-				console.log("Successful.");
-			};
-
-			var OnFailure = function (errorCode, errorString) {
-				console.log(errorString);
-			};
-
-			DWTObject.SaveAllAsPDF("WebTWAINImage.pdf", OnSuccess, OnFailure);
-		}
-
-		function _printUploadedFiles(info) {
-			if (info.indexOf('DWTUploadFileName') != -1) {
-				var url, _strPort;
-				DWTObject.IfSSL = Dynamsoft.Lib.detect.ssl;
-				_strPort = location.port == "" ? 80 : location.port;
-				url = 'http://' + location.hostname + ':' + location.port;
-				if (Dynamsoft.Lib.detect.ssl == true) {
-					_strPort = location.port == "" ? 443 : location.port;
-					url = 'https://' + location.hostname + ':' + location.port;
-				}
-				var fileName = info.substring(info.indexOf('DWTUploadFileName') + 18, info.indexOf('UploadedFileSize'));
-				var fileSize = info.substr(info.indexOf('UploadedFileSize') + 17);
-				url += CurrentPath + 'Upload/' + encodeURI(fileName);
-
-				var newTR = document.createElement('tr');
-				_str = "<td class='tc'><a class='bluelink'" + ' href="' + url + '" target="_blank">' + fileName + "</a></td>" + "<td class='tc'>" + fileSize + '</td>';
-				newTR.innerHTML = _str;
-				document.getElementById('div-uploadedFile').appendChild(newTR);
-
-				var element = document.querySelector(".DWTcontainer_upload");
-				element.scrollTop = element.scrollHeight;
-			}
-		}
-
-		function OnUploadImages() {
-			if (DWTObject.HowManyImagesInBuffer == 0) {
-				alert("There is no image in buffer.");
-				return;
-			}
-
-			if (location.protocol == 'file:') {
-				alert('The project requires an HTTP server environment to enable uploading.');
-				return;
-			}
-
-			var processbar = document.getElementById("processbar");
-			processbar.style.width = 0 + "%";
-
-			var processcontainer = document.getElementById("processcontainer");
-			processcontainer.style.display = "";
-			var addBtnEl = document.querySelector(".addBtn");
-			addBtnEl.style.display = "none";
-
-			if (DWTObject.HowManyImagesInBuffer == 0)
-				return;
-
-			var aryIndices = [];
-			for (var i = 0; i < DWTObject.HowManyImagesInBuffer; i++)
-				aryIndices.push(i);
-
-			var OnFileUploadSuccess = function (url, indices, iImageType) {
-				var Digital = new Date();
-				uploadfilename = Digital.getMilliseconds();
-				//upload_preparation(uploadfilename);
-
-				var FileUpload_OnUploadTransferPercentage = function (obj, a) {
-					var processbar = document.getElementById("processbar");
-					processbar.style.width = a + "%";
-				};
-
-				var FileUpload_OnRunSuccess = function (obj, sHttpResponse) {
-					var processbar = document.getElementById("processbar");
-					processbar.style.width = 100 + "%";
-					_printUploadedFiles(sHttpResponse);
-					setTimeout(() => {
-						var processcontainer = document.getElementById("processcontainer");
-						processcontainer.style.display = "none";
-						var addBtnEl = document.querySelector(".addBtn");
-						addBtnEl.style.display = "";
-
-					}, 1000);
-				};
-
-				var FileUpload_OnRunFailure = function (sHttpResponse, ec, es) {
-					alert(es);
-				};
-
-				var strFullActionPagePath, strHTTPServer = location.hostname,
-					strActionPage = CurrentPath + 'SaveToFile.aspx';
-
-				DWTObject.IfSSL = Dynamsoft.Lib.detect.ssl;
-				var _strPort = location.port == "" ? 80 : location.port;
-				if (Dynamsoft.Lib.detect.ssl == true) {
-					_strPort = location.port == "" ? 443 : location.port;
-					strFullActionPagePath = "https://" + strHTTPServer + ":" + _strPort + strActionPage;
-				} else {
-					strFullActionPagePath = "http://" + strHTTPServer + ":" + _strPort + strActionPage;
-				}
-				DWTObject.HTTPPort = _strPort;
-
-				var fileName = uploadfilename + ".pdf"
-				var job = dsUploadManager.CreateJob();
-				job.ServerUrl = strFullActionPagePath;
-				job.SourceValue.Add(url, fileName);
-
-				var fields = document.getElementsByClassName('div-fields-item');
-				for (var n = 0; n < fields.length; n++) {
-					var o = fields[n];
-					if (o.children[0].value != '')
-						job.FormField.Add(o.children[0].value, o.children[1].value);
-				}
-
-				job.OnUploadTransferPercentage = FileUpload_OnUploadTransferPercentage;
-				job.OnRunSuccess = FileUpload_OnRunSuccess;
-				job.OnRunFailure = FileUpload_OnRunFailure;
-				dsUploadManager.Run(job);
-			};
-
-			var OnFileUploadFaild = function (ec, es) {
-				alert(es);
-			};
-
-			DWTObject.GenerateURLForUploadData(aryIndices, Dynamsoft.DWT.EnumDWT_ImageType.IT_PDF, OnFileUploadSuccess, OnFileUploadFaild);
-		}
-
-
-		document.onkeydown = function (e) {
-			var ev = document.all ? window.event : e;
-			if (ev.keyCode == 13) {
-				ConfirmDocument();
-			}
-		}
-
-		function ShowMenu(obj) {
-			SelectDocument(obj, false);
-
-			if (obj == currentDocument) {
-				bShowMenu = true;
-				document.getElementById("divDocumentSetting").style.display = "";
-			}
-			else
-				bShowMenu = false;
-		}
-
-		function IfShowContext(bShow) {
-			var context = document.getElementById("context");
-			if (bShow) {
-				//var e = env || window.event;
-				var e = window.event;
-
-				context.style.display = "block";
-
-				var x = e.clientX;
-				var y = e.clientY;
-
-				context.style.left = x + "px";
-				context.style.top = (y + getScrollTop()) + "px";
-			}
-			else {
-				if (context)
-					context.style.display = "none";
-			}
-		}
-
-		function getScrollTop() {
-			var scroll_top = 0;
-			if (document.documentElement && document.documentElement.scrollTop) {
-				scroll_top = document.documentElement.scrollTop;
-			}
-			else if (document.body) {
-				scroll_top = document.body.scrollTop;
-			}
-			return scroll_top;
-		}
-
-		document.oncontextmenu = function (env) {
-			if (!bShowMenu) {
-				IfShowContext(false);
-				return false;
-			}
-
-			bShowMenu = false;
-
-			IfShowContext(true);
-
-			return false;
-		}
-
-		document.onclick = function () {
-			IfShowContext(false);
-		}
-
-		function ShowErrorMessage(errorMessage) {
-			var error = document.getElementById("divErrorMessage");
-			error.innerHTML = errorMessage;
-		}
-
-		function OnCopyDocument_clicked() {
-			if (DWTObject.HowManyImagesInBuffer == 0) {
-				alert("There is no image in buffer.");
-				return;
-			}
-
-			var strContent = [
-				'<div class="ds-div-copy-document">',
-				'<div><span>From: </span><input type="text" id="txtCopyFrom" disabled="true" /></div>',
-				'<div><span>indecies: </span><label><input type="radio" name="radioCopyIndeciesType" value="all" checked="checked" />All</label></div>',
-				'<div><span></span><label><input type="radio" name="radioCopyIndeciesType" value="custom" />Custom: <input type="text" id="txtCopyIndecies" placeholder="0,1,2, ... (separated by commas)." /></label></div>',
-				'<div><span>To: </span><select id="selectCopyTo"></select></div>',
-				'<div><span>To Position: </span><input type="text" id="txtCopyToPosition" placeholder="0 (number)"/></div>',
-				'<div><button class="ds-button ds-button-copy">Copy</button></div>',
-				'</div>'
-			].join('');
-
-			Dynamsoft.DWT.ShowMessage(strContent, {
-				width: '800px',
-				caption: 'Copy Document',
-				headerStyle: 2
-			});
-
-			var value = currentDocument.children[0].innerHTML;
-			document.getElementById('txtCopyFrom').value = value;
-
-			document.getElementById('txtCopyIndecies').addEventListener('focus', function (evt) {
-				var notCheckedEl = document.querySelector('input[name="radioCopyIndeciesType"]:not(:checked)');
-				if (notCheckedEl.value == 'custom') {
-					notCheckedEl.checked = true;
-				}
-
-			});
-
-
-			var selectCopyToEl = document.getElementById('selectCopyTo');
-			for (var i = 0; i < extrDocumentsCount; i++) {
-				var documentValueTemp = document.getElementsByClassName('div-documents-item')[i].children[0].innerHTML;
-				selectCopyToEl.options.add(new Option(documentValueTemp));
-			}
-
-			document.querySelector(".ds-button-copy").addEventListener('click', onButtonCopyToDocument);
-		}
-
-		function OnMoveDocument_clicked() {
-			if (DWTObject.HowManyImagesInBuffer == 0) {
-				alert("There is no image in buffer.");
-				return;
-			}
-
-			var strContent = [
-				'<div class="ds-div-move-document">',
-				'<div><span>From: </span><input type="text" id="txtMoveFrom" disabled="true" /></div>',
-				'<div><span>indecies: </span><label><input type="radio" name="radioMoveIndeciesType" value="all" checked="checked" />All</label></div>',
-				'<div><span></span><label><input type="radio" name="radioMoveIndeciesType" value="custom" />Custom: <input type="text" id="txtMoveIndecies" placeholder="0,1,2, ... (separated by commas)." /></label></div>',
-				'<div><span>To: </span><select id="selectMoveTo" ></select></div>',
-				'<div><span>To Position: </span><input type="text" id="txtMoveToPosition" placeholder="0 (number)" /></div>',
-				'<div><button class="ds-button ds-button-move">Move</button></div>',
-				'</div>'
-			].join('');
-
-			Dynamsoft.DWT.ShowMessage(strContent, {
-				width: '800px',
-				caption: 'Move Document',
-				headerStyle: 2
-			});
-
-			var value = currentDocument.children[0].innerHTML;
-			document.getElementById('txtMoveFrom').value = value;
-
-			document.getElementById('txtMoveIndecies').addEventListener('focus', function () {
-				var notCheckedEl = document.querySelector('input[name="radioMoveIndeciesType"]:not(:checked)');
-				if (notCheckedEl.value == 'custom') {
-					notCheckedEl.checked = true;
-				}
-
-			});
-
-			var selectMoveToEl = document.getElementById('selectMoveTo');
-			for (var i = 0; i < extrDocumentsCount; i++) {
-				var documentValueTemp = document.getElementsByClassName('div-documents-item')[i].children[0].innerHTML;
-				selectMoveToEl.options.add(new Option(documentValueTemp));
-			}
-
-			document.querySelector(".ds-button-move").addEventListener('click', onButtonMoveToDocument);
-
-		}
-
-		function selectDocumentItemByName(name) {
-			for (var i = 0; i < extrDocumentsCount; i++) {
-				var el = document.getElementsByClassName('div-documents-item')[i];
-				var documentValueTemp = el.children[0].innerHTML;
-				if (documentValueTemp == name) {
-					SelectDocument(el, true);
-					break;
-				}
-			}
-		}
-
-		function onButtonCopyToDocument() {
-
-			var from = document.getElementById('txtCopyFrom').value;
-			var to = document.getElementById('selectCopyTo').value;
-			var indecies = [], position;
-
-
-			var indeciesTypeEl = document.querySelector('input[name="radioCopyIndeciesType"]:checked');
-			if (indeciesTypeEl) {
-				if (indeciesTypeEl.value === 'all') {
-					for (var i = 0; i < DWTObject.HowManyImagesInBuffer; i++) {
-						indecies.push(i);
-					}
-				} else {
-					try {
-						indecies = JSON.parse('[' + document.getElementById('txtCopyIndecies').value + ']');
-					} catch (_) { }
-				}
-			}
-
-			if (!indecies || indecies.length == 0) {
-				return;
-			}
-
-
-			var _pos = document.getElementById('txtCopyToPosition').value;
-			if (_pos != '') {
-				_pos = parseInt(_pos);
-				if (_pos >= 0) position = _pos;
-			}
-
-			//CopyToDocumentAsync(from: string, to: string, sourceIndices: number[], targetIndex: number): Promise<void>;
-			DWTObject.CopyToDocumentAsync(from, to, indecies, position).then(function () {
-				DWTObject.OpenDocument(to);
-				selectDocumentItemByName(to);
-				Dynamsoft.DWT.CloseDialog();
-			}).catch(function (exp) {
-				console.log(exp);
-			});
-		}
-
-		function onButtonMoveToDocument() {
-
-			var from = document.getElementById('txtMoveFrom').value;
-			var to = document.getElementById('selectMoveTo').value;
-			var indecies = [], position;
-
-			var indeciesTypeEl = document.querySelector('input[name="radioMoveIndeciesType"]:checked');
-			if (indeciesTypeEl) {
-				if (indeciesTypeEl.value === 'all') {
-					for (var i = 0; i < DWTObject.HowManyImagesInBuffer; i++) {
-						indecies.push(i);
-					}
-				} else {
-					try {
-						indecies = JSON.parse('[' + document.getElementById('txtMoveIndecies').value + ']');
-					} catch (_) { }
-				}
-			}
-
-			if (!indecies || indecies.length == 0) {
-				return;
-			}
-
-
-			var _pos = document.getElementById('txtMoveToPosition').value;
-			if (_pos != '') {
-				_pos = parseInt(_pos);
-				if (_pos >= 0) position = _pos;
-			}
-
-			//MoveToDocumentAsync(from: string, to: string, sourceIndices: number[], targetIndex: number): Promise<void>;
-			DWTObject.MoveToDocumentAsync(from, to, indecies, position).then(function () {
-				DWTObject.OpenDocument(to);
-				selectDocumentItemByName(to);
-				Dynamsoft.DWT.CloseDialog();
-			}).catch(function (exp) {
-				console.log(exp);
-			});
-		}
-	</script>
+        Dynamsoft.DWT.AutoLoad = true;
+
+        var showOverflowYCount = 7;
+        if (screen.width > 1281) { //1440
+            showOverflowYCount = 7;
+        } else {  //1028
+            showOverflowYCount = 5;
+        }
+        var DWTObject, extrDocumentsCount = 0, blankField = "", bOnAddDocument = false, bOnModifyDocument = false, bShowMenu = false, currentDocument,
+            CurrentPathName = unescape(location.pathname),
+            CurrentPath = CurrentPathName.substring(0, CurrentPathName.lastIndexOf("/") + 1);
+
+        if (screen.width > 2560) {
+            showOverflowYCount = 15;
+        }
+
+        Dynamsoft.DWT.RegisterEvent("OnWebTwainReady", function () {
+            blankField = document.getElementsByClassName('div-documents-item')[0].cloneNode(true);
+            DWTObject = Dynamsoft.DWT.GetWebTwain('dwtcontrolContainer'); // Get the Dynamic Web TWAIN object that is embeded in the div with id 'dwtcontrolContainer'
+            if (DWTObject) {
+                if (location.protocol == 'file:' && !Dynamsoft.navInfoSync.bWin) {
+                    alert('The project requires an HTTP server environment to enable uploading.');
+                    return;
+                }
+
+                DWTObject.Viewer.cursor = "default";
+                Dynamsoft.DWT.CustomizableDisplayInfo.buttons.visibility.close = false;
+
+                Dynamsoft.FileUploader.Init('', function (obj) { dsUploadManager = obj }, function () { });
+
+                var imageEditor = DWTObject.Viewer.createImageEditor({ element: document.getElementById("dwtcontrolContainerLargeViewer"), width: '100%', height: '100%', buttons: { visibility: { close: false } } });
+                imageEditor.show();
+                DWTObject.Viewer.setViewMode(1, 4); // Set the view mode to 1 by 4
+
+                AddDocumentsInner("Web-TWAIN");
+                AddDocumentsInner("Barcode-Reader");
+                AddDocumentsInner("Document-Viewer");
+
+                DWTObject.CreateDocument("Web-TWAIN");
+                DWTObject.OpenDocument("Web-TWAIN");
+
+                DWTObject.IfSSL = Dynamsoft.Lib.detect.ssl;
+                var _strPort = location.port == "" ? 80 : location.port;
+                if (Dynamsoft.Lib.detect.ssl == true)
+                    _strPort = location.port == "" ? 443 : location.port;
+                DWTObject.HTTPPort = _strPort;
+
+                if (location.protocol == 'file:') {
+                    var loadPath = CurrentPath.substring(1, CurrentPath.length);
+                    DWTObject.LoadImageEx(loadPath + "Images/Images1.pdf", Dynamsoft.DWT.EnumDWT_ImageType.IT_PDF, function () {
+
+                        DWTObject.CreateDocument("Barcode-Reader");
+                        DWTObject.OpenDocument("Barcode-Reader");
+
+                        DWTObject.LoadImageEx(loadPath + "Images/Images2.pdf", Dynamsoft.DWT.EnumDWT_ImageType.IT_PDF, function () {
+
+                            DWTObject.CreateDocument("Document-Viewer");
+                            DWTObject.OpenDocument("Document-Viewer");
+
+                            DWTObject.LoadImageEx(loadPath + "Images/Images3.pdf", Dynamsoft.DWT.EnumDWT_ImageType.IT_PDF, function () {
+                                SetSelectDocument(document.getElementsByClassName('div-documents-item')[0]);
+                            },
+                                function () {
+                                    console.log('failed to download the sample image!');
+                                }
+                            );
+                        },
+                            function () {
+                                console.log('failed to download the sample image!');
+                            }
+                        );
+                    },
+                        function () {
+                            console.log('failed to download the sample image!');
+                        }
+                    );
+                } else {
+                    DWTObject.HTTPDownload(location.hostname, CurrentPath + "Images/Images1.pdf", function () {
+
+                        DWTObject.CreateDocument("Barcode-Reader");
+                        DWTObject.OpenDocument("Barcode-Reader");
+
+                        DWTObject.HTTPDownload(location.hostname, CurrentPath + "Images/Images2.pdf", function () {
+
+                            DWTObject.CreateDocument("Document-Viewer");
+                            DWTObject.OpenDocument("Document-Viewer");
+
+                            DWTObject.HTTPDownload(location.hostname, CurrentPath + "Images/Images3.pdf", function () {
+                                SetSelectDocument(document.getElementsByClassName('div-documents-item')[0]);
+                            },
+                                function () {
+                                    console.log('failed to download the sample image!');
+                                }
+                            );
+                        },
+                            function () {
+                                console.log('failed to download the sample image!');
+                            }
+                        );
+                    },
+                        function () {
+                            console.log('failed to download the sample image!');
+                        }
+                    );
+                }
+            }
+        });
+
+        function AcquireImage() {
+            if (DWTObject) {
+                DWTObject.SelectSourceAsync().then(function () {
+                    return DWTObject.AcquireImageAsync({
+                        IfCloseSourceAfterAcquire: true // Scanner source will be closed automatically after the scan.
+                    });
+                }).catch(function (exp) {
+                    alert(exp.message);
+                });
+            }
+        }
+
+        function LoadImages() {
+            if (DWTObject) {
+                if (DWTObject.Addon && DWTObject.Addon.PDF) {
+                    DWTObject.Addon.PDF.SetReaderOptions({
+                        convertMode: Dynamsoft.DWT.EnumDWT_ConvertMode.CM_RENDERALL,
+                        renderOptions: {
+                            resolution: 300
+                        }
+                    });
+                }
+                DWTObject.LoadImageEx('', 5,
+                    function () {
+                    },
+                    function (errorCode, errorString) {
+                        alert('Load Image:' + errorString);
+                    }
+                );
+            }
+        }
+
+
+        function AddDocuments() {
+            if (extrDocumentsCount > 0)
+                if (ConfirmDocumentInner() == false)
+                    return;
+
+            var addDocument;
+            extrDocumentsCount++;
+            var index = extrDocumentsCount - 1;
+            if (extrDocumentsCount == showOverflowYCount) {
+                document.getElementById('div-extra-documents').style.overflowY = 'scroll';
+            }
+
+            var addDocumentElement;
+            if (document.getElementsByClassName('div-documents-item')[0].style.display == "none") {
+                document.getElementsByClassName('div-documents-item')[0].style.display = '';
+                addDocument = document.getElementsByClassName('div-documents-item')[0];
+            }
+            else {
+                addDocumentElement = blankField;
+                document.getElementById('div-extra-documents').appendChild(blankField);
+                if (document.getElementsByClassName('div-documents-item')[index].style.display == "none")
+                    document.getElementsByClassName('div-documents-item')[index].style.display = '';
+                addDocument = document.getElementsByClassName('div-documents-item')[index];
+                blankField = document.getElementsByClassName('div-documents-item')[index].cloneNode(true);
+            }
+            var spanDocument = document.getElementsByClassName('span-document')[index];
+            spanDocument.style.display = 'none';
+            var inputDocument = document.getElementsByClassName('input-document')[index];
+            inputDocument.style.display = '';
+            var divEdit = document.getElementsByClassName('divEdit')[index];
+            divEdit.style.display = 'none';
+
+            bOnAddDocument = true;
+            SelectDocument(addDocument, true);
+            if (addDocumentElement && addDocumentElement.children[1])
+                addDocumentElement.children[1].focus();
+
+        }
+
+        function AddDocumentsInner(value) {
+            extrDocumentsCount++;
+            var index = extrDocumentsCount - 1;
+
+            if (document.getElementsByClassName('div-documents-item')[0].style.display == "none") {
+                document.getElementsByClassName('div-documents-item')[0].style.display = '';
+            }
+            else {
+                document.getElementById('div-extra-documents').appendChild(blankField);
+                if (document.getElementsByClassName('div-documents-item')[index].style.display == "none")
+                    document.getElementsByClassName('div-documents-item')[index].style.display = '';
+                blankField = document.getElementsByClassName('div-documents-item')[index].cloneNode(true);
+            }
+            var spanDocument = document.getElementsByClassName('span-document')[index];
+            spanDocument.style.display = '';
+            spanDocument.innerHTML = value;
+            var inputDocument = document.getElementsByClassName('input-document')[index];
+            inputDocument.style.display = 'none';
+            inputDocument.value = value;
+            var divEdit = document.getElementsByClassName('divEdit')[index];
+            divEdit.style.display = 'none';
+        }
+
+        function ConfirmDocument() {
+            if (bOnModifyDocument) {
+                bOnModifyDocument = false;
+                return;
+            }
+
+            if (bOnAddDocument) {
+                bOnAddDocument = false;
+                return;
+            }
+
+            ConfirmDocumentInner();
+        }
+
+        function ConfirmDocumentInner() {
+            ShowErrorMessage("");
+            if (currentDocument) {
+                var spanDocument = currentDocument.children[0];
+                var inputDocument = currentDocument.children[1];
+
+                if (spanDocument.style.display == '')
+                    return true;
+
+                var oldDocumentValue = spanDocument.innerHTML;
+                var documentValue = inputDocument.value;
+                if (documentValue == "")
+                    documentValue = "DocumentName";
+
+                var bFindSelf = false;
+                for (var i = 0; i < extrDocumentsCount; i++) {
+                    var documentValueTemp = document.getElementsByClassName('div-documents-item')[i].children[0].innerHTML;
+
+                    if (((bFindSelf == false && documentValueTemp != spanDocument.innerHTML) || bFindSelf == true) && documentValueTemp == documentValue) {
+                        //alert("The name already exists, please change it to another name!");
+                        ShowErrorMessage("Error: The name already exists, please change it to another name!");
+                        return false;
+                    }
+
+                    if (documentValueTemp == spanDocument.innerHTML)
+                        bFindSelf = true;
+
+                }
+
+                spanDocument.style.display = '';
+
+                var documentShowValue = documentValue;
+                if (documentValue.length >= 15)
+                    documentShowValue = documentValue.substring(0, 7) + "......" + documentValue.substring(documentValue.length - 3, documentValue.length);
+                spanDocument.innerHTML = documentShowValue;
+                inputDocument.style.display = 'none';
+
+                var divEdit = currentDocument.children[2];
+                divEdit.style.display = '';
+
+                if (oldDocumentValue == documentValue)
+                    return;
+
+                DWTObject.RenameDocument(oldDocumentValue, documentValue);
+
+                DWTObject.OpenDocument(documentValue);
+            }
+
+            return true;
+        }
+
+        function ModifyDocument() {
+            bOnModifyDocument = true;
+        }
+
+        function SelectDocument(obj, bOnlySelectDocument) {
+            if (obj == currentDocument)
+                return;
+            if (!bOnlySelectDocument) {
+                if (ConfirmDocumentInner() == false)
+                    return;
+            }
+
+            for (var i = 0; i < extrDocumentsCount; i++) {
+                document.getElementsByClassName('div-documents-item')[i].style.background = "";
+                document.getElementsByClassName('div-documents-item')[i].children[2].style.display = "none";
+            }
+
+            SetSelectDocument(obj);
+        }
+
+        function SetSelectDocument(obj) {
+            currentDocument = obj;
+            if (obj) {
+                obj.style.background = "#e7f2fd";
+
+                var value = currentDocument.children[0].innerHTML;
+                if (obj.children[1].style.display == "none")
+                    obj.children[2].style.display = "";
+                if (!DWTObject.OpenDocument(value)) {
+                    if (DWTObject.ErrorCode == -2540) {
+                        DWTObject.CreateDocument(value);
+                        DWTObject.OpenDocument(value);
+                    }
+                }
+                DWTObject.CurrentImageIndexInBuffer = 0;
+            }
+            else {
+                DWTObject.CurrentImageIndexInBuffer = 0;
+            }
+        }
+
+        function OnRenameDocument() {
+            IfShowContext(false);
+            currentDocument.children[0].style.display = 'none';
+            currentDocument.children[1].style.display = '';
+            currentDocument.children[1].value = currentDocument.children[0].innerHTML;
+            currentDocument.children[1].focus();
+            currentDocument.children[2].style.display = 'none';
+        }
+
+        function OnRenameDocument_click() {
+            ModifyDocument();
+            OnRenameDocument();
+        }
+
+
+        function OnDeleteDocument() {
+            IfShowContext(false);
+            if (confirm("Are you sure you want to delete this document?")) {
+                if (currentDocument && currentDocument.children[0] && currentDocument.children[0].innerHTML) {
+                    var documentName = currentDocument.children[0].innerHTML;
+                    if (documentName.length > 0) {
+                        DWTObject.RemoveDocument(documentName);
+                    }
+                }
+
+                if (document.getElementsByClassName('div-documents-item').length == 1) {
+                    document.getElementsByClassName('div-documents-item')[0].style.display = 'none';
+                    currentDocument.children[0].innerHTML = "DocumentName";
+                    currentDocument.children[0].style.display = 'none';
+                    currentDocument.children[1].value = "";
+                    currentDocument.children[1].style.display = '';
+                    currentDocument.children[2].style.display = 'none';
+                    currentDocument = "";
+                    SetSelectDocument("");
+                }
+                else {
+                    currentDocument.remove();
+                    SetSelectDocument(document.getElementsByClassName('div-documents-item')[0]);
+                }
+
+                extrDocumentsCount--;
+
+                if (extrDocumentsCount < showOverflowYCount) {
+                    document.getElementById('div-extra-documents').style.overflowY = '';
+                }
+            }
+        }
+
+        function OnSaveImages() {
+            if (DWTObject.HowManyImagesInBuffer == 0) {
+                alert("There is no image in buffer.");
+                return;
+            }
+
+            var OnSuccess = function () {
+                console.log("Successful.");
+            };
+
+            var OnFailure = function (errorCode, errorString) {
+                console.log(errorString);
+            };
+
+            DWTObject.SaveAllAsPDF("WebTWAINImage.pdf", OnSuccess, OnFailure);
+        }
+
+        function _printUploadedFiles(info) {
+            if (info.indexOf('DWTUploadFileName') != -1) {
+                var url, _strPort;
+                DWTObject.IfSSL = Dynamsoft.Lib.detect.ssl;
+                _strPort = location.port == "" ? 80 : location.port;
+                url = 'http://' + location.hostname + ':' + location.port;
+                if (Dynamsoft.Lib.detect.ssl == true) {
+                    _strPort = location.port == "" ? 443 : location.port;
+                    url = 'https://' + location.hostname + ':' + location.port;
+                }
+                var fileName = info.substring(info.indexOf('DWTUploadFileName') + 18, info.indexOf('UploadedFileSize'));
+                var fileSize = info.substr(info.indexOf('UploadedFileSize') + 17);
+                url += CurrentPath + 'Upload/' + encodeURI(fileName);
+
+                var newTR = document.createElement('tr');
+                _str = "<td class='tc'><a class='bluelink'" + ' href="' + url + '" target="_blank">' + fileName + "</a></td>" + "<td class='tc'>" + fileSize + '</td>';
+                newTR.innerHTML = _str;
+                document.getElementById('div-uploadedFile').appendChild(newTR);
+
+                var element = document.querySelector(".DWTcontainer_upload");
+                element.scrollTop = element.scrollHeight;
+            }
+        }
+
+        function OnUploadImages() {
+            if (DWTObject.HowManyImagesInBuffer == 0) {
+                alert("There is no image in buffer.");
+                return;
+            }
+
+            if (location.protocol == 'file:') {
+                alert('The project requires an HTTP server environment to enable uploading.');
+                return;
+            }
+
+            var processbar = document.getElementById("processbar");
+            processbar.style.width = 0 + "%";
+
+            var processcontainer = document.getElementById("processcontainer");
+            processcontainer.style.display = "";
+            var addBtnEl = document.querySelector(".addBtn");
+            addBtnEl.style.display = "none";
+
+            if (DWTObject.HowManyImagesInBuffer == 0)
+                return;
+
+            var aryIndices = [];
+            for (var i = 0; i < DWTObject.HowManyImagesInBuffer; i++)
+                aryIndices.push(i);
+
+            var OnFileUploadSuccess = function (url, indices, iImageType) {
+                var Digital = new Date();
+                uploadfilename = Digital.getMilliseconds();
+                //upload_preparation(uploadfilename);
+
+                var FileUpload_OnUploadTransferPercentage = function (obj, a) {
+                    var processbar = document.getElementById("processbar");
+                    processbar.style.width = a + "%";
+                };
+
+                var FileUpload_OnRunSuccess = function (obj, sHttpResponse) {
+                    var processbar = document.getElementById("processbar");
+                    processbar.style.width = 100 + "%";
+                    _printUploadedFiles(sHttpResponse);
+                    setTimeout(() => {
+                        var processcontainer = document.getElementById("processcontainer");
+                        processcontainer.style.display = "none";
+                        var addBtnEl = document.querySelector(".addBtn");
+                        addBtnEl.style.display = "";
+
+                    }, 1000);
+                };
+
+                var FileUpload_OnRunFailure = function (sHttpResponse, ec, es) {
+                    alert(es);
+                };
+
+                var strFullActionPagePath, strHTTPServer = location.hostname,
+                    strActionPage = CurrentPath + 'SaveToFile.aspx';
+
+                DWTObject.IfSSL = Dynamsoft.Lib.detect.ssl;
+                var _strPort = location.port == "" ? 80 : location.port;
+                if (Dynamsoft.Lib.detect.ssl == true) {
+                    _strPort = location.port == "" ? 443 : location.port;
+                    strFullActionPagePath = "https://" + strHTTPServer + ":" + _strPort + strActionPage;
+                } else {
+                    strFullActionPagePath = "http://" + strHTTPServer + ":" + _strPort + strActionPage;
+                }
+                DWTObject.HTTPPort = _strPort;
+
+                var fileName = uploadfilename + ".pdf"
+                var job = dsUploadManager.CreateJob();
+                job.ServerUrl = strFullActionPagePath;
+                job.SourceValue.Add(url, fileName);
+
+                var fields = document.getElementsByClassName('div-fields-item');
+                for (var n = 0; n < fields.length; n++) {
+                    var o = fields[n];
+                    if (o.children[0].value != '')
+                        job.FormField.Add(o.children[0].value, o.children[1].value);
+                }
+
+                job.OnUploadTransferPercentage = FileUpload_OnUploadTransferPercentage;
+                job.OnRunSuccess = FileUpload_OnRunSuccess;
+                job.OnRunFailure = FileUpload_OnRunFailure;
+                dsUploadManager.Run(job);
+            };
+
+            var OnFileUploadFaild = function (ec, es) {
+                alert(es);
+            };
+
+            DWTObject.GenerateURLForUploadData(aryIndices, Dynamsoft.DWT.EnumDWT_ImageType.IT_PDF, OnFileUploadSuccess, OnFileUploadFaild);
+        }
+
+
+        document.onkeydown = function (e) {
+            var ev = document.all ? window.event : e;
+            if (ev.keyCode == 13) {
+                ConfirmDocument();
+            }
+        }
+
+        function ShowMenu(obj) {
+            SelectDocument(obj, false);
+
+            if (obj == currentDocument) {
+                bShowMenu = true;
+                document.getElementById("divDocumentSetting").style.display = "";
+            }
+            else
+                bShowMenu = false;
+        }
+
+        function IfShowContext(bShow) {
+            var context = document.getElementById("context");
+            if (bShow) {
+                //var e = env || window.event;
+                var e = window.event;
+
+                context.style.display = "block";
+
+                var x = e.clientX;
+                var y = e.clientY;
+
+                context.style.left = x + "px";
+                context.style.top = (y + getScrollTop()) + "px";
+            }
+            else {
+                if (context)
+                    context.style.display = "none";
+            }
+        }
+
+        function getScrollTop() {
+            var scroll_top = 0;
+            if (document.documentElement && document.documentElement.scrollTop) {
+                scroll_top = document.documentElement.scrollTop;
+            }
+            else if (document.body) {
+                scroll_top = document.body.scrollTop;
+            }
+            return scroll_top;
+        }
+
+        document.oncontextmenu = function (env) {
+            if (!bShowMenu) {
+                IfShowContext(false);
+                return false;
+            }
+
+            bShowMenu = false;
+
+            IfShowContext(true);
+
+            return false;
+        }
+
+        document.onclick = function () {
+            IfShowContext(false);
+        }
+
+        function ShowErrorMessage(errorMessage) {
+            var error = document.getElementById("divErrorMessage");
+            error.innerHTML = errorMessage;
+        }
+
+        function OnCopyDocument_clicked() {
+            if (DWTObject.HowManyImagesInBuffer == 0) {
+                alert("There is no image in buffer.");
+                return;
+            }
+
+            var strContent = [
+                '<div class="ds-div-copy-document">',
+                '<div><span>From: </span><input type="text" id="txtCopyFrom" disabled="true" /></div>',
+                '<div><span>indecies: </span><label><input type="radio" name="radioCopyIndeciesType" value="all" checked="checked" />All</label></div>',
+                '<div><span></span><label><input type="radio" name="radioCopyIndeciesType" value="custom" />Custom: <input type="text" id="txtCopyIndecies" placeholder="0,1,2, ... (separated by commas)." /></label></div>',
+                '<div><span>To: </span><select id="selectCopyTo"></select></div>',
+                '<div><span>To Position: </span><input type="text" id="txtCopyToPosition" placeholder="0 (number)"/></div>',
+                '<div><button class="ds-button ds-button-copy">Copy</button></div>',
+                '</div>'
+            ].join('');
+
+            Dynamsoft.DWT.ShowMessage(strContent, {
+                width: '800px',
+                caption: 'Copy Document',
+                headerStyle: 2
+            });
+
+            var value = currentDocument.children[0].innerHTML;
+            document.getElementById('txtCopyFrom').value = value;
+
+            document.getElementById('txtCopyIndecies').addEventListener('focus', function (evt) {
+                var notCheckedEl = document.querySelector('input[name="radioCopyIndeciesType"]:not(:checked)');
+                if (notCheckedEl.value == 'custom') {
+                    notCheckedEl.checked = true;
+                }
+
+            });
+
+
+            var selectCopyToEl = document.getElementById('selectCopyTo');
+            for (var i = 0; i < extrDocumentsCount; i++) {
+                var documentValueTemp = document.getElementsByClassName('div-documents-item')[i].children[0].innerHTML;
+                selectCopyToEl.options.add(new Option(documentValueTemp));
+            }
+
+            document.querySelector(".ds-button-copy").addEventListener('click', onButtonCopyToDocument);
+        }
+
+        function OnMoveDocument_clicked() {
+            if (DWTObject.HowManyImagesInBuffer == 0) {
+                alert("There is no image in buffer.");
+                return;
+            }
+
+            var strContent = [
+                '<div class="ds-div-move-document">',
+                '<div><span>From: </span><input type="text" id="txtMoveFrom" disabled="true" /></div>',
+                '<div><span>indecies: </span><label><input type="radio" name="radioMoveIndeciesType" value="all" checked="checked" />All</label></div>',
+                '<div><span></span><label><input type="radio" name="radioMoveIndeciesType" value="custom" />Custom: <input type="text" id="txtMoveIndecies" placeholder="0,1,2, ... (separated by commas)." /></label></div>',
+                '<div><span>To: </span><select id="selectMoveTo" ></select></div>',
+                '<div><span>To Position: </span><input type="text" id="txtMoveToPosition" placeholder="0 (number)" /></div>',
+                '<div><button class="ds-button ds-button-move">Move</button></div>',
+                '</div>'
+            ].join('');
+
+            Dynamsoft.DWT.ShowMessage(strContent, {
+                width: '800px',
+                caption: 'Move Document',
+                headerStyle: 2
+            });
+
+            var value = currentDocument.children[0].innerHTML;
+            document.getElementById('txtMoveFrom').value = value;
+
+            document.getElementById('txtMoveIndecies').addEventListener('focus', function () {
+                var notCheckedEl = document.querySelector('input[name="radioMoveIndeciesType"]:not(:checked)');
+                if (notCheckedEl.value == 'custom') {
+                    notCheckedEl.checked = true;
+                }
+
+            });
+
+            var selectMoveToEl = document.getElementById('selectMoveTo');
+            for (var i = 0; i < extrDocumentsCount; i++) {
+                var documentValueTemp = document.getElementsByClassName('div-documents-item')[i].children[0].innerHTML;
+                selectMoveToEl.options.add(new Option(documentValueTemp));
+            }
+
+            document.querySelector(".ds-button-move").addEventListener('click', onButtonMoveToDocument);
+
+        }
+
+        function selectDocumentItemByName(name) {
+            for (var i = 0; i < extrDocumentsCount; i++) {
+                var el = document.getElementsByClassName('div-documents-item')[i];
+                var documentValueTemp = el.children[0].innerHTML;
+                if (documentValueTemp == name) {
+                    SelectDocument(el, true);
+                    break;
+                }
+            }
+        }
+
+        function onButtonCopyToDocument() {
+
+            var from = document.getElementById('txtCopyFrom').value;
+            var to = document.getElementById('selectCopyTo').value;
+            var indecies = [], position;
+
+
+            var indeciesTypeEl = document.querySelector('input[name="radioCopyIndeciesType"]:checked');
+            if (indeciesTypeEl) {
+                if (indeciesTypeEl.value === 'all') {
+                    for (var i = 0; i < DWTObject.HowManyImagesInBuffer; i++) {
+                        indecies.push(i);
+                    }
+                } else {
+                    try {
+                        indecies = JSON.parse('[' + document.getElementById('txtCopyIndecies').value + ']');
+                    } catch (_) { }
+                }
+            }
+
+            if (!indecies || indecies.length == 0) {
+                return;
+            }
+
+
+            var _pos = document.getElementById('txtCopyToPosition').value;
+            if (_pos != '') {
+                _pos = parseInt(_pos);
+                if (_pos >= 0) position = _pos;
+            }
+
+            //CopyToDocumentAsync(from: string, to: string, sourceIndices: number[], targetIndex: number): Promise<void>;
+            DWTObject.CopyToDocumentAsync(from, to, indecies, position).then(function () {
+                DWTObject.OpenDocument(to);
+                selectDocumentItemByName(to);
+                Dynamsoft.DWT.CloseDialog();
+            }).catch(function (exp) {
+                console.log(exp);
+            });
+        }
+
+        function onButtonMoveToDocument() {
+
+            var from = document.getElementById('txtMoveFrom').value;
+            var to = document.getElementById('selectMoveTo').value;
+            var indecies = [], position;
+
+            var indeciesTypeEl = document.querySelector('input[name="radioMoveIndeciesType"]:checked');
+            if (indeciesTypeEl) {
+                if (indeciesTypeEl.value === 'all') {
+                    for (var i = 0; i < DWTObject.HowManyImagesInBuffer; i++) {
+                        indecies.push(i);
+                    }
+                } else {
+                    try {
+                        indecies = JSON.parse('[' + document.getElementById('txtMoveIndecies').value + ']');
+                    } catch (_) { }
+                }
+            }
+
+            if (!indecies || indecies.length == 0) {
+                return;
+            }
+
+
+            var _pos = document.getElementById('txtMoveToPosition').value;
+            if (_pos != '') {
+                _pos = parseInt(_pos);
+                if (_pos >= 0) position = _pos;
+            }
+
+            //MoveToDocumentAsync(from: string, to: string, sourceIndices: number[], targetIndex: number): Promise<void>;
+            DWTObject.MoveToDocumentAsync(from, to, indecies, position).then(function () {
+                DWTObject.OpenDocument(to);
+                selectDocumentItemByName(to);
+                Dynamsoft.DWT.CloseDialog();
+            }).catch(function (exp) {
+                console.log(exp);
+            });
+        }
+    </script>
 
 </body>
 

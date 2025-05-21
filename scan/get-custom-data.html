@@ -2,121 +2,121 @@
 <html>
 
 <head>
-	<title>Getting Custom Scanning Data</title>
-	<link rel="stylesheet" href="../css/global.css" />
-	<link rel="stylesheet" href="../css/scan.css" />
+    <title>Getting Custom Scanning Data</title>
+    <link rel="stylesheet" href="../css/global.css" />
+    <link rel="stylesheet" href="../css/scan.css" />
 </head>
 
 <body>
-	<div class="ds-div-scanPageHeader">
-		<div class="ds-div-title">Getting Custom Scanning Data</div>
-		<p>This demo only supports TWAIN drivers on Windows.</p>
-	</div>
-	<div class="ds-div-scanPageDemo">
-		<div class="ds-div-scanPage-column ds-div-scanPage-column0">
-			<div><label for="left">SelectSource:</label><select size="1" id="source"
-					style="position: relative; width: 220px;"></select></div>
-			<input type="button" value="Get custom DS data" class="ds-button-bg-black" onclick="GetCustomDSDataEx();" />
-			<div id="CustomDSData" class="clearfix"><span class="lblCustomDSData">CustomDSData:</span></div>
-			<textarea id="message" name="message" rows="8" cols="50"></textarea>
-			<div><input type="button" value="Copy" class="ds-button-bg-white" onclick="CopyToClipboard();" /> </div>
-		</div>
-		<div class="ds-div-scanPage-column ds-div-scanPage-column1">
-			<div id="dwtcontrolContainer" style="width: 100%; height: 100%;"></div>
-		</div>
-	</div>
-	<div class="ds-div-scanPageAPI">
-		<div>
-			Main API(s) used in this sample:
-			<a class="bluelink"
-				href="https://www.dynamsoft.com/web-twain/docs/info/api/WebTwain_Acquire.html#getdevicesasync"
-				target="_blank">GetDevicesAsync()</a>,
-			<a class="bluelink"
-				href="https://www.dynamsoft.com/web-twain/docs/info/api/WebTwain_Acquire.html#selectdeviceasync"
-				target="_blank">SelectDeviceAsync()</a>,
-			<a class="bluelink"
-				href="https://www.dynamsoft.com/web-twain/docs/info/api/WebTwain_Acquire.html#enablesourceui"
-				target="_blank">EnableSourceUI()</a>,
-			<a class="bluelink"
-				href="https://www.dynamsoft.com/web-twain/docs/info/api/WebTwain_Acquire.html#getcustomdsdataex"
-				target="_blank">GetCustomDSDataEx()</a>
-		</div>
-	</div>
-	<div class="ds-div-scanPageAPI-toFrame"></div>
-	<script src="https://cdn.jsdelivr.net/npm/dwt@latest/dist/dynamsoft.webtwain.min.js"></script>
-	<script type="text/javascript">
-		Dynamsoft.DWT.Containers = [{ ContainerId: 'dwtcontrolContainer', Width: '100%', Height: '100%' }];
-		Dynamsoft.DWT.ProductKey = "DLS2eyJvcmdhbml6YXRpb25JRCI6IjIwMDAwMSJ9";
-		Dynamsoft.DWT.ResourcesPath = 'https://cdn.jsdelivr.net/npm/dwt@latest/dist';
+    <div class="ds-div-scanPageHeader">
+        <div class="ds-div-title">Getting Custom Scanning Data</div>
+        <p>This demo only supports TWAIN drivers on Windows.</p>
+    </div>
+    <div class="ds-div-scanPageDemo">
+        <div class="ds-div-scanPage-column ds-div-scanPage-column0">
+            <div><label for="left">SelectSource:</label><select size="1" id="source"
+                    style="position: relative; width: 220px;"></select></div>
+            <input type="button" value="Get custom DS data" class="ds-button-bg-black" onclick="GetCustomDSDataEx();" />
+            <div id="CustomDSData" class="clearfix"><span class="lblCustomDSData">CustomDSData:</span></div>
+            <textarea id="message" name="message" rows="8" cols="50"></textarea>
+            <div><input type="button" value="Copy" class="ds-button-bg-white" onclick="CopyToClipboard();" /> </div>
+        </div>
+        <div class="ds-div-scanPage-column ds-div-scanPage-column1">
+            <div id="dwtcontrolContainer" style="width: 100%; height: 100%;"></div>
+        </div>
+    </div>
+    <div class="ds-div-scanPageAPI">
+        <div>
+            Main API(s) used in this sample:
+            <a class="bluelink"
+                href="https://www.dynamsoft.com/web-twain/docs/info/api/WebTwain_Acquire.html#getdevicesasync"
+                target="_blank">GetDevicesAsync()</a>,
+            <a class="bluelink"
+                href="https://www.dynamsoft.com/web-twain/docs/info/api/WebTwain_Acquire.html#selectdeviceasync"
+                target="_blank">SelectDeviceAsync()</a>,
+            <a class="bluelink"
+                href="https://www.dynamsoft.com/web-twain/docs/info/api/WebTwain_Acquire.html#enablesourceui"
+                target="_blank">EnableSourceUI()</a>,
+            <a class="bluelink"
+                href="https://www.dynamsoft.com/web-twain/docs/info/api/WebTwain_Acquire.html#getcustomdsdataex"
+                target="_blank">GetCustomDSDataEx()</a>
+        </div>
+    </div>
+    <div class="ds-div-scanPageAPI-toFrame"></div>
+    <script src="https://cdn.jsdelivr.net/npm/dwt@latest/dist/dynamsoft.webtwain.min.js"></script>
+    <script type="text/javascript">
+        Dynamsoft.DWT.Containers = [{ ContainerId: 'dwtcontrolContainer', Width: '100%', Height: '100%' }];
+        Dynamsoft.DWT.ProductKey = "DLS2eyJvcmdhbml6YXRpb25JRCI6IjIwMDAwMSJ9";
+        Dynamsoft.DWT.ResourcesPath = 'https://cdn.jsdelivr.net/npm/dwt@latest/dist';
         Dynamsoft.DWT.ServiceInstallerLocation = 'https://download2.dynamsoft.com/Demo/DWT/Resources/dist/';
-		Dynamsoft.DWT.AutoLoad = true;
+        Dynamsoft.DWT.AutoLoad = true;
 
-		var DWTObject, deviceList;
-		Dynamsoft.DWT.RegisterEvent("OnWebTwainReady", function () {
-			DWTObject = Dynamsoft.DWT.GetWebTwain('dwtcontrolContainer'); // Get the Dynamic Web TWAIN object that is embeded in the div with id 'dwtcontrolContainer'
-			if (DWTObject) {
-				deviceList = [];
-				if (Dynamsoft.navInfoSync.bWin) {
-					DWTObject.GetDevicesAsync(Dynamsoft.DWT.EnumDWT_DeviceType.TWAINX64SCANNER | Dynamsoft.DWT.EnumDWT_DeviceType.TWAINSCANNER).then(function (devices) {
-						for (var i = 0; i < devices.length; i++) { // Get how many sources are installed in the system
-							document.getElementById('source').options.add(new Option(devices[i].displayName, i)); // Add the sources in a drop-down list
-							deviceList.push(devices[i]);
-						}
-					}).catch(function (exp) {
-						alert(exp.message);
-					});
-				}
-			}
-		});
+        var DWTObject, deviceList;
+        Dynamsoft.DWT.RegisterEvent("OnWebTwainReady", function () {
+            DWTObject = Dynamsoft.DWT.GetWebTwain('dwtcontrolContainer'); // Get the Dynamic Web TWAIN object that is embeded in the div with id 'dwtcontrolContainer'
+            if (DWTObject) {
+                deviceList = [];
+                if (Dynamsoft.navInfoSync.bWin) {
+                    DWTObject.GetDevicesAsync(Dynamsoft.DWT.EnumDWT_DeviceType.TWAINX64SCANNER | Dynamsoft.DWT.EnumDWT_DeviceType.TWAINSCANNER).then(function (devices) {
+                        for (var i = 0; i < devices.length; i++) { // Get how many sources are installed in the system
+                            document.getElementById('source').options.add(new Option(devices[i].displayName, i)); // Add the sources in a drop-down list
+                            deviceList.push(devices[i]);
+                        }
+                    }).catch(function (exp) {
+                        alert(exp.message);
+                    });
+                }
+            }
+        });
 
-		function GetCustomDSDataEx() {
-			var cIndex = document.getElementById('source').selectedIndex;
-			DWTObject.SelectDeviceAsync(deviceList[cIndex]).then(function () {
-				DWTObject.EnableSourceUI(function () {
-					var customDSData = document.getElementById("message");
-					customDSData.value = DWTObject.GetCustomDSDataEx();
-					DWTObject.CloseSourceAsync();
-				}, function (errorString) {
-					alert(errorString);
-				});
-			}).catch(function (exp) {
-				alert(exp.message);
-				DWTObject.CloseSourceAsync();
-			});
-		}
+        function GetCustomDSDataEx() {
+            var cIndex = document.getElementById('source').selectedIndex;
+            DWTObject.SelectDeviceAsync(deviceList[cIndex]).then(function () {
+                DWTObject.EnableSourceUI(function () {
+                    var customDSData = document.getElementById("message");
+                    customDSData.value = DWTObject.GetCustomDSDataEx();
+                    DWTObject.CloseSourceAsync();
+                }, function (errorString) {
+                    alert(errorString);
+                });
+            }).catch(function (exp) {
+                alert(exp.message);
+                DWTObject.CloseSourceAsync();
+            });
+        }
 
-		function CopyToClipboard() {
-			var customDSData = document.getElementById("message");
-			if (customDSData.value.length > 0) {
-				if (navigator.clipboard) {
-					navigator.clipboard.writeText(customDSData.value)
-						.then(() => {
-							alert('Copy successful.');
-						})
-						.catch(err => {
-							console.error('Copy failed:', err);
-						});
-				} else {
-					var textarea = document.createElement('textarea');
-					textarea.value = customDSData.value;
-					document.body.appendChild(textarea);
+        function CopyToClipboard() {
+            var customDSData = document.getElementById("message");
+            if (customDSData.value.length > 0) {
+                if (navigator.clipboard) {
+                    navigator.clipboard.writeText(customDSData.value)
+                        .then(() => {
+                            alert('Copy successful.');
+                        })
+                        .catch(err => {
+                            console.error('Copy failed:', err);
+                        });
+                } else {
+                    var textarea = document.createElement('textarea');
+                    textarea.value = customDSData.value;
+                    document.body.appendChild(textarea);
 
-					textarea.select();
-					try {
-						var successful = document.execCommand('copy');
-						if (successful) {
-							alert('Copy successful.');
-						} else {
-							console.error('Copy failed.');
-						}
-					} catch (err) {
-						console.error('Copy failed:', err);
-					}
-					document.body.removeChild(textarea);
-				}
-			}
-		}
-	</script>
+                    textarea.select();
+                    try {
+                        var successful = document.execCommand('copy');
+                        if (successful) {
+                            alert('Copy successful.');
+                        } else {
+                            console.error('Copy failed.');
+                        }
+                    } catch (err) {
+                        console.error('Copy failed:', err);
+                    }
+                    document.body.removeChild(textarea);
+                }
+            }
+        }
+    </script>
 </body>
 
 </html>

@@ -2,109 +2,109 @@
 <html>
 
 <head>
-	<title>Without Built-In Viewer</title>
-	<link rel="stylesheet" href="../css/global.css" />
-	<link rel="stylesheet" href="../css/scan.css" />
+    <title>Without Built-In Viewer</title>
+    <link rel="stylesheet" href="../css/global.css" />
+    <link rel="stylesheet" href="../css/scan.css" />
 </head>
 
 <body>
-	<div class="ds-div-scanPageHeader">
-		<div class="ds-div-title">Without Built-In Viewer</div>
-		<p>You can use a third-party viewer to replace the default Dynamic Web TWAIN Viewer. This demo uses a simple div
-			to display the scanned results in place of the default Dynamic Web TWAIN Viewer.</p>
-	</div>
-	<div class="ds-div-scanPageDemo">
-		<div class="ds-div-scanPage-column ds-div-scanPage-column0">
-			<div><label for="left">Select Source: </label><select size="1" id="source"></select></div>
-			<div><input type="button" value="Scan" class="ds-button-bg-black" onclick="AcquireImage();" />
-				<input type="button" value="Open a local file" class="ds-button-bg-white" onclick="LoadImages();" />
-			</div>
-		</div>
-		<div class="ds-div-scanPage-column ds-div-scanPage-column1">
-			<div id="dwtcontrolContainer" style="width: 100%;height: 100%;overflow: auto;"></div>
-		</div>
-	</div>
-	<style>
-		#dwtcontrolContainer img {
-			margin: 3px;
-		}
+    <div class="ds-div-scanPageHeader">
+        <div class="ds-div-title">Without Built-In Viewer</div>
+        <p>You can use a third-party viewer to replace the default Dynamic Web TWAIN Viewer. This demo uses a simple div
+            to display the scanned results in place of the default Dynamic Web TWAIN Viewer.</p>
+    </div>
+    <div class="ds-div-scanPageDemo">
+        <div class="ds-div-scanPage-column ds-div-scanPage-column0">
+            <div><label for="left">Select Source: </label><select size="1" id="source"></select></div>
+            <div><input type="button" value="Scan" class="ds-button-bg-black" onclick="AcquireImage();" />
+                <input type="button" value="Open a local file" class="ds-button-bg-white" onclick="LoadImages();" />
+            </div>
+        </div>
+        <div class="ds-div-scanPage-column ds-div-scanPage-column1">
+            <div id="dwtcontrolContainer" style="width: 100%;height: 100%;overflow: auto;"></div>
+        </div>
+    </div>
+    <style>
+        #dwtcontrolContainer img {
+            margin: 3px;
+        }
 
-		.ds-div-scanPage-column1 {
-			border: 1px solid #CCC;
-			border-left: 0;
-		}
-	</style>
-	<script src="https://cdn.jsdelivr.net/npm/dwt@latest/dist/dynamsoft.webtwain.min.js"></script>
-	<script type="text/javascript">
-		Dynamsoft.DWT.Containers = [];
-		Dynamsoft.DWT.ProductKey = "DLS2eyJvcmdhbml6YXRpb25JRCI6IjIwMDAwMSJ9";
-		Dynamsoft.DWT.ResourcesPath = 'https://cdn.jsdelivr.net/npm/dwt@latest/dist';
+        .ds-div-scanPage-column1 {
+            border: 1px solid #CCC;
+            border-left: 0;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/dwt@latest/dist/dynamsoft.webtwain.min.js"></script>
+    <script type="text/javascript">
+        Dynamsoft.DWT.Containers = [];
+        Dynamsoft.DWT.ProductKey = "DLS2eyJvcmdhbml6YXRpb25JRCI6IjIwMDAwMSJ9";
+        Dynamsoft.DWT.ResourcesPath = 'https://cdn.jsdelivr.net/npm/dwt@latest/dist';
         Dynamsoft.DWT.ServiceInstallerLocation = 'https://download2.dynamsoft.com/Demo/DWT/Resources/dist/';
-		Dynamsoft.DWT.AutoLoad = false;
+        Dynamsoft.DWT.AutoLoad = false;
 
-		Dynamsoft.DWT.UseDefaultViewer = false;
-		Dynamsoft.DWT.IfConfineMaskWithinTheViewer = false;
-		var DWTObject, deviceList;
-		Dynamsoft.DWT.CreateDWTObjectEx({
-			WebTwainId: 'dwtId',
-		}, function (object) {
-			DWTObject = object;
-			if (DWTObject) {
-				deviceList = [];
-				DWTObject.GetDevicesAsync().then(function (devices) {
-					for (var i = 0; i < devices.length; i++) { // Get how many sources are installed in the system
-						document.getElementById('source').options.add(new Option(devices[i].displayName, i)); // Add the sources in a drop-down list
-						deviceList.push(devices[i]);
-					}
-				}).catch(function (exp) {
-					alert(exp.message);
-				});
+        Dynamsoft.DWT.UseDefaultViewer = false;
+        Dynamsoft.DWT.IfConfineMaskWithinTheViewer = false;
+        var DWTObject, deviceList;
+        Dynamsoft.DWT.CreateDWTObjectEx({
+            WebTwainId: 'dwtId',
+        }, function (object) {
+            DWTObject = object;
+            if (DWTObject) {
+                deviceList = [];
+                DWTObject.GetDevicesAsync().then(function (devices) {
+                    for (var i = 0; i < devices.length; i++) { // Get how many sources are installed in the system
+                        document.getElementById('source').options.add(new Option(devices[i].displayName, i)); // Add the sources in a drop-down list
+                        deviceList.push(devices[i]);
+                    }
+                }).catch(function (exp) {
+                    alert(exp.message);
+                });
 
-				DWTObject.RegisterEvent('OnBufferChanged', function (bufferChangeInfo) {
-					if (bufferChangeInfo.action == "add") {
-						showImage();
-					}
-				});
-			}
-		}, function (error) {
-			console.log(error);
-		});
+                DWTObject.RegisterEvent('OnBufferChanged', function (bufferChangeInfo) {
+                    if (bufferChangeInfo.action == "add") {
+                        showImage();
+                    }
+                });
+            }
+        }, function (error) {
+            console.log(error);
+        });
 
-		function showImage() {
-			var strUrl = DWTObject.GetImageURL(DWTObject.CurrentImageIndexInBuffer);
-			const img = document.createElement('img');
-			img.style.width = "100px";
-			img.src = strUrl;
+        function showImage() {
+            var strUrl = DWTObject.GetImageURL(DWTObject.CurrentImageIndexInBuffer);
+            const img = document.createElement('img');
+            img.style.width = "100px";
+            img.src = strUrl;
 
-			const imageContainer = document.getElementById('dwtcontrolContainer');
-			imageContainer.appendChild(img);
-		}
+            const imageContainer = document.getElementById('dwtcontrolContainer');
+            imageContainer.appendChild(img);
+        }
 
-		function AcquireImage() {
-			if (DWTObject) {
-				var ddlSource = document.getElementById('source');
-				DWTObject.SelectDeviceAsync(deviceList[ddlSource.selectedIndex]).then(function () {
-					return DWTObject.AcquireImageAsync({
-						IfShowUI: false,
-						IfCloseSourceAfterAcquire: true // Scanner source will be closed automatically after the scan.
-					});
-				}).catch(function (exp) {
-					alert(exp.message);
-				});
-			}
-		}
+        function AcquireImage() {
+            if (DWTObject) {
+                var ddlSource = document.getElementById('source');
+                DWTObject.SelectDeviceAsync(deviceList[ddlSource.selectedIndex]).then(function () {
+                    return DWTObject.AcquireImageAsync({
+                        IfShowUI: false,
+                        IfCloseSourceAfterAcquire: true // Scanner source will be closed automatically after the scan.
+                    });
+                }).catch(function (exp) {
+                    alert(exp.message);
+                });
+            }
+        }
 
-		function LoadImages() {
-			if (DWTObject) {
-				// Load images in all supported formats (.bmp, .jpg, .tif, .png, .pdf). OnSuccess or OnFailure will be called after the operation
-				DWTObject.LoadImageEx("", Dynamsoft.DWT.EnumDWT_ImageType.IT_ALL, function () {
-					console.log('successful');
-				}, function (errorCode, errorString) {
-					alert(errorString);
-				});
-			}
-		}
-	</script>
+        function LoadImages() {
+            if (DWTObject) {
+                // Load images in all supported formats (.bmp, .jpg, .tif, .png, .pdf). OnSuccess or OnFailure will be called after the operation
+                DWTObject.LoadImageEx("", Dynamsoft.DWT.EnumDWT_ImageType.IT_ALL, function () {
+                    console.log('successful');
+                }, function (errorCode, errorString) {
+                    alert(errorString);
+                });
+            }
+        }
+    </script>
 
 </body>
 

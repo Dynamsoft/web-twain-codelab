@@ -2,928 +2,928 @@
 <html>
 
 <head>
-	<title>Organizing Scanned Images by Tags</title>
-	<link rel="stylesheet" href="../../css/global.css" />
-	<link rel="stylesheet" href="../../css/scan.css" />
+    <title>Organizing Scanned Images by Tags</title>
+    <link rel="stylesheet" href="../../css/global.css" />
+    <link rel="stylesheet" href="../../css/scan.css" />
 </head>
 
 <body>
-	<div class="contextmenu" id="context">
-		<ul>
-			<div id="divTagSetting">
-				<li><a onclick="OnRenameTag();">Rename</a></li>
-				<li style="border-bottom: 1px solid #999;"><a onclick="OnDeleteTag();">Delete</a> </li>
-			</div>
-			<li><a onclick="OnSaveImages();">Save Images</a></li>
-			<li><a onclick="OnUploadImages();">Upload Images</a></li>
-		</ul>
-	</div>
-	<div class="ds-div-scanPageHeader">
-		<div class="ds-div-title">Organizing Scanned Images by Tags</div>
-	</div>
-	<div class="ds-div-scanPageDemo-button">
-		<input type="button" value="Scan" class="ds-button-bg-black btn" onclick="AcquireImage();" />
-		<input type="button" value="Open a local file" class="ds-button-bg-white btn" onclick="LoadImages();" />
-		<div id="divErrorMessage"></div>
-	</div>
-	<div class="ds-div-scanPageDemo">
-		<div class="ds-div-scanPage-column ds-div-scanPage-column0">
-			<div class="container">
-				<div style="display: block; position: absolute;" class="container">
-					<div class="leftContainer">
-						<div id="TagContainer" class="DWTcontainer">
-							<div id="extra-tags-div-id" class="section" onclick="ConfirmTag();">
-								<div id="div-extra-tags">
-									<div class="div-tags-item" onclick="SelectTag(this, false);"
-										oncontextmenu="ShowMenu(this);">
-										<span class="span-tag w80p">All</span>
-										<div class="divEdit" style="display:none;">
-											<ul class="operateGrp">
-												<li><img class="menuIcon" src="Images/upload.png" title="Upload Images"
-														alt="Upload Images" id="DW_btnUploadImages"
-														onclick="OnUploadImages();" /></li>
-												<li><img class="menuIcon" src="Images/save.png" title="Save Images"
-														alt="Save Images" id="DW_btnSaveImages"
-														onclick="OnSaveImages();" /></li>
-											</ul>
-										</div>
-									</div>
-									<div class="div-tags-item" style="display: none;" onclick="SelectTag(this, false);"
-										oncontextmenu="ShowMenu(this);">
-										<span class="span-tag w80p" style="display: none;">TagName</span>
-										<input type="text" class="input-tag w80p" placeholder="TagName"
-											onclick="ModifyTag();" onBlur="ConfirmTag();" />
-										<div class="divEdit" style="display:none;">
-											<ul class="operateGrp">
-												<li><img class="menuIcon" src="Images/upload.png" title="Upload Images"
-														alt="Upload Images" id="Img1" onclick="OnUploadImages();" />
-												</li>
-												<li><img class="menuIcon" src="Images/save.png" title="Save Images"
-														alt="Save Images" id="Img2" onclick="OnSaveImages();" /></li>
-												<li><img class="menuIcon" src="Images/delete.png" title="Delete"
-														alt="Delete" id="DW_btnDelete" onclick="OnDeleteTag();" /></li>
-												<li><img class="menuIcon" src="Images/rename.png" title="Rename"
-														alt="Rename" id="DW_btnRename" onclick="OnRenameTag_click();" />
-												</li>
-											</ul>
-										</div>
-									</div>
-								</div>
-								<div>
-									<div type="text" class="addBtn w80p" onclick="AddTags()">&plus;</div>
-									<div class="processcontainer" id="processcontainer" style="display:none">
-										<div id="processbar" style="width:0%;"></div>
-									</div>
-								</div>
-							</div>
-						</div>
+    <div class="contextmenu" id="context">
+        <ul>
+            <div id="divTagSetting">
+                <li><a onclick="OnRenameTag();">Rename</a></li>
+                <li style="border-bottom: 1px solid #999;"><a onclick="OnDeleteTag();">Delete</a> </li>
+            </div>
+            <li><a onclick="OnSaveImages();">Save Images</a></li>
+            <li><a onclick="OnUploadImages();">Upload Images</a></li>
+        </ul>
+    </div>
+    <div class="ds-div-scanPageHeader">
+        <div class="ds-div-title">Organizing Scanned Images by Tags</div>
+    </div>
+    <div class="ds-div-scanPageDemo-button">
+        <input type="button" value="Scan" class="ds-button-bg-black btn" onclick="AcquireImage();" />
+        <input type="button" value="Open a local file" class="ds-button-bg-white btn" onclick="LoadImages();" />
+        <div id="divErrorMessage"></div>
+    </div>
+    <div class="ds-div-scanPageDemo">
+        <div class="ds-div-scanPage-column ds-div-scanPage-column0">
+            <div class="container">
+                <div style="display: block; position: absolute;" class="container">
+                    <div class="leftContainer">
+                        <div id="TagContainer" class="DWTcontainer">
+                            <div id="extra-tags-div-id" class="section" onclick="ConfirmTag();">
+                                <div id="div-extra-tags">
+                                    <div class="div-tags-item" onclick="SelectTag(this, false);"
+                                        oncontextmenu="ShowMenu(this);">
+                                        <span class="span-tag w80p">All</span>
+                                        <div class="divEdit" style="display:none;">
+                                            <ul class="operateGrp">
+                                                <li><img class="menuIcon" src="Images/upload.png" title="Upload Images"
+                                                        alt="Upload Images" id="DW_btnUploadImages"
+                                                        onclick="OnUploadImages();" /></li>
+                                                <li><img class="menuIcon" src="Images/save.png" title="Save Images"
+                                                        alt="Save Images" id="DW_btnSaveImages"
+                                                        onclick="OnSaveImages();" /></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="div-tags-item" style="display: none;" onclick="SelectTag(this, false);"
+                                        oncontextmenu="ShowMenu(this);">
+                                        <span class="span-tag w80p" style="display: none;">TagName</span>
+                                        <input type="text" class="input-tag w80p" placeholder="TagName"
+                                            onclick="ModifyTag();" onBlur="ConfirmTag();" />
+                                        <div class="divEdit" style="display:none;">
+                                            <ul class="operateGrp">
+                                                <li><img class="menuIcon" src="Images/upload.png" title="Upload Images"
+                                                        alt="Upload Images" id="Img1" onclick="OnUploadImages();" />
+                                                </li>
+                                                <li><img class="menuIcon" src="Images/save.png" title="Save Images"
+                                                        alt="Save Images" id="Img2" onclick="OnSaveImages();" /></li>
+                                                <li><img class="menuIcon" src="Images/delete.png" title="Delete"
+                                                        alt="Delete" id="DW_btnDelete" onclick="OnDeleteTag();" /></li>
+                                                <li><img class="menuIcon" src="Images/rename.png" title="Rename"
+                                                        alt="Rename" id="DW_btnRename" onclick="OnRenameTag_click();" />
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div type="text" class="addBtn w80p" onclick="AddTags()">&plus;</div>
+                                    <div class="processcontainer" id="processcontainer" style="display:none">
+                                        <div id="processbar" style="width:0%;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-						<!--<div id="divUploadedFiles" style="height:315px"></div>-->
-						<div id="lblUploadedFiles"> Uploaded Files</div>
-						<div class="DWTcontainer_upload">
-							<table id='div-uploadedFile'>
-							</table>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="ds-div-scanPage-column ds-div-scanPage-column1">
-			<div id="dwtcontrolContainer" style="width:100%;height:100%;"></div>
-		</div>
-		<div class="ds-div-scanPage-column ds-div-scanPage-column2">
-			<div id="dwtcontrolContainerLargeViewer" style="width:100%;height:100%;"></div>
-		</div>
-	</div>
-	<style>
-		.span-tag {
-			margin: 5px 0 5px 20px;
-			cursor: default;
-		}
+                        <!--<div id="divUploadedFiles" style="height:315px"></div>-->
+                        <div id="lblUploadedFiles"> Uploaded Files</div>
+                        <div class="DWTcontainer_upload">
+                            <table id='div-uploadedFile'>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ds-div-scanPage-column ds-div-scanPage-column1">
+            <div id="dwtcontrolContainer" style="width:100%;height:100%;"></div>
+        </div>
+        <div class="ds-div-scanPage-column ds-div-scanPage-column2">
+            <div id="dwtcontrolContainerLargeViewer" style="width:100%;height:100%;"></div>
+        </div>
+    </div>
+    <style>
+        .span-tag {
+            margin: 5px 0 5px 20px;
+            cursor: default;
+        }
 
-		.div-tags-item {
-			padding: 3px;
-		}
+        .div-tags-item {
+            padding: 3px;
+        }
 
-		.input-tag {
-			margin-left: 5%;
-		}
+        .input-tag {
+            margin-left: 5%;
+        }
 
-		.contextmenu {
-			width: 170px;
-			border: 1px solid #999;
-			box-shadow: 3px 3px 3px #ccc;
-			background-color: #fff;
-			position: absolute;
-			top: 10px;
-			left: 10px;
-			display: none;
-			z-index: 9999;
-		}
+        .contextmenu {
+            width: 170px;
+            border: 1px solid #999;
+            box-shadow: 3px 3px 3px #ccc;
+            background-color: #fff;
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            display: none;
+            z-index: 9999;
+        }
 
-		.contextmenu li {
-			height: 40px;
-			line-height: 40px;
-		}
+        .contextmenu li {
+            height: 40px;
+            line-height: 40px;
+        }
 
-		.contextmenu li a {
-			display: block;
-			padding: 0 30px;
-			cursor: default;
-		}
+        .contextmenu li a {
+            display: block;
+            padding: 0 30px;
+            cursor: default;
+        }
 
-		.contextmenu li a:hover {
-			background-color: #ccc;
-			font-weight: bold;
-			color: #fff;
-		}
+        .contextmenu li a:hover {
+            background-color: #ccc;
+            font-weight: bold;
+            color: #fff;
+        }
 
-		.tc {
-			text-align: center;
-		}
+        .tc {
+            text-align: center;
+        }
 
-		#tipTop {
-			position: relative;
-			height: auto;
-			min-height: 60px;
-			font-size: 16px;
-			line-height: 60px;
-			background: #D8EDF8;
-			color: #3a87ad;
-			text-align: center;
-		}
+        #tipTop {
+            position: relative;
+            height: auto;
+            min-height: 60px;
+            font-size: 16px;
+            line-height: 60px;
+            background: #D8EDF8;
+            color: #3a87ad;
+            text-align: center;
+        }
 
-		#tipTop .close {
-			position: absolute;
-			right: 20px;
-			top: 20px;
-			width: 20px;
-			height: 20px;
-			line-height: 20px;
-			cursor: pointer;
-			font-size: 24px;
-			font-weight: bold;
-		}
+        #tipTop .close {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            width: 20px;
+            height: 20px;
+            line-height: 20px;
+            cursor: pointer;
+            font-size: 24px;
+            font-weight: bold;
+        }
 
-		.divEdit {
-			float: right;
-			width: 106px;
-			height: 20px;
-			margin: 5px 15px 0 0;
-		}
+        .divEdit {
+            float: right;
+            width: 106px;
+            height: 20px;
+            margin: 5px 15px 0 0;
+        }
 
-		.menuIcon {
-			width: 15px;
-			height: 15px;
-			float: right;
-			margin-right: 5px;
-		}
+        .menuIcon {
+            width: 15px;
+            height: 15px;
+            float: right;
+            margin-right: 5px;
+        }
 
-		.DWTcontainer,
-		.DWTcontainer_upload {
-			position: relative;
-			overflow: auto;
-			border: 1px solid #ccc;
-			color: #606060;
-		}
+        .DWTcontainer,
+        .DWTcontainer_upload {
+            position: relative;
+            overflow: auto;
+            border: 1px solid #ccc;
+            color: #606060;
+        }
 
-		.processcontainer {
-			width: 220px;
-			border: 1px solid #bbb;
-			height: 15px;
-			margin-left: 15px;
-			margin-top: 10px;
-		}
+        .processcontainer {
+            width: 220px;
+            border: 1px solid #bbb;
+            height: 15px;
+            margin-left: 15px;
+            margin-top: 10px;
+        }
 
-		#processbar {
-			background: #8ab4f8;
-			float: left;
-			height: 100%;
-			text-align: center;
-			line-height: 150%;
-		}
+        #processbar {
+            background: #8ab4f8;
+            float: left;
+            height: 100%;
+            text-align: center;
+            line-height: 150%;
+        }
 
-		.ds-div-scanPageDemo-button {
-			padding: 0 0 10px 10px;
-			margin: 0 auto;
-			border: 0;
-			border-style: initial;
-			border-color: initial;
-			border-image: initial;
-		}
+        .ds-div-scanPageDemo-button {
+            padding: 0 0 10px 10px;
+            margin: 0 auto;
+            border: 0;
+            border-style: initial;
+            border-color: initial;
+            border-image: initial;
+        }
 
-		#extra-tags-div-id .addBtn {
-			border: 1px dashed #999;
-			color: #999;
-			font-size: 36px;
-			text-align: center;
-			cursor: pointer;
-			margin: 3px 0 0 20px;
-			padding: 3px;
-			float: left;
-		}
+        #extra-tags-div-id .addBtn {
+            border: 1px dashed #999;
+            color: #999;
+            font-size: 36px;
+            text-align: center;
+            cursor: pointer;
+            margin: 3px 0 0 20px;
+            padding: 3px;
+            float: left;
+        }
 
-		table {
-			border-collapse: collapse;
-			border-spacing: 0;
-			width: 100%;
-			display: table
-		}
+        table {
+            border-collapse: collapse;
+            border-spacing: 0;
+            width: 100%;
+            display: table
+        }
 
-		table,
-		th,
-		td {
-			border: none
-		}
+        table,
+        th,
+        td {
+            border: none
+        }
 
-		.tc {
-			text-align: center;
-		}
+        .tc {
+            text-align: center;
+        }
 
-		#divErrorMessage {
-			color: red;
-		}
+        #divErrorMessage {
+            color: red;
+        }
 
-		.ds-div-scanPage-column {
-			padding: 0;
-			border: 0;
-			background-color: #FFF;
-		}
+        .ds-div-scanPage-column {
+            padding: 0;
+            border: 0;
+            background-color: #FFF;
+        }
 
 
-		.ds-div-title {
-			margin: 0;
-			padding: 0;
-		}
+        .ds-div-title {
+            margin: 0;
+            padding: 0;
+        }
 
-		.ds-div-scanPageDemo-button {
-			padding: 0;
-		}
+        .ds-div-scanPageDemo-button {
+            padding: 0;
+        }
 
-		.ds-div-scanPageHeader {
-			padding: 10px 0;
-		}
+        .ds-div-scanPageHeader {
+            padding: 10px 0;
+        }
 
-		.btn {
-			padding-top: 0;
-			padding-bottom: 0;
-			height: 35px;
-		}
+        .btn {
+            padding-top: 0;
+            padding-bottom: 0;
+            height: 35px;
+        }
 
-		.ds-button-bg-black,
-		.ds-button-bg-black-thin,
-		.ds-button-bg-white,
-		.ds-button-bg-white-thin {
-			margin: 0;
-		}
+        .ds-button-bg-black,
+        .ds-button-bg-black-thin,
+        .ds-button-bg-white,
+        .ds-button-bg-white-thin {
+            margin: 0;
+        }
 
-		.ds-div-scanPageTry {
-			margin: 2px auto;
-			padding: 0;
-			height: 105px;
-		}
+        .ds-div-scanPageTry {
+            margin: 2px auto;
+            padding: 0;
+            height: 105px;
+        }
 
-		.ds-div-scanPageTry h3 {
-			line-height: 20px;
-			padding: 0;
-			margin: 7px 0 0 0;
-		}
+        .ds-div-scanPageTry h3 {
+            line-height: 20px;
+            padding: 0;
+            margin: 7px 0 0 0;
+        }
 
-		.ds-div-scanPageTry div {
-			line-height: 20px;
-		}
+        .ds-div-scanPageTry div {
+            line-height: 20px;
+        }
 
-		.ds-div-download {
-			bottom: 2px;
-		}
+        .ds-div-download {
+            bottom: 2px;
+        }
 
-		#lblUploadedFiles {
-			padding: 5px 0;
-			line-height: 20px;
-		}
+        #lblUploadedFiles {
+            padding: 5px 0;
+            line-height: 20px;
+        }
 
-		.ds-div-download {
-			bottom: 2px;
-		}
+        .ds-div-download {
+            bottom: 2px;
+        }
 
-		.ds-div-scanPageAPI,
-		.ds-div-scanPageHeader,
-		.ds-div-scanPageDemo,
-		.ds-div-scanPageDemo-button,
-		.ds-div-scanPageTry {
-			width: 1460px;
-			min-width: 1460px;
-		}
+        .ds-div-scanPageAPI,
+        .ds-div-scanPageHeader,
+        .ds-div-scanPageDemo,
+        .ds-div-scanPageDemo-button,
+        .ds-div-scanPageTry {
+            width: 1460px;
+            min-width: 1460px;
+        }
 
-		.ds-div-scanPage-column0 {
-			width: 340px;
-		}
+        .ds-div-scanPage-column0 {
+            width: 340px;
+        }
 
-		.ds-div-scanPage-column1 {
-			width: 200px;
-		}
+        .ds-div-scanPage-column1 {
+            width: 200px;
+        }
 
-		.ds-div-scanPage-column2 {
-			width: calc(100% - 540px);
-		}
+        .ds-div-scanPage-column2 {
+            width: calc(100% - 540px);
+        }
 
-		.DWTcontainer,
-		.DWTcontainer_upload {
-			width: 335px;
-			font-size: 12px;
-			line-height: 18px;
-		}
+        .DWTcontainer,
+        .DWTcontainer_upload {
+            width: 335px;
+            font-size: 12px;
+            line-height: 18px;
+        }
 
-		.DWTcontainer {
-			height: 285px;
-		}
+        .DWTcontainer {
+            height: 285px;
+        }
 
-		.DWTcontainer_upload {
-			height: 330px;
-		}
+        .DWTcontainer_upload {
+            height: 330px;
+        }
 
-		.ds-div-scanPageDemo {
-			height: 645px;
-			min-height: 645px;
-		}
+        .ds-div-scanPageDemo {
+            height: 645px;
+            min-height: 645px;
+        }
 
-		#extra-tags-div-id .addBtn {
-			width: 310px;
-			margin: 0 0 5px 12px;
-		}
+        #extra-tags-div-id .addBtn {
+            width: 310px;
+            margin: 0 0 5px 12px;
+        }
 
-		.ds-div-scanPage-column0 span {
-			width: 105px;
-		}
+        .ds-div-scanPage-column0 span {
+            width: 105px;
+        }
 
-		#div-extra-tags {
-			max-height: 240px;
-		}
-	</style>
-	<script src="https://cdn.jsdelivr.net/npm/dwt@latest/dist/dynamsoft.webtwain.min.js"></script>
-	<script type="text/javascript">
-		Dynamsoft.DWT.Containers = [{ ContainerId: 'dwtcontrolContainer', Width: '100%', Height: '100%' }];
-		Dynamsoft.DWT.ProductKey = "DLS2eyJvcmdhbml6YXRpb25JRCI6IjIwMDAwMSJ9";
-		Dynamsoft.DWT.ResourcesPath = 'https://cdn.jsdelivr.net/npm/dwt@latest/dist';
+        #div-extra-tags {
+            max-height: 240px;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/dwt@latest/dist/dynamsoft.webtwain.min.js"></script>
+    <script type="text/javascript">
+        Dynamsoft.DWT.Containers = [{ ContainerId: 'dwtcontrolContainer', Width: '100%', Height: '100%' }];
+        Dynamsoft.DWT.ProductKey = "DLS2eyJvcmdhbml6YXRpb25JRCI6IjIwMDAwMSJ9";
+        Dynamsoft.DWT.ResourcesPath = 'https://cdn.jsdelivr.net/npm/dwt@latest/dist';
         Dynamsoft.DWT.ServiceInstallerLocation = 'https://download2.dynamsoft.com/Demo/DWT/Resources/dist/';
-		Dynamsoft.DWT.AutoLoad = true;
-
-		var showOverflowYCount = 7;
-		if (screen.width > 1281) { //1440
-			showOverflowYCount = 7;
-		} else {  //1028
-			showOverflowYCount = 5;
-		}
-		var DWTObject, extrTagsCount = 1, blankField = "", bOnAddTag = false, bOnModifyTag = false, bShowMenu = false, currentTag,
-			CurrentPathName = unescape(location.pathname),
-			CurrentPath = CurrentPathName.substring(0, CurrentPathName.lastIndexOf("/") + 1);
-
-		if (screen.width > 2560) {
-			showOverflowYCount = 15;
-		}
-
-		Dynamsoft.DWT.RegisterEvent("OnWebTwainReady", function () {
-			blankField = document.getElementsByClassName('div-tags-item')[1].cloneNode(true);
-			DWTObject = Dynamsoft.DWT.GetWebTwain('dwtcontrolContainer'); // Get the Dynamic Web TWAIN object that is embeded in the div with id 'dwtcontrolContainer'
-			if (DWTObject) {
-				if (location.protocol == 'file:' && !Dynamsoft.navInfoSync.bWin) {
-					alert('The project requires an HTTP server environment to enable uploading.');
-					return;
-				}
-
-				DWTObject.Viewer.cursor = "default";
-				Dynamsoft.DWT.CustomizableDisplayInfo.buttons.visibility.close = false;
-
-				Dynamsoft.FileUploader.Init('', function (obj) { dsUploadManager = obj }, function () { });
-				var imageEditor = DWTObject.Viewer.createImageEditor({ element: document.getElementById("dwtcontrolContainerLargeViewer"), width: '100%', height: '100%', buttons: { visibility: { close: false } } });
-				imageEditor.show();
-				DWTObject.Viewer.setViewMode(1, 4); // Set the view mode to 1 by 4
-
-				AddTagsInner("Web-TWAIN");
-				AddTagsInner("Barcode-Reader");
-				AddTagsInner("Document-Viewer");
-
-				DWTObject.SetDefaultTag("Web-TWAIN");
-
-				if (location.protocol == 'file:') {
-					var loadPath = CurrentPath.substring(1, CurrentPath.length);
-					DWTObject.LoadImageEx(loadPath + "Images/Images1.pdf", Dynamsoft.DWT.EnumDWT_ImageType.IT_PDF, function () {
-						DWTObject.SetDefaultTag("Barcode-Reader");
-						DWTObject.LoadImageEx(loadPath + "Images/Images2.pdf", Dynamsoft.DWT.EnumDWT_ImageType.IT_PDF, function () {
-							DWTObject.SetDefaultTag("Document-Viewer");
-							DWTObject.LoadImageEx(loadPath + "Images/Images3.pdf", Dynamsoft.DWT.EnumDWT_ImageType.IT_PDF, function () {
-								SetSelectTag(document.getElementsByClassName('div-tags-item')[0]);
-							},
-								function (errorCode, errorString) {
-									console.log('Failed to load the sample image: ' + errorString);
-								}
-							);
-						},
-							function (errorCode, errorString) {
-								console.log('Failed to load the sample image: ' + errorString);
-							}
-						);
-					},
-						function (errorCode, errorString) {
-							console.log('Failed to load the sample image: ' + errorString);
-						}
-					);
-
-				} else {
-					DWTObject.IfSSL = Dynamsoft.Lib.detect.ssl;
-					var _strPort = location.port == "" ? 80 : location.port;
-					if (Dynamsoft.Lib.detect.ssl == true)
-						_strPort = location.port == "" ? 443 : location.port;
-					DWTObject.HTTPPort = _strPort;
-
-					DWTObject.HTTPDownload(location.hostname, CurrentPath + "Images/Images1.pdf", function () {
-						DWTObject.SetDefaultTag("Barcode-Reader");
-						DWTObject.HTTPDownload(location.hostname, CurrentPath + "Images/Images2.pdf", function () {
-							DWTObject.SetDefaultTag("Document-Viewer");
-							DWTObject.HTTPDownload(location.hostname, CurrentPath + "Images/Images3.pdf", function () {
-								SetSelectTag(document.getElementsByClassName('div-tags-item')[0]);
-							},
-								function () {
-									console.log('failed to download the sample image!');
-								}
-							);
-						},
-							function () {
-								console.log('failed to download the sample image!');
-							}
-						);
-					},
-						function () {
-							console.log('failed to download the sample image!');
-						}
-					);
-				}
-			}
-		});
-
-		function AcquireImage() {
-			if (DWTObject) {
-				DWTObject.SelectSourceAsync().then(function () {
-					return DWTObject.AcquireImageAsync({
-						IfCloseSourceAfterAcquire: true // Scanner source will be closed automatically after the scan.
-					});
-				}).catch(function (exp) {
-					alert(exp.message);
-				});
-			}
-		}
-
-		function LoadImages() {
-			if (DWTObject) {
-				if (DWTObject.Addon && DWTObject.Addon.PDF) {
-					DWTObject.Addon.PDF.SetReaderOptions({
-						convertMode: Dynamsoft.DWT.EnumDWT_ConvertMode.CM_RENDERALL,
-						renderOptions: {
-							resolution: 300
-						}
-					});
-				}
-				DWTObject.LoadImageEx('', 5,
-					function () {
-					},
-					function (errorCode, errorString) {
-						alert('Load Image:' + errorString);
-					}
-				);
-			}
-		}
-
-
-		function AddTags() {
-			if (extrTagsCount > 1)
-				if (ConfirmTagInner() == false)
-					return;
-
-			var addTag;
-			extrTagsCount++;
-			var index = extrTagsCount - 1;
-			if (extrTagsCount == showOverflowYCount) {
-				document.getElementById('div-extra-tags').style.overflowY = 'scroll';
-			}
-
-			var addTagElement;
-			if (document.getElementsByClassName('div-tags-item')[1].style.display == "none") {
-				document.getElementsByClassName('div-tags-item')[1].style.display = '';
-				addTag = document.getElementsByClassName('div-tags-item')[1];
-			}
-			else {
-				addTagElement = blankField;
-				document.getElementById('div-extra-tags').appendChild(blankField);
-				if (document.getElementsByClassName('div-tags-item')[index].style.display == "none")
-					document.getElementsByClassName('div-tags-item')[index].style.display = '';
-				addTag = document.getElementsByClassName('div-tags-item')[index];
-				blankField = document.getElementsByClassName('div-tags-item')[index].cloneNode(true);
-			}
-			var spanTag = document.getElementsByClassName('span-tag')[index];
-			spanTag.style.display = 'none';
-			var inputTag = document.getElementsByClassName('input-tag')[index - 1];
-			inputTag.style.display = '';
-			var divEdit = document.getElementsByClassName('divEdit')[index];
-			divEdit.style.display = 'none';
-
-			bOnAddTag = true;
-			SelectTag(addTag, true);
-			if (addTagElement && addTagElement.children[1])
-				addTagElement.children[1].focus();
-
-		}
-
-		function AddTagsInner(value) {
-			extrTagsCount++;
-			var index = extrTagsCount - 1;
-
-			if (document.getElementsByClassName('div-tags-item')[1].style.display == "none") {
-				document.getElementsByClassName('div-tags-item')[1].style.display = '';
-			}
-			else {
-				document.getElementById('div-extra-tags').appendChild(blankField);
-				if (document.getElementsByClassName('div-tags-item')[index].style.display == "none")
-					document.getElementsByClassName('div-tags-item')[index].style.display = '';
-				blankField = document.getElementsByClassName('div-tags-item')[index].cloneNode(true);
-			}
-			var spanTag = document.getElementsByClassName('span-tag')[index];
-			spanTag.style.display = '';
-			spanTag.innerHTML = value;
-			var inputTag = document.getElementsByClassName('input-tag')[index - 1];
-			inputTag.style.display = 'none';
-			inputTag.value = value;
-			var divEdit = document.getElementsByClassName('divEdit')[index];
-			divEdit.style.display = 'none';
-		}
-
-		function ConfirmTag() {
-			if (bOnModifyTag) {
-				bOnModifyTag = false;
-				return;
-			}
-
-			if (bOnAddTag) {
-				bOnAddTag = false;
-				return;
-			}
-
-			ConfirmTagInner();
-		}
-
-		function ConfirmTagInner() {
-			ShowErrorMessage("");
-			if (currentTag) {
-				var spanTag = currentTag.children[0];
-				var inputTag = currentTag.children[1];
-
-				if (spanTag.style.display == '')
-					return true;
-
-				var oldTagValue = spanTag.innerHTML;
-				var tagValue = inputTag.value;
-				if (tagValue == "")
-					tagValue = "TagName";
-
-				var bFindSelf = false;
-				for (var i = 0; i < extrTagsCount; i++) {
-					var tagValueTemp = document.getElementsByClassName('div-tags-item')[i].children[0].innerHTML;
-
-					if (((bFindSelf == false && tagValueTemp != spanTag.innerHTML) || bFindSelf == true) && tagValueTemp == tagValue) {
-						//alert("The name already exists, please change it to another name!");
-						ShowErrorMessage("Error: The name already exists, please change it to another name!");
-						return false;
-					}
-
-					if (tagValueTemp == spanTag.innerHTML)
-						bFindSelf = true;
-
-				}
-
-				spanTag.style.display = '';
-
-				var tagShowValue = tagValue;
-				if (tagValue.length >= 18)
-					tagShowValue = tagValue.substring(0, 10) + "......" + tagValue.substring(tagValue.length - 3, tagValue.length);
-				spanTag.innerHTML = tagShowValue;
-				inputTag.style.display = 'none';
-
-				var divEdit = currentTag.children[2];
-				divEdit.style.display = '';
-
-				if (oldTagValue == tagValue)
-					return;
-
-				DWTObject.RenameTag(oldTagValue, tagValue);
-
-				DWTObject.SetDefaultTag(tagValue);
-
-				DWTObject.FilterImagesByTag(tagValue);
-			}
-
-			return true;
-		}
-
-		function ModifyTag() {
-			bOnModifyTag = true;
-		}
-
-		function SelectTag(obj, bOnlySelectTag) {
-			if (obj == currentTag)
-				return;
-			if (!bOnlySelectTag) {
-				if (ConfirmTagInner() == false)
-					return;
-			}
-
-
-			for (var i = 0; i < extrTagsCount; i++) {
-				document.getElementsByClassName('div-tags-item')[i].style.background = "";
-				if (i == 0)
-					document.getElementsByClassName('div-tags-item')[i].children[1].style.display = "none";
-				else
-					document.getElementsByClassName('div-tags-item')[i].children[2].style.display = "none";
-			}
-
-			SetSelectTag(obj);
-		}
-
-		function SetSelectTag(obj) {
-			currentTag = obj;
-			if (obj) {
-				obj.style.background = "#e7f2fd";
-
-				var value = currentTag.children[0].innerHTML;
-				if (value == "All") {
-					obj.children[1].style.display = "";
-					DWTObject.SetDefaultTag("");
-					DWTObject.FilterImagesByTag("");
-					DWTObject.CurrentImageIndexInBuffer = 0;
-				}
-				else {
-					if (obj.children[1].style.display == "none")
-						obj.children[2].style.display = "";
-					DWTObject.SetDefaultTag(value);
-					DWTObject.FilterImagesByTag(value);
-					DWTObject.CurrentImageIndexInBuffer = 0;
-				}
-			}
-			else {
-				DWTObject.SetDefaultTag("");
-				DWTObject.FilterImagesByTag("");
-				DWTObject.CurrentImageIndexInBuffer = 0;
-			}
-		}
-
-		function OnRenameTag() {
-			IfShowContext(false);
-			currentTag.children[0].style.display = 'none';
-			currentTag.children[1].style.display = '';
-			currentTag.children[1].value = currentTag.children[0].innerHTML;
-			currentTag.children[1].focus();
-			currentTag.children[2].style.display = 'none';
-		}
-
-		function OnRenameTag_click() {
-			ModifyTag();
-			OnRenameTag();
-		}
-
-
-		function OnDeleteTag() {
-			IfShowContext(false);
-			if (confirm("Are you sure you want to delete this tag?")) {
-				for (var i = DWTObject.HowManyImagesInBuffer - 1; i >= 0; i--) {
-					DWTObject.ClearImageTags(i);
-				}
-
-				if (document.getElementsByClassName('div-tags-item').length == 2) {
-					document.getElementsByClassName('div-tags-item')[1].style.display = 'none';
-					currentTag.children[0].innerHTML = "TagName";
-					currentTag.children[0].style.display = 'none';
-					currentTag.children[1].value = "";
-					currentTag.children[1].style.display = '';
-					currentTag.children[2].style.display = 'none';
-					currentTag = "";
-					SetSelectTag("");
-				}
-				else {
-					currentTag.remove();
-					SetSelectTag(document.getElementsByClassName('div-tags-item')[0]);
-				}
-
-				extrTagsCount--;
-
-				if (extrTagsCount < showOverflowYCount) {
-					document.getElementById('div-extra-tags').style.overflowY = '';
-				}
-			}
-		}
-
-		function OnSaveImages() {
-			if (DWTObject.HowManyImagesInBuffer == 0) {
-				alert("There is no image in buffer.");
-				return;
-			}
-
-			var OnSuccess = function () {
-				console.log("Successful.");
-			};
-
-			var OnFailure = function (errorCode, errorString) {
-				console.log(errorString);
-			};
-
-			DWTObject.SaveAllAsPDF("WebTWAINImage.pdf", OnSuccess, OnFailure);
-		}
-
-		function _printUploadedFiles(info) {
-			if (info.indexOf('DWTUploadFileName') != -1) {
-				var url, _strPort;
-				DWTObject.IfSSL = Dynamsoft.Lib.detect.ssl;
-				_strPort = location.port == "" ? 80 : location.port;
-				url = 'http://' + location.hostname + ':' + location.port;
-				if (Dynamsoft.Lib.detect.ssl == true) {
-					_strPort = location.port == "" ? 443 : location.port;
-					url = 'https://' + location.hostname + ':' + location.port;
-				}
-				var fileName = info.substring(info.indexOf('DWTUploadFileName') + 18, info.indexOf('UploadedFileSize'));
-				var fileSize = info.substr(info.indexOf('UploadedFileSize') + 17);
-				url += CurrentPath + 'Upload/' + encodeURI(fileName);
-
-				var newTR = document.createElement('tr');
-				_str = "<td class='tc'><a class='bluelink'" + ' href="' + url + '" target="_blank">' + fileName + "</a></td>" + "<td class='tc'>" + fileSize + '</td>';
-				newTR.innerHTML = _str;
-				document.getElementById('div-uploadedFile').appendChild(newTR);
-
-				var element = document.querySelector(".DWTcontainer_upload");
-				element.scrollTop = element.scrollHeight;
-			}
-		}
-
-		function OnUploadImages() {
-			if (DWTObject.HowManyImagesInBuffer == 0) {
-				alert("There is no image in buffer.");
-				return;
-			}
-
-			if (location.protocol == 'file:') {
-				alert('The project requires an HTTP server environment to enable uploading.');
-				return;
-			}
-
-			var processbar = document.getElementById("processbar");
-			processbar.style.width = 0 + "%";
-
-			var processcontainer = document.getElementById("processcontainer");
-			processcontainer.style.display = "";
-			var addBtnEl = document.querySelector(".addBtn");
-			addBtnEl.style.display = "none";
-
-			if (DWTObject.HowManyImagesInBuffer == 0)
-				return;
-
-			var aryIndices = [];
-			for (var i = 0; i < DWTObject.HowManyImagesInBuffer; i++)
-				aryIndices.push(i);
-
-			var OnFileUploadSuccess = function (url, indices, iImageType) {
-				var Digital = new Date();
-				uploadfilename = Digital.getMilliseconds();
-
-				var FileUpload_OnUploadTransferPercentage = function (obj, a) {
-					var processbar = document.getElementById("processbar");
-					processbar.style.width = a + "%";
-				};
-
-				var FileUpload_OnRunSuccess = function (obj, sHttpResponse) {
-					var processbar = document.getElementById("processbar");
-					processbar.style.width = 100 + "%";
-					_printUploadedFiles(sHttpResponse);
-					setTimeout(() => {
-						var processcontainer = document.getElementById("processcontainer");
-						processcontainer.style.display = "none";
-						var addBtnEl = document.querySelector(".addBtn");
-						addBtnEl.style.display = "";
-					}, 1000);
-				};
-
-				var FileUpload_OnRunFailure = function (sHttpResponse, ec, es) {
-					alert(es);
-				};
-
-				var strFullActionPagePath, strHTTPServer = location.hostname,
-					strActionPage = CurrentPath + 'SaveToFile.aspx';
-
-				DWTObject.IfSSL = Dynamsoft.Lib.detect.ssl;
-				var _strPort = location.port == "" ? 80 : location.port;
-				if (Dynamsoft.Lib.detect.ssl == true) {
-					_strPort = location.port == "" ? 443 : location.port;
-					strFullActionPagePath = "https://" + strHTTPServer + ":" + _strPort + strActionPage;
-				} else {
-					strFullActionPagePath = "http://" + strHTTPServer + ":" + _strPort + strActionPage;
-				}
-				DWTObject.HTTPPort = _strPort;
-
-				var fileName = uploadfilename + ".pdf"
-				var job = dsUploadManager.CreateJob();
-				job.ServerUrl = strFullActionPagePath;
-				job.SourceValue.Add(url, fileName);
-
-				var fields = document.getElementsByClassName('div-fields-item');
-				for (var n = 0; n < fields.length; n++) {
-					var o = fields[n];
-					if (o.children[0].value != '')
-						job.FormField.Add(o.children[0].value, o.children[1].value);
-				}
-
-				job.OnUploadTransferPercentage = FileUpload_OnUploadTransferPercentage;
-				job.OnRunSuccess = FileUpload_OnRunSuccess;
-				job.OnRunFailure = FileUpload_OnRunFailure;
-				dsUploadManager.Run(job);
-			};
-
-			var OnFileUploadFaild = function (ec, es) {
-				alert(es);
-			};
-
-			DWTObject.GenerateURLForUploadData(aryIndices, Dynamsoft.DWT.EnumDWT_ImageType.IT_PDF, OnFileUploadSuccess, OnFileUploadFaild);
-		}
-
-
-		document.onkeydown = function (e) {
-			var ev = document.all ? window.event : e;
-			if (ev.keyCode == 13) {
-				ConfirmTag();
-			}
-		}
-
-		function ShowMenu(obj) {
-			SelectTag(obj, false);
-
-			if (obj == currentTag) {
-				bShowMenu = true;
-				var tagForAll = document.getElementById("divTagSetting");
-				if (currentTag.children[0].innerHTML == "All")
-					tagForAll.style.display = "none";
-				else
-					tagForAll.style.display = "";
-			}
-			else
-				bShowMenu = false;
-		}
-
-		function IfShowContext(bShow) {
-			var context = document.getElementById("context");
-			if (bShow) {
-				//var e = env || window.event;
-				var e = window.event;
-
-				context.style.display = "block";
-
-				var x = e.clientX;
-				var y = e.clientY;
-				context.style.left = x + "px";
-				context.style.top = (y + getScrollTop()) + "px";
-			}
-			else {
-				if (context)
-					context.style.display = "none";
-			}
-		}
-
-		function getScrollTop() {
-			var scroll_top = 0;
-			if (document.documentElement && document.documentElement.scrollTop) {
-				scroll_top = document.documentElement.scrollTop;
-			}
-			else if (document.body) {
-				scroll_top = document.body.scrollTop;
-			}
-			return scroll_top;
-		}
-
-		document.oncontextmenu = function (env) {
-			if (!bShowMenu) {
-				IfShowContext(false);
-				return false;
-			}
-
-			bShowMenu = false;
-
-			IfShowContext(true);
-			return false;
-		}
-
-		document.onclick = function () {
-			IfShowContext(false);
-		}
-
-
-		function ShowErrorMessage(errorMessage) {
-			var error = document.getElementById("divErrorMessage");
-			error.innerHTML = errorMessage;
-		}
-	</script>
+        Dynamsoft.DWT.AutoLoad = true;
+
+        var showOverflowYCount = 7;
+        if (screen.width > 1281) { //1440
+            showOverflowYCount = 7;
+        } else {  //1028
+            showOverflowYCount = 5;
+        }
+        var DWTObject, extrTagsCount = 1, blankField = "", bOnAddTag = false, bOnModifyTag = false, bShowMenu = false, currentTag,
+            CurrentPathName = unescape(location.pathname),
+            CurrentPath = CurrentPathName.substring(0, CurrentPathName.lastIndexOf("/") + 1);
+
+        if (screen.width > 2560) {
+            showOverflowYCount = 15;
+        }
+
+        Dynamsoft.DWT.RegisterEvent("OnWebTwainReady", function () {
+            blankField = document.getElementsByClassName('div-tags-item')[1].cloneNode(true);
+            DWTObject = Dynamsoft.DWT.GetWebTwain('dwtcontrolContainer'); // Get the Dynamic Web TWAIN object that is embeded in the div with id 'dwtcontrolContainer'
+            if (DWTObject) {
+                if (location.protocol == 'file:' && !Dynamsoft.navInfoSync.bWin) {
+                    alert('The project requires an HTTP server environment to enable uploading.');
+                    return;
+                }
+
+                DWTObject.Viewer.cursor = "default";
+                Dynamsoft.DWT.CustomizableDisplayInfo.buttons.visibility.close = false;
+
+                Dynamsoft.FileUploader.Init('', function (obj) { dsUploadManager = obj }, function () { });
+                var imageEditor = DWTObject.Viewer.createImageEditor({ element: document.getElementById("dwtcontrolContainerLargeViewer"), width: '100%', height: '100%', buttons: { visibility: { close: false } } });
+                imageEditor.show();
+                DWTObject.Viewer.setViewMode(1, 4); // Set the view mode to 1 by 4
+
+                AddTagsInner("Web-TWAIN");
+                AddTagsInner("Barcode-Reader");
+                AddTagsInner("Document-Viewer");
+
+                DWTObject.SetDefaultTag("Web-TWAIN");
+
+                if (location.protocol == 'file:') {
+                    var loadPath = CurrentPath.substring(1, CurrentPath.length);
+                    DWTObject.LoadImageEx(loadPath + "Images/Images1.pdf", Dynamsoft.DWT.EnumDWT_ImageType.IT_PDF, function () {
+                        DWTObject.SetDefaultTag("Barcode-Reader");
+                        DWTObject.LoadImageEx(loadPath + "Images/Images2.pdf", Dynamsoft.DWT.EnumDWT_ImageType.IT_PDF, function () {
+                            DWTObject.SetDefaultTag("Document-Viewer");
+                            DWTObject.LoadImageEx(loadPath + "Images/Images3.pdf", Dynamsoft.DWT.EnumDWT_ImageType.IT_PDF, function () {
+                                SetSelectTag(document.getElementsByClassName('div-tags-item')[0]);
+                            },
+                                function (errorCode, errorString) {
+                                    console.log('Failed to load the sample image: ' + errorString);
+                                }
+                            );
+                        },
+                            function (errorCode, errorString) {
+                                console.log('Failed to load the sample image: ' + errorString);
+                            }
+                        );
+                    },
+                        function (errorCode, errorString) {
+                            console.log('Failed to load the sample image: ' + errorString);
+                        }
+                    );
+
+                } else {
+                    DWTObject.IfSSL = Dynamsoft.Lib.detect.ssl;
+                    var _strPort = location.port == "" ? 80 : location.port;
+                    if (Dynamsoft.Lib.detect.ssl == true)
+                        _strPort = location.port == "" ? 443 : location.port;
+                    DWTObject.HTTPPort = _strPort;
+
+                    DWTObject.HTTPDownload(location.hostname, CurrentPath + "Images/Images1.pdf", function () {
+                        DWTObject.SetDefaultTag("Barcode-Reader");
+                        DWTObject.HTTPDownload(location.hostname, CurrentPath + "Images/Images2.pdf", function () {
+                            DWTObject.SetDefaultTag("Document-Viewer");
+                            DWTObject.HTTPDownload(location.hostname, CurrentPath + "Images/Images3.pdf", function () {
+                                SetSelectTag(document.getElementsByClassName('div-tags-item')[0]);
+                            },
+                                function () {
+                                    console.log('failed to download the sample image!');
+                                }
+                            );
+                        },
+                            function () {
+                                console.log('failed to download the sample image!');
+                            }
+                        );
+                    },
+                        function () {
+                            console.log('failed to download the sample image!');
+                        }
+                    );
+                }
+            }
+        });
+
+        function AcquireImage() {
+            if (DWTObject) {
+                DWTObject.SelectSourceAsync().then(function () {
+                    return DWTObject.AcquireImageAsync({
+                        IfCloseSourceAfterAcquire: true // Scanner source will be closed automatically after the scan.
+                    });
+                }).catch(function (exp) {
+                    alert(exp.message);
+                });
+            }
+        }
+
+        function LoadImages() {
+            if (DWTObject) {
+                if (DWTObject.Addon && DWTObject.Addon.PDF) {
+                    DWTObject.Addon.PDF.SetReaderOptions({
+                        convertMode: Dynamsoft.DWT.EnumDWT_ConvertMode.CM_RENDERALL,
+                        renderOptions: {
+                            resolution: 300
+                        }
+                    });
+                }
+                DWTObject.LoadImageEx('', 5,
+                    function () {
+                    },
+                    function (errorCode, errorString) {
+                        alert('Load Image:' + errorString);
+                    }
+                );
+            }
+        }
+
+
+        function AddTags() {
+            if (extrTagsCount > 1)
+                if (ConfirmTagInner() == false)
+                    return;
+
+            var addTag;
+            extrTagsCount++;
+            var index = extrTagsCount - 1;
+            if (extrTagsCount == showOverflowYCount) {
+                document.getElementById('div-extra-tags').style.overflowY = 'scroll';
+            }
+
+            var addTagElement;
+            if (document.getElementsByClassName('div-tags-item')[1].style.display == "none") {
+                document.getElementsByClassName('div-tags-item')[1].style.display = '';
+                addTag = document.getElementsByClassName('div-tags-item')[1];
+            }
+            else {
+                addTagElement = blankField;
+                document.getElementById('div-extra-tags').appendChild(blankField);
+                if (document.getElementsByClassName('div-tags-item')[index].style.display == "none")
+                    document.getElementsByClassName('div-tags-item')[index].style.display = '';
+                addTag = document.getElementsByClassName('div-tags-item')[index];
+                blankField = document.getElementsByClassName('div-tags-item')[index].cloneNode(true);
+            }
+            var spanTag = document.getElementsByClassName('span-tag')[index];
+            spanTag.style.display = 'none';
+            var inputTag = document.getElementsByClassName('input-tag')[index - 1];
+            inputTag.style.display = '';
+            var divEdit = document.getElementsByClassName('divEdit')[index];
+            divEdit.style.display = 'none';
+
+            bOnAddTag = true;
+            SelectTag(addTag, true);
+            if (addTagElement && addTagElement.children[1])
+                addTagElement.children[1].focus();
+
+        }
+
+        function AddTagsInner(value) {
+            extrTagsCount++;
+            var index = extrTagsCount - 1;
+
+            if (document.getElementsByClassName('div-tags-item')[1].style.display == "none") {
+                document.getElementsByClassName('div-tags-item')[1].style.display = '';
+            }
+            else {
+                document.getElementById('div-extra-tags').appendChild(blankField);
+                if (document.getElementsByClassName('div-tags-item')[index].style.display == "none")
+                    document.getElementsByClassName('div-tags-item')[index].style.display = '';
+                blankField = document.getElementsByClassName('div-tags-item')[index].cloneNode(true);
+            }
+            var spanTag = document.getElementsByClassName('span-tag')[index];
+            spanTag.style.display = '';
+            spanTag.innerHTML = value;
+            var inputTag = document.getElementsByClassName('input-tag')[index - 1];
+            inputTag.style.display = 'none';
+            inputTag.value = value;
+            var divEdit = document.getElementsByClassName('divEdit')[index];
+            divEdit.style.display = 'none';
+        }
+
+        function ConfirmTag() {
+            if (bOnModifyTag) {
+                bOnModifyTag = false;
+                return;
+            }
+
+            if (bOnAddTag) {
+                bOnAddTag = false;
+                return;
+            }
+
+            ConfirmTagInner();
+        }
+
+        function ConfirmTagInner() {
+            ShowErrorMessage("");
+            if (currentTag) {
+                var spanTag = currentTag.children[0];
+                var inputTag = currentTag.children[1];
+
+                if (spanTag.style.display == '')
+                    return true;
+
+                var oldTagValue = spanTag.innerHTML;
+                var tagValue = inputTag.value;
+                if (tagValue == "")
+                    tagValue = "TagName";
+
+                var bFindSelf = false;
+                for (var i = 0; i < extrTagsCount; i++) {
+                    var tagValueTemp = document.getElementsByClassName('div-tags-item')[i].children[0].innerHTML;
+
+                    if (((bFindSelf == false && tagValueTemp != spanTag.innerHTML) || bFindSelf == true) && tagValueTemp == tagValue) {
+                        //alert("The name already exists, please change it to another name!");
+                        ShowErrorMessage("Error: The name already exists, please change it to another name!");
+                        return false;
+                    }
+
+                    if (tagValueTemp == spanTag.innerHTML)
+                        bFindSelf = true;
+
+                }
+
+                spanTag.style.display = '';
+
+                var tagShowValue = tagValue;
+                if (tagValue.length >= 18)
+                    tagShowValue = tagValue.substring(0, 10) + "......" + tagValue.substring(tagValue.length - 3, tagValue.length);
+                spanTag.innerHTML = tagShowValue;
+                inputTag.style.display = 'none';
+
+                var divEdit = currentTag.children[2];
+                divEdit.style.display = '';
+
+                if (oldTagValue == tagValue)
+                    return;
+
+                DWTObject.RenameTag(oldTagValue, tagValue);
+
+                DWTObject.SetDefaultTag(tagValue);
+
+                DWTObject.FilterImagesByTag(tagValue);
+            }
+
+            return true;
+        }
+
+        function ModifyTag() {
+            bOnModifyTag = true;
+        }
+
+        function SelectTag(obj, bOnlySelectTag) {
+            if (obj == currentTag)
+                return;
+            if (!bOnlySelectTag) {
+                if (ConfirmTagInner() == false)
+                    return;
+            }
+
+
+            for (var i = 0; i < extrTagsCount; i++) {
+                document.getElementsByClassName('div-tags-item')[i].style.background = "";
+                if (i == 0)
+                    document.getElementsByClassName('div-tags-item')[i].children[1].style.display = "none";
+                else
+                    document.getElementsByClassName('div-tags-item')[i].children[2].style.display = "none";
+            }
+
+            SetSelectTag(obj);
+        }
+
+        function SetSelectTag(obj) {
+            currentTag = obj;
+            if (obj) {
+                obj.style.background = "#e7f2fd";
+
+                var value = currentTag.children[0].innerHTML;
+                if (value == "All") {
+                    obj.children[1].style.display = "";
+                    DWTObject.SetDefaultTag("");
+                    DWTObject.FilterImagesByTag("");
+                    DWTObject.CurrentImageIndexInBuffer = 0;
+                }
+                else {
+                    if (obj.children[1].style.display == "none")
+                        obj.children[2].style.display = "";
+                    DWTObject.SetDefaultTag(value);
+                    DWTObject.FilterImagesByTag(value);
+                    DWTObject.CurrentImageIndexInBuffer = 0;
+                }
+            }
+            else {
+                DWTObject.SetDefaultTag("");
+                DWTObject.FilterImagesByTag("");
+                DWTObject.CurrentImageIndexInBuffer = 0;
+            }
+        }
+
+        function OnRenameTag() {
+            IfShowContext(false);
+            currentTag.children[0].style.display = 'none';
+            currentTag.children[1].style.display = '';
+            currentTag.children[1].value = currentTag.children[0].innerHTML;
+            currentTag.children[1].focus();
+            currentTag.children[2].style.display = 'none';
+        }
+
+        function OnRenameTag_click() {
+            ModifyTag();
+            OnRenameTag();
+        }
+
+
+        function OnDeleteTag() {
+            IfShowContext(false);
+            if (confirm("Are you sure you want to delete this tag?")) {
+                for (var i = DWTObject.HowManyImagesInBuffer - 1; i >= 0; i--) {
+                    DWTObject.ClearImageTags(i);
+                }
+
+                if (document.getElementsByClassName('div-tags-item').length == 2) {
+                    document.getElementsByClassName('div-tags-item')[1].style.display = 'none';
+                    currentTag.children[0].innerHTML = "TagName";
+                    currentTag.children[0].style.display = 'none';
+                    currentTag.children[1].value = "";
+                    currentTag.children[1].style.display = '';
+                    currentTag.children[2].style.display = 'none';
+                    currentTag = "";
+                    SetSelectTag("");
+                }
+                else {
+                    currentTag.remove();
+                    SetSelectTag(document.getElementsByClassName('div-tags-item')[0]);
+                }
+
+                extrTagsCount--;
+
+                if (extrTagsCount < showOverflowYCount) {
+                    document.getElementById('div-extra-tags').style.overflowY = '';
+                }
+            }
+        }
+
+        function OnSaveImages() {
+            if (DWTObject.HowManyImagesInBuffer == 0) {
+                alert("There is no image in buffer.");
+                return;
+            }
+
+            var OnSuccess = function () {
+                console.log("Successful.");
+            };
+
+            var OnFailure = function (errorCode, errorString) {
+                console.log(errorString);
+            };
+
+            DWTObject.SaveAllAsPDF("WebTWAINImage.pdf", OnSuccess, OnFailure);
+        }
+
+        function _printUploadedFiles(info) {
+            if (info.indexOf('DWTUploadFileName') != -1) {
+                var url, _strPort;
+                DWTObject.IfSSL = Dynamsoft.Lib.detect.ssl;
+                _strPort = location.port == "" ? 80 : location.port;
+                url = 'http://' + location.hostname + ':' + location.port;
+                if (Dynamsoft.Lib.detect.ssl == true) {
+                    _strPort = location.port == "" ? 443 : location.port;
+                    url = 'https://' + location.hostname + ':' + location.port;
+                }
+                var fileName = info.substring(info.indexOf('DWTUploadFileName') + 18, info.indexOf('UploadedFileSize'));
+                var fileSize = info.substr(info.indexOf('UploadedFileSize') + 17);
+                url += CurrentPath + 'Upload/' + encodeURI(fileName);
+
+                var newTR = document.createElement('tr');
+                _str = "<td class='tc'><a class='bluelink'" + ' href="' + url + '" target="_blank">' + fileName + "</a></td>" + "<td class='tc'>" + fileSize + '</td>';
+                newTR.innerHTML = _str;
+                document.getElementById('div-uploadedFile').appendChild(newTR);
+
+                var element = document.querySelector(".DWTcontainer_upload");
+                element.scrollTop = element.scrollHeight;
+            }
+        }
+
+        function OnUploadImages() {
+            if (DWTObject.HowManyImagesInBuffer == 0) {
+                alert("There is no image in buffer.");
+                return;
+            }
+
+            if (location.protocol == 'file:') {
+                alert('The project requires an HTTP server environment to enable uploading.');
+                return;
+            }
+
+            var processbar = document.getElementById("processbar");
+            processbar.style.width = 0 + "%";
+
+            var processcontainer = document.getElementById("processcontainer");
+            processcontainer.style.display = "";
+            var addBtnEl = document.querySelector(".addBtn");
+            addBtnEl.style.display = "none";
+
+            if (DWTObject.HowManyImagesInBuffer == 0)
+                return;
+
+            var aryIndices = [];
+            for (var i = 0; i < DWTObject.HowManyImagesInBuffer; i++)
+                aryIndices.push(i);
+
+            var OnFileUploadSuccess = function (url, indices, iImageType) {
+                var Digital = new Date();
+                uploadfilename = Digital.getMilliseconds();
+
+                var FileUpload_OnUploadTransferPercentage = function (obj, a) {
+                    var processbar = document.getElementById("processbar");
+                    processbar.style.width = a + "%";
+                };
+
+                var FileUpload_OnRunSuccess = function (obj, sHttpResponse) {
+                    var processbar = document.getElementById("processbar");
+                    processbar.style.width = 100 + "%";
+                    _printUploadedFiles(sHttpResponse);
+                    setTimeout(() => {
+                        var processcontainer = document.getElementById("processcontainer");
+                        processcontainer.style.display = "none";
+                        var addBtnEl = document.querySelector(".addBtn");
+                        addBtnEl.style.display = "";
+                    }, 1000);
+                };
+
+                var FileUpload_OnRunFailure = function (sHttpResponse, ec, es) {
+                    alert(es);
+                };
+
+                var strFullActionPagePath, strHTTPServer = location.hostname,
+                    strActionPage = CurrentPath + 'SaveToFile.aspx';
+
+                DWTObject.IfSSL = Dynamsoft.Lib.detect.ssl;
+                var _strPort = location.port == "" ? 80 : location.port;
+                if (Dynamsoft.Lib.detect.ssl == true) {
+                    _strPort = location.port == "" ? 443 : location.port;
+                    strFullActionPagePath = "https://" + strHTTPServer + ":" + _strPort + strActionPage;
+                } else {
+                    strFullActionPagePath = "http://" + strHTTPServer + ":" + _strPort + strActionPage;
+                }
+                DWTObject.HTTPPort = _strPort;
+
+                var fileName = uploadfilename + ".pdf"
+                var job = dsUploadManager.CreateJob();
+                job.ServerUrl = strFullActionPagePath;
+                job.SourceValue.Add(url, fileName);
+
+                var fields = document.getElementsByClassName('div-fields-item');
+                for (var n = 0; n < fields.length; n++) {
+                    var o = fields[n];
+                    if (o.children[0].value != '')
+                        job.FormField.Add(o.children[0].value, o.children[1].value);
+                }
+
+                job.OnUploadTransferPercentage = FileUpload_OnUploadTransferPercentage;
+                job.OnRunSuccess = FileUpload_OnRunSuccess;
+                job.OnRunFailure = FileUpload_OnRunFailure;
+                dsUploadManager.Run(job);
+            };
+
+            var OnFileUploadFaild = function (ec, es) {
+                alert(es);
+            };
+
+            DWTObject.GenerateURLForUploadData(aryIndices, Dynamsoft.DWT.EnumDWT_ImageType.IT_PDF, OnFileUploadSuccess, OnFileUploadFaild);
+        }
+
+
+        document.onkeydown = function (e) {
+            var ev = document.all ? window.event : e;
+            if (ev.keyCode == 13) {
+                ConfirmTag();
+            }
+        }
+
+        function ShowMenu(obj) {
+            SelectTag(obj, false);
+
+            if (obj == currentTag) {
+                bShowMenu = true;
+                var tagForAll = document.getElementById("divTagSetting");
+                if (currentTag.children[0].innerHTML == "All")
+                    tagForAll.style.display = "none";
+                else
+                    tagForAll.style.display = "";
+            }
+            else
+                bShowMenu = false;
+        }
+
+        function IfShowContext(bShow) {
+            var context = document.getElementById("context");
+            if (bShow) {
+                //var e = env || window.event;
+                var e = window.event;
+
+                context.style.display = "block";
+
+                var x = e.clientX;
+                var y = e.clientY;
+                context.style.left = x + "px";
+                context.style.top = (y + getScrollTop()) + "px";
+            }
+            else {
+                if (context)
+                    context.style.display = "none";
+            }
+        }
+
+        function getScrollTop() {
+            var scroll_top = 0;
+            if (document.documentElement && document.documentElement.scrollTop) {
+                scroll_top = document.documentElement.scrollTop;
+            }
+            else if (document.body) {
+                scroll_top = document.body.scrollTop;
+            }
+            return scroll_top;
+        }
+
+        document.oncontextmenu = function (env) {
+            if (!bShowMenu) {
+                IfShowContext(false);
+                return false;
+            }
+
+            bShowMenu = false;
+
+            IfShowContext(true);
+            return false;
+        }
+
+        document.onclick = function () {
+            IfShowContext(false);
+        }
+
+
+        function ShowErrorMessage(errorMessage) {
+            var error = document.getElementById("divErrorMessage");
+            error.innerHTML = errorMessage;
+        }
+    </script>
 
 </body>
 

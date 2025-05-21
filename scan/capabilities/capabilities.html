@@ -2,295 +2,295 @@
 <html>
 
 <head>
-	<title>Batch-Setting Scanner Capabilities</title>
-	<link rel="stylesheet" href="../../css/global.css?v=20250121" />
-	<link rel="stylesheet" href="../../css/scan.css?v=20250121" />
-	<link rel="stylesheet" href="Style/jquery-ui.css?v=20250121" />
-	<link href="Scripts/contextMenu/jquery.contextMenu.min.css?v=20250121" rel="stylesheet" type="text/css" />
+    <title>Batch-Setting Scanner Capabilities</title>
+    <link rel="stylesheet" href="../../css/global.css?v=20250121" />
+    <link rel="stylesheet" href="../../css/scan.css?v=20250121" />
+    <link rel="stylesheet" href="Style/jquery-ui.css?v=20250121" />
+    <link href="Scripts/contextMenu/jquery.contextMenu.min.css?v=20250121" rel="stylesheet" type="text/css" />
 </head>
 
 <body onunload="_unload();">
-	<div id="ValueSelector" title="Select A Value" class="hidden" style="min-width: 150px;">
-	</div>
-	<div class="ds-div-scanPageHeader">
-		<div class="ds-div-title">Batch-Setting Scanner Capabilities</div>
-		<p>This demo requires a scanner that supports batch setting scanner capabilities.</p>
-	</div>
-	<div class="ds-div-scanPageDemo">
-		<div class="ds-div-scanPage-column ds-div-scanPage-column0">
-			<div><label for="left">Select Source:</label><select size="1" id="source"
-					style="margin: 0 10px;"></select><input type="button" value="Get Capabilities"
-					class="ds-button-bg-black" onclick="GetAllCapabilities();" /></div>
-			<div id="capabilities" class="noselect clearfix mt10">
-				<table id="tblCAPList">
-					<thead id="tblCAPListHead">
-						<tr>
-							<th style="width:40%;">Capability</th>
-							<th style="width:15%;">Current Value</th>
-							<th style="width:15%;">Value Type</th>
-							<th style="width:10%;">Container</th>
-							<th style="width:5%;">#</th>
-							<th style="width:15%;">Operation Type</th>
-							<th style="display: none;">Original Index</th>
-							<th style="display: none;">Runtime Index</th>
-						</tr>
-					</thead>
-					<tbody id="tBodyCAPList"></tbody>
-				</table>
-			</div>
-			<input type="button" value="Scan" class="ds-button-bg-black" onclick="AcquireImage();" />
-			<input type="button" value="Close Source" class="ds-button-bg-white" onclick="CloseSource();" />
-		</div>
-		<div class="ds-div-scanPage-column ds-div-scanPage-column1">
-			<div id="dwtcontrolContainer" style="width: 100%; height: 100%;"></div>
-		</div>
-	</div>
-	<div class="ds-div-scanPageNote"><label for="message">Note: This demo automatically closes the Source when you leave
-			the page. After modifying capabilities or completing a scan, the Source remains open. To release the Source
-			without leaving the page, click "Close Source".</label></div>
-	<style>
-		#capabilities {
-			border: solid 1px #CCC;
-			overflow: auto;
-		}
+    <div id="ValueSelector" title="Select A Value" class="hidden" style="min-width: 150px;">
+    </div>
+    <div class="ds-div-scanPageHeader">
+        <div class="ds-div-title">Batch-Setting Scanner Capabilities</div>
+        <p>This demo requires a scanner that supports batch setting scanner capabilities.</p>
+    </div>
+    <div class="ds-div-scanPageDemo">
+        <div class="ds-div-scanPage-column ds-div-scanPage-column0">
+            <div><label for="left">Select Source:</label><select size="1" id="source"
+                    style="margin: 0 10px;"></select><input type="button" value="Get Capabilities"
+                    class="ds-button-bg-black" onclick="GetAllCapabilities();" /></div>
+            <div id="capabilities" class="noselect clearfix mt10">
+                <table id="tblCAPList">
+                    <thead id="tblCAPListHead">
+                        <tr>
+                            <th style="width:40%;">Capability</th>
+                            <th style="width:15%;">Current Value</th>
+                            <th style="width:15%;">Value Type</th>
+                            <th style="width:10%;">Container</th>
+                            <th style="width:5%;">#</th>
+                            <th style="width:15%;">Operation Type</th>
+                            <th style="display: none;">Original Index</th>
+                            <th style="display: none;">Runtime Index</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tBodyCAPList"></tbody>
+                </table>
+            </div>
+            <input type="button" value="Scan" class="ds-button-bg-black" onclick="AcquireImage();" />
+            <input type="button" value="Close Source" class="ds-button-bg-white" onclick="CloseSource();" />
+        </div>
+        <div class="ds-div-scanPage-column ds-div-scanPage-column1">
+            <div id="dwtcontrolContainer" style="width: 100%; height: 100%;"></div>
+        </div>
+    </div>
+    <div class="ds-div-scanPageNote"><label for="message">Note: This demo automatically closes the Source when you leave
+            the page. After modifying capabilities or completing a scan, the Source remains open. To release the Source
+            without leaving the page, click "Close Source".</label></div>
+    <style>
+        #capabilities {
+            border: solid 1px #CCC;
+            overflow: auto;
+        }
 
-		.ds-table-col0 {
-			padding: 0 5px;
-			font-size: 12px;
-		}
+        .ds-table-col0 {
+            padding: 0 5px;
+            font-size: 12px;
+        }
 
-		.ds-button-bg-black,
-		.ds-button-bg-white {
-			margin: 10px 15px;
-		}
+        .ds-button-bg-black,
+        .ds-button-bg-white {
+            margin: 10px 15px;
+        }
 
-		.ds-div-scanPage-column0 {
-			width: 900px;
-			padding: 5px;
-		}
+        .ds-div-scanPage-column0 {
+            width: 900px;
+            padding: 5px;
+        }
 
-		.ds-div-scanPage-column1 {
-			width: calc(100% - 900px);
-		}
+        .ds-div-scanPage-column1 {
+            width: calc(100% - 900px);
+        }
 
-		table,
-		th,
-		td {
-			border: 1px solid #CCC;
-		}
+        table,
+        th,
+        td {
+            border: 1px solid #CCC;
+        }
 
-		table,
-		td {
-			border-collapse: collapse;
-			font-size: 12px;
-		}
+        table,
+        td {
+            border-collapse: collapse;
+            font-size: 12px;
+        }
 
-		table {
-			width: 100%
-		}
+        table {
+            width: 100%
+        }
 
-		th {
-			word-wrap: normal;
-			line-height: 17px;
-			color: #fff;
-			background-color: #787878;
-		}
+        th {
+            word-wrap: normal;
+            line-height: 17px;
+            color: #fff;
+            background-color: #787878;
+        }
 
-		tr.even {
-			background-color: #E2E2E2;
-		}
+        tr.even {
+            background-color: #E2E2E2;
+        }
 
-		li.over,
-		tr.over {
-			background-color: #fafafa;
-		}
+        li.over,
+        tr.over {
+            background-color: #fafafa;
+        }
 
-		td {
-			padding: 5px;
-		}
+        td {
+            padding: 5px;
+        }
 
-		th {
-			padding-right: 20px;
-			padding-left: 10px;
-		}
+        th {
+            padding-right: 20px;
+            padding-left: 10px;
+        }
 
-		th.sortUp {
-			color: #fff;
-			background: #323334 url(Images/asc.png) no-repeat right center;
-		}
+        th.sortUp {
+            color: #fff;
+            background: #323334 url(Images/asc.png) no-repeat right center;
+        }
 
-		th.sortDown {
-			color: #fff;
-			background: #323334 url(Images/desc.png) no-repeat right center;
-		}
+        th.sortDown {
+            color: #fff;
+            background: #323334 url(Images/desc.png) no-repeat right center;
+        }
 
-		tr.ReadOnly {
-			color: #aaaaaa;
-		}
+        tr.ReadOnly {
+            color: #aaaaaa;
+        }
 
-		tr.Changed,
-		td.Changed {
-			font-weight: bold;
-			color: red;
-		}
+        tr.Changed,
+        td.Changed {
+            font-weight: bold;
+            color: red;
+        }
 
-		.ds-div-scanPageNote {
-			margin: 25px auto;
-			padding: 5px;
-			height: 50px;
-			border: 1px solid #CCCCCC;
-		}
+        .ds-div-scanPageNote {
+            margin: 25px auto;
+            padding: 5px;
+            height: 50px;
+            border: 1px solid #CCCCCC;
+        }
 
-		#capabilities {
-			color: #323334;
-		}
+        #capabilities {
+            color: #323334;
+        }
 
-		.ds-div-try-buttons {
-			margin-top: 10px;
-		}
+        .ds-div-try-buttons {
+            margin-top: 10px;
+        }
 
-		.ds-div-scanPageTry {
-			margin: 2px auto;
-			padding: 10px 0;
-			height: 120px;
-		}
+        .ds-div-scanPageTry {
+            margin: 2px auto;
+            padding: 10px 0;
+            height: 120px;
+        }
 
-		.ds-div-scanPageTry h2 {
-			line-height: 20px;
-			padding: 0;
-			margin: 7px 0 0 0;
-		}
+        .ds-div-scanPageTry h2 {
+            line-height: 20px;
+            padding: 0;
+            margin: 7px 0 0 0;
+        }
 
-		.ds-div-scanPageAPI,
-		.ds-div-scanPageHeader,
-		.ds-div-scanPageNote,
-		.ds-div-scanPageDemo,
-		.ds-div-scanPageDemo-button,
-		.ds-div-scanPageTry {
-			width: 1500px;
-		}
+        .ds-div-scanPageAPI,
+        .ds-div-scanPageHeader,
+        .ds-div-scanPageNote,
+        .ds-div-scanPageDemo,
+        .ds-div-scanPageDemo-button,
+        .ds-div-scanPageTry {
+            width: 1500px;
+        }
 
-		.ds-div-scanPage-column0 {
-			width: 950px;
-		}
+        .ds-div-scanPage-column0 {
+            width: 950px;
+        }
 
-		.ds-div-scanPage-column1 {
-			width: calc(100% - 950px);
-		}
+        .ds-div-scanPage-column1 {
+            width: calc(100% - 950px);
+        }
 
-		table,
-		td,
-		.ds-table-col0 {
-			font-size: 14px;
-		}
+        table,
+        td,
+        .ds-table-col0 {
+            font-size: 14px;
+        }
 
-		tr,
-		td,
-		th {
-			padding: 5px;
-			line-height: 20px;
-		}
+        tr,
+        td,
+        th {
+            padding: 5px;
+            line-height: 20px;
+        }
 
-		.ds-div-scanPageNote {
-			height: 60px;
-		}
+        .ds-div-scanPageNote {
+            height: 60px;
+        }
 
-		.ds-div-scanPage-column,
-		.ds-div-scanPageDemo {
-			height: 840px;
-			min-height: 840px;
-		}
+        .ds-div-scanPage-column,
+        .ds-div-scanPageDemo {
+            height: 840px;
+            min-height: 840px;
+        }
 
-		#capabilities {
-			height: 700px;
-			min-height: 700px;
-		}
-	</style>
-	<script src="https://cdn.jsdelivr.net/npm/dwt@latest/dist/dynamsoft.webtwain.min.js"></script>
-	<script type="text/javascript">
-		Dynamsoft.DWT.Containers = [{ ContainerId: 'dwtcontrolContainer', Width: '100%', Height: '100%' }];
-		Dynamsoft.DWT.ProductKey = "DLS2eyJvcmdhbml6YXRpb25JRCI6IjIwMDAwMSJ9";
-		Dynamsoft.DWT.ResourcesPath = 'https://cdn.jsdelivr.net/npm/dwt@latest/dist';
+        #capabilities {
+            height: 700px;
+            min-height: 700px;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/dwt@latest/dist/dynamsoft.webtwain.min.js"></script>
+    <script type="text/javascript">
+        Dynamsoft.DWT.Containers = [{ ContainerId: 'dwtcontrolContainer', Width: '100%', Height: '100%' }];
+        Dynamsoft.DWT.ProductKey = "DLS2eyJvcmdhbml6YXRpb25JRCI6IjIwMDAwMSJ9";
+        Dynamsoft.DWT.ResourcesPath = 'https://cdn.jsdelivr.net/npm/dwt@latest/dist';
         Dynamsoft.DWT.ServiceInstallerLocation = 'https://download2.dynamsoft.com/Demo/DWT/Resources/dist/';
-		Dynamsoft.DWT.AutoLoad = true;
-	</script>
-	<script src="Scripts/jquery.js?v=20250121"></script>
-	<script src="Scripts/jquery-ui.js?v=20250121"></script>
-	<script src="Scripts/tablesorter/js/jquery.tablesorter.min.js?v=20250121"></script>
-	<script src="Scripts/contextMenu/jquery.contextMenu.min.js?v=20250121"></script>
-	<script src="Scripts/contextMenu/jquery.ui.position.min.js?v=20250121"></script>
-	<script src="Scripts/twain.js?t=20250121"></script>
-	<script src="Scripts/twainstring.js?t=20250121"></script>
-	<script src="Scripts/twainapp.js?t=20250121"></script>
-	<script type="text/javascript">
-		var DWTObject, deviceList;
-		Dynamsoft.DWT.RegisterEvent("OnWebTwainReady", function () {
-			DWTObject = Dynamsoft.DWT.GetWebTwain('dwtcontrolContainer'); // Get the Dynamic Web TWAIN object that is embeded in the div with id 'dwtcontrolContainer'
-			if (DWTObject) {
-				deviceList = [];
-				var defaultSourceName = DWTObject.DefaultSourceName;
-				DWTObject.GetDevicesAsync().then(function (devices) {
-					for (var i = 0; i < devices.length; i++) { // Get how many sources are installed in the system
-						var device = devices[i],
-							newOption = new Option(devices[i].displayName, i);
-						if (devices[i].displayName == DWTObject.DefaultSourceName)
-							newOption.selected = true;
-						document.getElementById('source').options.add(newOption); // Add the sources in a drop-down list
-						deviceList.push(devices[i]);
-					}
-				}).catch(function (exp) {
-					alert(exp.message);
-				});
-			}
-		});
+        Dynamsoft.DWT.AutoLoad = true;
+    </script>
+    <script src="Scripts/jquery.js?v=20250121"></script>
+    <script src="Scripts/jquery-ui.js?v=20250121"></script>
+    <script src="Scripts/tablesorter/js/jquery.tablesorter.min.js?v=20250121"></script>
+    <script src="Scripts/contextMenu/jquery.contextMenu.min.js?v=20250121"></script>
+    <script src="Scripts/contextMenu/jquery.ui.position.min.js?v=20250121"></script>
+    <script src="Scripts/twain.js?t=20250121"></script>
+    <script src="Scripts/twainstring.js?t=20250121"></script>
+    <script src="Scripts/twainapp.js?t=20250121"></script>
+    <script type="text/javascript">
+        var DWTObject, deviceList;
+        Dynamsoft.DWT.RegisterEvent("OnWebTwainReady", function () {
+            DWTObject = Dynamsoft.DWT.GetWebTwain('dwtcontrolContainer'); // Get the Dynamic Web TWAIN object that is embeded in the div with id 'dwtcontrolContainer'
+            if (DWTObject) {
+                deviceList = [];
+                var defaultSourceName = DWTObject.DefaultSourceName;
+                DWTObject.GetDevicesAsync().then(function (devices) {
+                    for (var i = 0; i < devices.length; i++) { // Get how many sources are installed in the system
+                        var device = devices[i],
+                            newOption = new Option(devices[i].displayName, i);
+                        if (devices[i].displayName == DWTObject.DefaultSourceName)
+                            newOption.selected = true;
+                        document.getElementById('source').options.add(newOption); // Add the sources in a drop-down list
+                        deviceList.push(devices[i]);
+                    }
+                }).catch(function (exp) {
+                    alert(exp.message);
+                });
+            }
+        });
 
-		function GetAllCapabilities() {
-			if (DWTObject) {
-				var ddlSource = document.getElementById('source');
-				DWTObject.SelectDeviceAsync(deviceList[ddlSource.selectedIndex]).then(function () {
-					Dynamsoft.Lib.showMask();
-					return DWTObject.OpenSourceAsync();
-				}).then(function () {
-					return ListSupportedCaps(false, true);
-				}).then(function () {
-					addContextMenuToDWTViewer();
-					Dynamsoft.Lib.hideMask();
-				}).catch(function (exp) {
-					Dynamsoft.Lib.hideMask();
-					DWTObject.CloseSourceAsync().catch(function (_exp) {
-						console.error(_exp);
-					});
-					console.error(exp);
-				});
-			}
-		}
+        function GetAllCapabilities() {
+            if (DWTObject) {
+                var ddlSource = document.getElementById('source');
+                DWTObject.SelectDeviceAsync(deviceList[ddlSource.selectedIndex]).then(function () {
+                    Dynamsoft.Lib.showMask();
+                    return DWTObject.OpenSourceAsync();
+                }).then(function () {
+                    return ListSupportedCaps(false, true);
+                }).then(function () {
+                    addContextMenuToDWTViewer();
+                    Dynamsoft.Lib.hideMask();
+                }).catch(function (exp) {
+                    Dynamsoft.Lib.hideMask();
+                    DWTObject.CloseSourceAsync().catch(function (_exp) {
+                        console.error(_exp);
+                    });
+                    console.error(exp);
+                });
+            }
+        }
 
-		function AcquireImage() {
-			if (DWTObject) {
-				DWTObject.IfShowUI = false;
-				DWTObject.IfDisableSourceAfterAcquire = true;
+        function AcquireImage() {
+            if (DWTObject) {
+                DWTObject.IfShowUI = false;
+                DWTObject.IfDisableSourceAfterAcquire = true;
 
-				var ddlSource = document.getElementById('source');
-				DWTObject.AcquireImageAsync().catch(function (exp) {
-					console.error(exp);
-				});
-			}
-		}
+                var ddlSource = document.getElementById('source');
+                DWTObject.AcquireImageAsync().catch(function (exp) {
+                    console.error(exp);
+                });
+            }
+        }
 
-		function CloseSource() {
-			if (DWTObject) {
-				DWTObject.CloseSourceAsync().catch(function (exp) {
-					console.error(exp);
-				});
-			}
-		}
+        function CloseSource() {
+            if (DWTObject) {
+                DWTObject.CloseSourceAsync().catch(function (exp) {
+                    console.error(exp);
+                });
+            }
+        }
 
-		function _unload() {
-			if (DWTObject && !Dynamsoft.navInfoSync.bSafari) {
-				DWTObject.CloseSource();
-			}
-		}
-	</script>
+        function _unload() {
+            if (DWTObject && !Dynamsoft.navInfoSync.bSafari) {
+                DWTObject.CloseSource();
+            }
+        }
+    </script>
 </body>
 
 </html>
