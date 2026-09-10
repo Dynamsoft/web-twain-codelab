@@ -1,0 +1,304 @@
+<!doctype html>
+<!--
+	Hybrid scanning: MDS and DWT are pluggable image sources feeding into DDV
+	(Dynamsoft Document Viewer) as the shared document buffer and viewer, DWT
+	is limited to desktop.
+
+	- Camera button (all platforms): launch MDS, feed result into DDV.
+	- Scanner button (desktop only): headless DWT (Dynamic Web TWAIN) drives physical
+	  scanners (TWAIN/WIA/SANE) through locally installed DWT Service
+	  (browser prompts installation when DWT initializes at page load), feed into
+	  DDV buffer.
+	- DDV handles file IO - PDF export.
+
+	Loading strategy (all CDN, no build step or local assets): all three
+	libraries load dynamically from jsDelivr (only the DDV stylesheet is a
+	static tag); MDS and (on desktop) DWT start downloading immediately, in
+	parallel with DDV's load and init, so every source is ready before the
+	first click. Each source instance is created once and reused across
+	scans. DWT not supported on mobile.
+-->
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Dynamsoft MDS + DWT - Hybrid Document Scanning</title>
+
+		<!-- Dynamsoft Document Viewer stylesheet; the library itself is loaded
+		     dynamically from the same CDN, like MDS and DWT -->
+		<link
+			href="https://cdn.jsdelivr.net/npm/dynamsoft-document-viewer@4.0.0/dist/ddv.min.css"
+			rel="stylesheet"
+		/>
+		<style>
+			html,
+			body {
+				margin: 0;
+				width: 100%;
+				height: 100%;
+				position: fixed;
+			}
+
+			#edit-viewer-container,
+			#scanner-container {
+				position: fixed;
+				inset: 0;
+			}
+
+			#scanner-container {
+				display: none;
+				z-index: 9999;
+			}
+
+			/* Custom DDV toolbar buttons: camera (MDS) and physical scanner (DWT) */
+			.camera-button {
+				background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="28" height="24" viewBox="0 0 28 24"><g><path d="M24.37,4.174H21.287a1.672,1.672,0,0,1-1.224-.635L18.387,1.066A2.726,2.726,0,0,0,16.356,0H11.615A2.725,2.725,0,0,0,9.6,1.09L7.5,4.174l-3.927,0A3.978,3.978,0,0,0,0,8.206V20.348A3.645,3.645,0,0,0,3.63,24H24.37A3.645,3.645,0,0,0,28,20.348V8.212a3.99,3.99,0,0,0-3.63-4.038m2.593,16.174a2.6,2.6,0,0,1-2.593,2.609H3.63a2.6,2.6,0,0,1-2.592-2.609V8.2A2.935,2.935,0,0,1,3.63,5.218H7.778a.521.521,0,0,0,.429-.228L10.436,1.7a1.663,1.663,0,0,1,1.208-.657h4.683a1.665,1.665,0,0,1,1.221.635l1.676,2.474a2.735,2.735,0,0,0,2.033,1.066l3.06,0a2.946,2.946,0,0,1,2.646,2.991Z" fill="%23fff"/><path d="M14,8.348a5.739,5.739,0,1,0,5.7,5.739A5.729,5.729,0,0,0,14,8.348m0,10.435a4.7,4.7,0,1,1,4.667-4.7A4.687,4.687,0,0,1,14,18.783" fill="%23fff"/></g></svg>');
+				background-repeat: no-repeat;
+				background-position: center;
+				background-size: 28px 24px;
+			}
+
+			.scanner-button {
+				background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="28" height="24" viewBox="0 0 28 24"><g fill="none" stroke="%23fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 9V2h12v7"/><rect x="2" y="9" width="24" height="10" rx="2"/><path d="M7 14h14"/><path d="M10 22h8"/></g></svg>');
+				background-repeat: no-repeat;
+				background-position: center;
+				background-size: 28px 24px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="edit-viewer-container"></div>
+		<div id="scanner-container"></div>
+
+		<script type="module">
+			// 24 hour public trial license for DDV, MDS, DWT.
+			// Request a 30-day trial key for each product from
+			// https://www.dynamsoft.com/customer/license/trialLicense/
+			const LICENSE = "DLS2eyJvcmdhbml6YXRpb25JRCI6IjIwMDAwMSJ9";
+
+			// The MDS UMD bundle (DCV inlined) for inline use, use ESM with bundler.
+			const MDS_URL =
+				"https://cdn.jsdelivr.net/npm/dynamsoft-document-scanner@1.5.0/dist/dds.bundle.js";
+			const DWT_CDN = "https://cdn.jsdelivr.net/npm/dwt@19.4.1/dist";
+			const DDV_CDN = "https://cdn.jsdelivr.net/npm/dynamsoft-document-viewer@4.0.0/dist";
+
+			// iPadOS 13+ reports a Mac user agent; the touch-point check catches it.
+			const isMobile =
+				/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+					navigator.userAgent,
+				) ||
+				(navigator.maxTouchPoints > 1 && /Mac/i.test(navigator.userAgent));
+
+			const loadScript = (src) =>
+				new Promise((resolve, reject) => {
+					const script = document.createElement("script");
+					script.src = src;
+					script.onload = resolve;
+					script.onerror = () => reject(new Error(`Failed to load ${src}`));
+					document.head.appendChild(script);
+				});
+
+			const editViewerContainer = document.getElementById("edit-viewer-container");
+			const scannerContainer = document.getElementById("scanner-container");
+
+			// ---- Image sources: eagerly loaded, created once, reused on every scan ----
+			// Both libraries start downloading now, in parallel with DDV's load and
+			// init below. A failed init is forgotten so the next click retries (e.g.
+			// after the user installs the Dynamsoft Service).
+
+			let mdsScannerPromise;
+			const getMdsScanner = () =>
+				(mdsScannerPromise ??= loadScript(MDS_URL)
+					.then(
+						() =>
+							new Dynamsoft.DocumentScanner({
+								license: LICENSE,
+								container: scannerContainer,
+								enableContinuousScanning: true,
+								scannerViewConfig: {
+									enableAutoCropMode: true,
+									enableSmartCaptureMode: true,
+								},
+								onDocumentScanned: async (result) => {
+									try {
+										const canvas = result.correctedImageResult.toCanvas();
+										const blob = await new Promise((resolve) =>
+											canvas.toBlob(resolve, "image/jpeg", 0.9),
+										);
+										if (blob) await addPage(blob);
+									} catch (error) {
+										console.error("Error adding scanned page to DDV:", error);
+									}
+								},
+							}),
+					)
+					.catch((error) => {
+						mdsScannerPromise = undefined;
+						throw error;
+					}));
+
+			let dwtPromise;
+			const createDwt = async () => {
+				await loadScript(`${DWT_CDN}/dynamsoft.webtwain.min.js`);
+				Dynamsoft.DWT.AutoLoad = false;
+				Dynamsoft.DWT.Containers = [];
+				Dynamsoft.DWT.ProductKey = LICENSE;
+				Dynamsoft.DWT.ResourcesPath = DWT_CDN;
+				Dynamsoft.DWT.ServiceInstallerLocation = "https://unpkg.com/dwt@19.4.1/dist/dist/";
+				// Headless, use DDV for UI
+				return new Promise((resolve, reject) =>
+					Dynamsoft.DWT.CreateDWTObjectEx({ WebTwainId: "dwt-source" }, resolve, (error) =>
+						reject(new Error(error?.message ?? String(error))),
+					),
+				);
+			};
+			const getDwt = () =>
+				(dwtPromise ??= createDwt().catch((error) => {
+					dwtPromise = undefined;
+					throw error;
+				}));
+
+			// Pre-load, failures are logged, not fatal,
+			// button handlers go through the same getters and retry.
+			getMdsScanner().catch((error) => console.error("MDS preload failed:", error));
+			if (!isMobile) getDwt().catch((error) => console.error("DWT preload failed:", error));
+
+			// ---- DDV: shared document store, viewer, and file IO pipeline ----
+			await loadScript(`${DDV_CDN}/ddv.min.js`);
+			Dynamsoft.DDV.Core.license = LICENSE;
+			Dynamsoft.DDV.Core.engineResourcePath = `${DDV_CDN}/engine`;
+			await Dynamsoft.DDV.Core.loadWasm();
+			await Dynamsoft.DDV.Core.init();
+
+			// Custom toolbar buttons
+			const cameraButton = {
+				type: Dynamsoft.DDV.Elements.Button,
+				className: "camera-button",
+				tooltip: "Scan with camera (MDS)",
+				events: { click: "startCameraScan" },
+			};
+			const scannerButton = {
+				type: Dynamsoft.DDV.Elements.Button,
+				className: "scanner-button",
+				tooltip: "Scan from document scanner (DWT)",
+				events: { click: "startScannerScan" },
+			};
+			// Desktop UI: default edit viewer UI with the camera and scanner buttons
+			// appended to the header toolbar.
+			const desktopUiConfig = Dynamsoft.DDV.getDefaultUiConfig("editViewer");
+			desktopUiConfig?.children?.[0]?.children?.[1]?.children?.push?.(cameraButton, scannerButton);
+
+			// Mobile UI: no scanner button - DWT is desktop-only.
+			const mobileUiConfig = {
+				type: Dynamsoft.DDV.Elements.Layout,
+				flexDirection: "column",
+				className: "ddv-edit-viewer-mobile",
+				children: [
+					{
+						type: Dynamsoft.DDV.Elements.Layout,
+						className: "ddv-edit-viewer-header-mobile",
+						children: [
+							{
+								type: Dynamsoft.DDV.Elements.Layout,
+								children: [
+									Dynamsoft.DDV.Elements.Print,
+									Dynamsoft.DDV.Elements.Download,
+									Dynamsoft.DDV.Elements.Pagination,
+								],
+							},
+						],
+					},
+					Dynamsoft.DDV.Elements.MainView,
+					{
+						type: Dynamsoft.DDV.Elements.Layout,
+						className: "ddv-edit-viewer-footer-mobile",
+						children: [
+							Dynamsoft.DDV.Elements.DisplayMode,
+							Dynamsoft.DDV.Elements.RotateLeft,
+							Dynamsoft.DDV.Elements.Crop,
+							Dynamsoft.DDV.Elements.AnnotationSet,
+							Dynamsoft.DDV.Elements.Undo,
+							Dynamsoft.DDV.Elements.DeleteCurrent,
+							Dynamsoft.DDV.Elements.Load,
+							cameraButton,
+						],
+					},
+				],
+			};
+
+			// Workflow starts in the edit viewer on an empty document
+			const editViewer = new Dynamsoft.DDV.EditViewer({
+				container: editViewerContainer,
+				uiConfig: isMobile ? mobileUiConfig : desktopUiConfig,
+				viewerConfig: {
+					scrollToLatest: true,
+				},
+			});
+			const doc = Dynamsoft.DDV.documentManager.createDocument({
+				name: `Doc-${Date.now()}`,
+			});
+			editViewer.openDocument(doc.uid);
+
+			// Feed pages into the DDV document, hoists so the eagerly-created MDS scanner
+			// above can safely reference it from its onDocumentScanned callback.
+			async function addPage(blob) {
+				return doc.loadSource([{ convertMode: "cm/auto", fileData: blob }]);
+			}
+
+			// Prevent overlapping acquisitions from either source.
+			let sourceBusy = false;
+
+			// ---- Camera source: MDS (all platforms) ----
+			editViewer.on("startCameraScan", async () => {
+				if (sourceBusy) return;
+				sourceBusy = true;
+				try {
+					const mdsScanner = await getMdsScanner(); // already created at startup
+					editViewerContainer.style.display = "none";
+					scannerContainer.style.display = "block";
+					await mdsScanner.launch(); // resolves when the user taps Done or closes
+				} catch (error) {
+					console.error("Camera scanner error:", error);
+				} finally {
+					scannerContainer.style.display = "none";
+					editViewerContainer.style.display = "block";
+					sourceBusy = false;
+				}
+			});
+
+			// ---- Physical scanner source: DWT (desktop only) ----
+			editViewer.on("startScannerScan", async () => {
+				if (sourceBusy) return;
+				sourceBusy = true;
+				try {
+					const dwt = await getDwt(); // already created at startup
+					await dwt.SelectSourceAsync();
+					await dwt.AcquireImageAsync({
+						PixelType: Dynamsoft.DWT.EnumDWT_PixelType.TWPT_RGB,
+						Resolution: 200,
+						IfCloseSourceAfterAcquire: true,
+					});
+					// Drain the DWT buffer into the DDV document, oldest page first.
+					for (let i = 0; i < dwt.HowManyImagesInBuffer; i++) {
+						const blob = await new Promise((resolve, reject) =>
+							dwt.ConvertToBlob(
+								[i],
+								Dynamsoft.DWT.EnumDWT_ImageType.IT_PNG,
+								resolve,
+								(code, message) => reject(new Error(`DWT error ${code}: ${message}`)),
+							),
+						);
+						await addPage(blob);
+					}
+					dwt.RemoveAllImages();
+				} catch (error) {
+					// Also lands here when the user cancels the source-select dialog.
+					console.error("Scanner error:", error);
+				} finally {
+					sourceBusy = false;
+				}
+			});
+		</script>
+	</body>
+</html>
