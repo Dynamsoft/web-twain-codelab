@@ -19,6 +19,10 @@ Check out more samples in this repo: <https://github.com/Dynamsoft/web-twain-sam
 - [Setting Maximum Image Count per Scan](scan/xfer-count.html)
 - [Batch-Setting Scanner Capabilities](scan/capabilities/capabilities.html)
 
+## Camera
+
+- [Scan with both camera and scanners on desktop and camera on mobile](camera/camera-and-TWAIN-scanner.html)
+
 ## UI Customization
 
 - [Built-in image viewer and editor](UI-customization/image-editor.html)
