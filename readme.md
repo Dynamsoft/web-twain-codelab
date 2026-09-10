@@ -21,7 +21,7 @@ Check out more samples in this repo: <https://github.com/Dynamsoft/web-twain-sam
 
 ## Camera
 
-- [Scan with both camera and scanners on desktop and camera on mobile](camera/camera-and-TWAIN-scanner.html)
+- [Scan with both cameras and scanners on desktop and camera on mobile](camera/camera-and-TWAIN-scanner.html)
 
 ## UI Customization
 
