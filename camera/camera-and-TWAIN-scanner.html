@@ -27,7 +27,7 @@
 		<!-- Dynamsoft Document Viewer stylesheet; the library itself is loaded
 		     dynamically from the same CDN, like MDS and DWT -->
 		<link
-			href="https://cdn.jsdelivr.net/npm/dynamsoft-document-viewer@4.0.0/dist/ddv.min.css"
+			href="https://cdn.jsdelivr.net/npm/dynamsoft-document-viewer@5.0.1/dist/ddv.css"
 			rel="stylesheet"
 		/>
 		<style>
@@ -80,8 +80,8 @@
 			// The MDS UMD bundle (DCV inlined) for inline use, use ESM with bundler.
 			const MDS_URL =
 				"https://cdn.jsdelivr.net/npm/dynamsoft-document-scanner@1.5.0/dist/dds.bundle.js";
-			const DWT_CDN = "https://cdn.jsdelivr.net/npm/dwt@19.4.1/dist";
-			const DDV_CDN = "https://cdn.jsdelivr.net/npm/dynamsoft-document-viewer@4.0.0/dist";
+			const DWT_CDN = "https://cdn.jsdelivr.net/npm/dwt@19.4.4/dist";
+			const DDV_CDN = "https://cdn.jsdelivr.net/npm/dynamsoft-document-viewer@5.0.1/dist";
 
 			// iPadOS 13+ reports a Mac user agent; the touch-point check catches it.
 			const isMobile =
@@ -145,7 +145,7 @@
 				Dynamsoft.DWT.Containers = [];
 				Dynamsoft.DWT.ProductKey = LICENSE;
 				Dynamsoft.DWT.ResourcesPath = DWT_CDN;
-				Dynamsoft.DWT.ServiceInstallerLocation = "https://unpkg.com/dwt@19.4.1/dist/dist/";
+				Dynamsoft.DWT.ServiceInstallerLocation = "https://unpkg.com/dwt@19.4.4/dist/dist/";
 				// Headless, use DDV for UI
 				return new Promise((resolve, reject) =>
 					Dynamsoft.DWT.CreateDWTObjectEx({ WebTwainId: "dwt-source" }, resolve, (error) =>
@@ -165,10 +165,11 @@
 			if (!isMobile) getDwt().catch((error) => console.error("DWT preload failed:", error));
 
 			// ---- DDV: shared document store, viewer, and file IO pipeline ----
-			await loadScript(`${DDV_CDN}/ddv.min.js`);
+			await loadScript(`${DDV_CDN}/ddv.js`);
+			await loadScript(`${DDV_CDN}/plugins/ddv-plugin-annotation.js`);
 			Dynamsoft.DDV.Core.license = LICENSE;
 			Dynamsoft.DDV.Core.engineResourcePath = `${DDV_CDN}/engine`;
-			await Dynamsoft.DDV.Core.loadWasm();
+			Dynamsoft.DDV.use(Dynamsoft.DDV.AnnotationPlugin);
 			await Dynamsoft.DDV.Core.init();
 
 			// Custom toolbar buttons
