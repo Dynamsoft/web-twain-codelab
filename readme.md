@@ -19,9 +19,12 @@ Check out more samples in this repo: <https://github.com/Dynamsoft/web-twain-sam
 - [Setting Maximum Image Count per Scan](scan/xfer-count.html)
 - [Batch-Setting Scanner Capabilities](scan/capabilities/capabilities.html)
 
-## Camera
+## Combining Web TWAIN with Other Dynamsoft SDKs
 
-- [Scan with both cameras and scanners on desktop and camera on mobile](camera/camera-and-TWAIN-scanner.html)
+Samples in [`with-other-sdks/`](with-other-sdks/) pair Dynamic Web TWAIN with other Dynamsoft SDKs, one folder per SDK.
+
+- **Dynamic Web TWAIN + Mobile Document Scanner**: capture documents from a camera or a scanner — [Hybrid Document Scanning](with-other-sdks/mobile-document-scanner/camera-and-scanner.html). Also uses Dynamsoft Document Viewer to display pages.
+- **Dynamic Web TWAIN + MRZ Scanner**: read passports and IDs — *coming soon*
 
 ## UI Customization
 
