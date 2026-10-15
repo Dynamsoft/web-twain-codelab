@@ -21,10 +21,10 @@ Check out more samples in this repo: <https://github.com/Dynamsoft/web-twain-sam
 
 ## Combining Web TWAIN with Other Dynamsoft SDKs
 
-Samples in [`with-other-sdks/`](with-other-sdks/) pair Dynamic Web TWAIN (DWT) with other Dynamsoft SDKs.
+Samples in [`with-other-sdks/`](with-other-sdks/) pair Dynamic Web TWAIN with other Dynamsoft SDKs, one folder per SDK.
 
-- DWT + MDS: capture documents from a camera or a scanner — [Hybrid Document Scanning (Camera and Scanner)](with-other-sdks/mds/camera-and-scanner.html). Uses MDS (Mobile Document Scanner) for the camera and DDV (Document Viewer) to display pages.
-- DWT + MRZ: read passports and IDs — *coming soon*
+- **Dynamic Web TWAIN + Mobile Document Scanner**: capture documents from a camera or a scanner — [Hybrid Document Scanning](with-other-sdks/mobile-document-scanner/camera-and-scanner.html). Also uses Dynamsoft Document Viewer to display pages.
+- **Dynamic Web TWAIN + MRZ Scanner**: read passports and IDs — *coming soon*
 
 ## UI Customization
 
