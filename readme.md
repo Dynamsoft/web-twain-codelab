@@ -19,9 +19,12 @@ Check out more samples in this repo: <https://github.com/Dynamsoft/web-twain-sam
 - [Setting Maximum Image Count per Scan](scan/xfer-count.html)
 - [Batch-Setting Scanner Capabilities](scan/capabilities/capabilities.html)
 
-## Camera
+## Combining Web TWAIN with Other Dynamsoft SDKs
 
-- [Scan with both cameras and scanners on desktop and camera on mobile](camera/camera-and-TWAIN-scanner.html)
+Samples in [`cross-product/`](cross-product/) pair Dynamic Web TWAIN (DWT) with other Dynamsoft SDKs.
+
+- DWT + MDS: capture documents from a camera — [Scan with both cameras and scanners on desktop and camera on mobile](cross-product/camera-and-TWAIN-scanner.html)
+- DWT + MRZ: read passports and IDs — *coming soon*
 
 ## UI Customization
 
