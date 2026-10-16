@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Dynamic Web TWAIN + Dynamsoft MRZ Scanner</title>
+		<link rel="stylesheet" href="assets/style.css" />
+
+		<!-- The 19.x npm bundle inlines every addon, so one tag covers Web TWAIN. Both
+		     SDKs extend the same `Dynamsoft` global, so load order does not matter. -->
+		<script src="https://cdn.jsdelivr.net/npm/dwt@19.4.4/dist/dynamsoft.webtwain.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/dynamsoft-mrz-scanner@4.0.0/dist/mrz-scanner.bundle.js"></script>
+	</head>
+
+	<body>
+		<header class="site-header">
+			<div class="site-header-inner">
+				<a class="brand" href="https://www.dynamsoft.com/" aria-label="Dynamsoft home">
+					<img class="brand-logo" src="assets/dynamsoft-logo.svg" width="159" height="39" alt="Dynamsoft" />
+				</a>
+				<span class="brand-divider" aria-hidden="true"></span>
+				<span class="brand-product">MRZ Scanner for Dynamic Web TWAIN</span>
+
+				<nav class="header-nav" aria-label="Dynamsoft products">
+					<a class="nav-link" href="https://www.dynamsoft.com/web-twain/overview/">
+						Dynamic Web TWAIN
+					</a>
+					<a class="nav-link" href="https://www.dynamsoft.com/use-cases/mrz-scanner/">
+						MRZ Scanner
+					</a>
+					<a class="btn btn-primary" href="https://www.dynamsoft.com/downloads/">
+						30-Day Free Trial
+					</a>
+				</nav>
+			</div>
+		</header>
+
+		<p class="page-intro">
+			Scan or load a passport, ID card, or visa into the Web TWAIN buffer, then read its
+			Machine-Readable Zone with the Dynamsoft MRZ Scanner.
+		</p>
+
+		<div id="banner" class="banner" hidden></div>
+
+		<main class="layout">
+			<!-- ── Left: Web TWAIN acquisition + viewer ───────────────────────────── -->
+			<section class="panel panel-scan">
+				<div class="toolbar">
+					<select id="source-list" class="select" aria-label="Scanner" disabled>
+						<option>Looking for scanners&hellip;</option>
+					</select>
+					<button type="button" id="btn-refresh" class="btn btn-quiet" title="Refresh the scanner list" disabled>
+						Refresh
+					</button>
+				</div>
+
+				<div class="options">
+					<!-- Scans use the feeder unless this is ticked, since most scanners only have one. -->
+					<label class="option">
+						<input type="checkbox" id="chk-flatbed" autocomplete="off" />
+						<span>Use Flatbed</span>
+					</label>
+					<!-- Only shown for the feeder: a flatbed scans one side at a time. -->
+					<label class="option" id="duplex-option" title="The scanner captures both faces, so the sides can be linked">
+						<input type="checkbox" id="chk-duplex" />
+						<span>Duplex (both faces)</span>
+					</label>
+					<label class="option">
+						<input type="checkbox" id="chk-blank" checked />
+						<span>Discard blank pages</span>
+					</label>
+					<label class="option">
+						<input type="checkbox" id="chk-auto" />
+						<span>Read MRZ automatically as each image arrives</span>
+					</label>
+				</div>
+
+				<div class="scan-actions">
+					<button type="button" id="btn-scan" class="btn btn-primary btn-scan" disabled>Scan</button>
+					<button type="button" id="btn-load" class="btn" disabled>Load File</button>
+					<button type="button" id="btn-clear" class="btn btn-quiet" disabled>Clear Buffer</button>
+				</div>
+
+				<div id="dwtcontrolContainer" class="viewer"></div>
+				<p class="hint" id="buffer-hint">Initializing Dynamic Web TWAIN&hellip;</p>
+			</section>
+
+			<!-- ── Right: MRZ reading + results ───────────────────────────────────── -->
+			<section class="panel panel-mrz">
+				<div class="toolbar">
+					<button type="button" id="btn-read-current" class="btn btn-primary" disabled>
+						Read Current Image
+					</button>
+					<button type="button" id="btn-read-all" class="btn" disabled>Read All Images</button>
+				</div>
+
+				<ol class="result-list" id="result-list"></ol>
+
+				<div class="detail" id="detail" hidden></div>
+			</section>
+		</main>
+
+		<!-- The MRZ Scanner needs a real container for its loading overlay; it is parked
+		     off-screen since file mode never creates a camera view. -->
+		<div class="mrz-host-wrapper" aria-hidden="true">
+			<div id="mrzScannerHost"></div>
+		</div>
+
+		<script type="module" src="js/main.js"></script>
+	</body>
+</html>

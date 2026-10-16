@@ -1,0 +1,268 @@
+:root {
+	--surface: #ffffff;
+	--control: #fbfbfc;
+	--hover: #f0f1f3;
+	--divider: #eceef0;
+	--border: #d8dbe0;
+	--text: #1f2328;
+	--muted: #646b75;
+	--accent: #fe8e14;
+	--accent-tint: #fff6ec;
+	--warn: #9a6700;
+	--warn-tint: #fdf8e8;
+	--err: #b32d2e;
+	--err-tint: #fdf0f0;
+}
+
+* { box-sizing: border-box; }
+
+/* Classes below set `display`, which would otherwise override the hidden attribute. */
+[hidden] { display: none !important; }
+
+body {
+	margin: 0;
+	padding: 24px;
+	background: #f4f5f7;
+	color: var(--text);
+	font: 14px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,
+		sans-serif;
+}
+
+/* Every top-level block shares one centred column. */
+.site-header-inner,
+.page-intro,
+.banner,
+.layout { max-width: 1180px; margin: 0 auto; }
+
+/* ── Header ──────────────────────────────────────────────────────────────── */
+
+/* Negative margins bleed the bar past the body padding, edge to edge. */
+.site-header {
+	margin: -24px -24px 16px;
+	padding: 0 24px;
+	border-bottom: 1px solid var(--border);
+	background: var(--surface);
+}
+.site-header-inner {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 12px;
+	min-height: 60px;
+	padding: 10px 0;
+}
+
+.brand { display: flex; }
+.brand-logo { display: block; width: auto; height: 26px; }
+.brand-divider { width: 1px; height: 22px; background: var(--border); }
+.brand-product { font-weight: 600; }
+
+.header-nav { display: flex; flex-wrap: wrap; align-items: center; gap: 18px; margin-left: auto; }
+.nav-link { color: var(--muted); text-decoration: none; white-space: nowrap; }
+.nav-link:hover { color: var(--text); }
+
+.page-intro { margin-bottom: 16px; color: var(--muted); }
+
+.banner {
+	margin-bottom: 16px;
+	padding: 10px 14px;
+	border: 1px solid #f0c0c0;
+	border-radius: 6px;
+	background: var(--err-tint);
+	color: var(--err);
+}
+.banner.warn { border-color: #e8d6a0; background: var(--warn-tint); color: var(--warn); }
+
+/* ── Layout ──────────────────────────────────────────────────────────────── */
+
+.layout {
+	display: grid;
+	grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+	gap: 16px;
+	align-items: start;
+}
+
+@media (max-width: 900px) {
+	.layout { grid-template-columns: minmax(0, 1fr); }
+}
+
+.panel {
+	padding: 14px;
+	border: 1px solid var(--border);
+	border-radius: 8px;
+	background: var(--surface);
+}
+
+/* ── Controls ────────────────────────────────────────────────────────────── */
+
+.toolbar { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
+
+.btn,
+.select {
+	border: 1px solid var(--border);
+	border-radius: 5px;
+	background: var(--control);
+	font: inherit;
+}
+.btn:disabled,
+.select:disabled { opacity: 0.45; cursor: not-allowed; }
+
+.select { min-width: 240px; max-width: 100%; padding: 7px 8px; }
+
+
+.btn {
+	display: inline-block; /* the header's trial CTA is an anchor, not a button */
+	padding: 7px 14px;
+	color: var(--text);
+	text-decoration: none;
+	white-space: nowrap;
+	cursor: pointer;
+}
+.btn:hover:not(:disabled) { background: var(--hover); }
+.btn-quiet { background: transparent; color: var(--muted); }
+.btn-primary {
+	border-color: var(--accent);
+	background: var(--accent);
+	color: #fff;
+	font-weight: 600;
+}
+.btn-primary:hover:not(:disabled) { background: #e87f08; }
+
+.options { display: flex; flex-wrap: wrap; column-gap: 16px; }
+.option {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	margin-bottom: 6px;
+	color: var(--muted);
+	cursor: pointer;
+}
+
+/* Scan is the main action on this side, so it takes the spare width of the row. */
+.scan-actions { display: flex; gap: 8px; margin: 4px 0 12px; }
+.btn-scan { flex: 1; font-size: 15px; }
+
+/* ── Viewer ──────────────────────────────────────────────────────────────── */
+
+.viewer {
+	width: 100%;
+	height: 560px;
+	border: 1px solid var(--border);
+	border-radius: 6px;
+	background: #2b2b2e;
+	overflow: hidden;
+}
+.hint { margin: 8px 0 0; color: var(--muted); font-size: 13px; }
+
+/* ── Result list ─────────────────────────────────────────────────────────── */
+
+.result-list {
+	max-height: 220px;
+	margin: 0 0 12px;
+	padding: 0;
+	border: 1px solid var(--border);
+	border-radius: 6px;
+	list-style: none;
+	overflow-y: auto;
+}
+.result-list:empty { display: none; }
+
+.result-row {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	padding: 8px 10px;
+	border-bottom: 1px solid var(--divider);
+	cursor: pointer;
+}
+.result-row:last-child { border-bottom: none; }
+.result-row:hover { background: #f7f8f9; }
+.result-row.is-current { background: var(--accent-tint); box-shadow: inset 3px 0 0 var(--accent); }
+
+.result-index { min-width: 46px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.result-name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.badge {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	padding: 1px 8px;
+	border-radius: 999px;
+	font-size: 12px;
+	white-space: nowrap;
+}
+
+.spinner {
+	width: 10px;
+	height: 10px;
+	border: 2px solid currentColor;
+	border-top-color: transparent;
+	border-radius: 50%;
+	opacity: 0.7;
+	animation: spin 0.7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) {
+	.spinner { animation-duration: 2.4s; }
+}
+
+.badge-found { background: #e6f4ea; color: #1a7f37; }
+.badge-none { background: var(--divider); color: var(--muted); }
+.badge-error { background: var(--err-tint); color: var(--err); }
+.badge-pending { background: var(--accent-tint); color: #7a4100; }
+.badge-unread { border: 1px dashed var(--border); background: transparent; color: var(--muted); }
+
+/* ── Detail ──────────────────────────────────────────────────────────────── */
+
+.detail { padding-top: 12px; border-top: 1px solid var(--border); }
+.detail h2 { margin: 0 0 10px; font-size: 15px; }
+
+.detail-images { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 12px; }
+.detail-images figure { margin: 0; }
+.detail-images figcaption { margin-top: 4px; color: var(--muted); font-size: 12px; }
+.detail-images canvas {
+	display: block;
+	max-width: 240px;
+	max-height: 160px;
+	border: 1px solid var(--border);
+	border-radius: 4px;
+}
+
+.field-table { width: 100%; border-collapse: collapse; }
+.field-table th,
+.field-table td {
+	padding: 5px 8px;
+	border-bottom: 1px solid var(--divider);
+	text-align: left;
+	vertical-align: top;
+}
+.field-table th { width: 42%; color: var(--muted); font-weight: 400; }
+.field-table td { font-weight: 600; overflow-wrap: anywhere; }
+.field-table tr.is-invalid td { color: var(--err); }
+
+.mrz-text {
+	font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+	font-size: 12px;
+	font-weight: 400;
+	white-space: pre;
+	overflow-x: auto;
+}
+
+.note {
+	margin: 10px 0 0;
+	padding: 8px 10px;
+	border-radius: 5px;
+	background: var(--warn-tint);
+	color: var(--warn);
+	font-size: 13px;
+}
+
+/* Off-screen host: the MRZ Scanner sets inline display on its container, which would
+   beat a class-based display:none. */
+.mrz-host-wrapper {
+	position: fixed;
+	left: -10000px;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+}
