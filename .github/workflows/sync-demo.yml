@@ -1,0 +1,68 @@
+# Rebuilds the `demo` branch from `main` on every push, swapping the public
+# trial licenses for the domain-bound demo license. GitHub Pages serves `demo`.
+#
+# Requires the repository variable DEMO_LICENSE_KEY
+# (Settings > Secrets and variables > Actions > Variables).
+#
+# Never edit `demo` directly: it is force-pushed on every sync.
+
+name: Sync demo branch
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+
+concurrency:
+  group: sync-demo
+  cancel-in-progress: true
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Swap in the domain-bound license
+        env:
+          DEMO_LICENSE_KEY: ${{ vars.DEMO_LICENSE_KEY }}
+        run: |
+          if [ -z "$DEMO_LICENSE_KEY" ]; then
+            echo "::error::Repository variable DEMO_LICENSE_KEY is not set."
+            exit 1
+          fi
+          # Every Dynamsoft license string in the samples starts with DLS2.
+          files=$(grep -rlE 'DLS2[A-Za-z0-9+/=]+' --include='*.html' --include='*.js' --exclude-dir=.git --exclude-dir=.github . || true)
+          if [ -z "$files" ]; then
+            echo "::error::No license strings found to replace."
+            exit 1
+          fi
+          echo "$files" | xargs sed -i -E "s#DLS2[A-Za-z0-9+/=]+#${DEMO_LICENSE_KEY}#g"
+          echo "Updated $(echo "$files" | wc -l) files."
+
+      - name: Push demo branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -B demo
+          git commit -qam "Use domain-bound demo license (synced from main ${GITHUB_SHA::7})"
+          git push --force origin demo
+
+      - name: Request a Pages build
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          source=$(gh api "repos/${GITHUB_REPOSITORY}/pages" --jq .source.branch || true)
+          if [ "$source" = "demo" ]; then
+            gh api -X POST "repos/${GITHUB_REPOSITORY}/pages/builds" > /dev/null
+            echo "Pages build requested."
+          else
+            echo "Pages is not serving the demo branch yet (source: ${source:-none}); skipping build."
+          fi
