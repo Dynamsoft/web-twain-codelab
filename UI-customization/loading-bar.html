@@ -36,7 +36,7 @@
                             for="radCenterControl">Center of the control</label><br />
                     </li>
                 </ul>
-                <input type="button" style="margin-bottom: 20px;" value="Apply" class="ds-button-bg-black"
+                <input id="btnApply" type="button" style="margin-bottom: 20px;" value="Apply" class="ds-button-bg-black"
                     onclick="Applay();" /><br />
             </div>
             <input id="btnScan" type="button" style="display: none;" value="Scan" onclick="AcquireImage();" />
@@ -177,12 +177,16 @@
 
         var DWTObject;
         function Applay() {
+			var el = document.getElementById('btnApply');
+			el.disabled = true;
             Dynamsoft.DWT.Unload();
             Initialize();
             Dynamsoft.DWT.Load();
         }
 
         Dynamsoft.DWT.RegisterEvent("OnWebTwainReady", function () {
+			var el = document.getElementById('btnApply');
+			el.disabled = false;
             DWTObject = Dynamsoft.DWT.GetWebTwain('dwtcontrolContainer'); // Get the Dynamic Web TWAIN object that is embeded in the div with id 'dwtcontrolContainer'
             if (DWTObject) {
                 DWTObject.SelectSourceAsync().then(function () {
@@ -194,6 +198,12 @@
                 });
             }
         });
+		
+		Dynamsoft.DWT.RegisterEvent("OnWebTwainError", function (e) {
+			var el = document.getElementById('btnApply');
+			el.disabled = false;
+			console.error(e);
+		});
 
         function AcquireImage() {
             if (DWTObject) {

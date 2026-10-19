@@ -155,6 +155,17 @@
         var DWTObject;
         Dynamsoft.DWT.RegisterEvent("OnWebTwainReady", function () {
             DWTObject = Dynamsoft.DWT.GetWebTwain('dwtcontrolContainer'); // Get the Dynamic Web TWAIN object that is embeded in the div with id 'dwtcontrolContainer'
+			if (DWTObject) {
+                // from v19.0
+                DWTObject.Addon.PDF.SetReaderOptions({
+                    convertMode: Dynamsoft.DWT.EnumDWT_ConvertMode.CM_RENDERALL,
+                    renderOptions: {
+                        renderAnnotations: true,
+                        resolution: 200
+                    },
+                    preserveUnmodifiedOnSave: true
+                });
+            }
         });
 
         function AcquireImage() {

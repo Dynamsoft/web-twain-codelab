@@ -196,15 +196,14 @@
                     deviceType |= Dynamsoft.DWT.EnumDWT_DeviceType.WIFIDIRECTSCANNER;
                 }
 
-                var btnAcquireImage = document.getElementById("btnAcquireImage");
                 document.getElementById('source').options.length = 0;
                 if (deviceType != 0) {
                     DWTObject.GetDevicesAsync(deviceType).then(function (devices) {
 
                         if (devices.length == 0) {
-                            btnAcquireImage.disabled = true;
+                            DisabledControl(true);
                         } else {
-                            btnAcquireImage.disabled = false;
+                            DisabledControl(false);
                         }
 
                         for (var i = 0; i < devices.length; i++) { // Get how many sources are installed in the system
@@ -215,10 +214,47 @@
                         alert(exp.message);
                     });
                 } else {
-                    btnAcquireImage.disabled = true;
+                    DisabledControl(true);
                 }
             }
         }
+		
+		function DisabledControl(bDisabled){
+			var source = document.getElementById('source');
+			var bw = document.getElementById('BW');
+			var gray = document.getElementById('Gray');
+			var rgb = document.getElementById('RGB');
+			var adf = document.getElementById('ADF');
+
+			var showUI = document.getElementById('ShowUI');
+			var duplex = document.getElementById('Duplex');
+			var resolution = document.getElementById('Resolution');
+
+			var btnAcquireImage = document.getElementById('btnAcquireImage');
+
+			if(bDisabled){
+				source.disabled = true;
+				bw.disabled = true;
+				gray.disabled = true;
+				rgb.disabled = true;
+				adf.disabled = true;
+				showUI.disabled = true;
+				duplex.disabled = true;
+				resolution.disabled = true;
+
+				btnAcquireImage.disabled = true;
+			} else {
+				source.disabled = false;
+				bw.disabled = false;
+				gray.disabled = false;
+				rgb.disabled = false;
+				adf.disabled = false;
+				showUI.disabled = false;
+				duplex.disabled = false;
+				resolution.disabled = false;
+				btnAcquireImage.disabled = false;
+			}
+		}
 
     </script>
 

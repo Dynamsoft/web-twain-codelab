@@ -61,10 +61,17 @@
             DWTObject = Dynamsoft.DWT.GetWebTwain('dwtcontrolContainer'); // Get the Dynamic Web TWAIN object that is embeded in the div with id 'dwtcontrolContainer'
             if (DWTObject) {
                 deviceList = [];
-                var filePath = document.getElementById('filePath');
-                if (Dynamsoft.navInfoSync.bMac) {
-                    filePath.value = '/tmp/Temp/WebTWAIN<%06d>.bmp';
-                    DWTObject.GetDevicesAsync(Dynamsoft.DWT.EnumDWT_DeviceType.ICASCANNER).then(function (devices) {
+				var filePath = document.getElementById('filePath'), sourceType;
+				if(Dynamsoft.navInfoSync.bMac || Dynamsoft.navInfoSync.bLinux) {
+					filePath.value = '~/Downloads/WebTWAIN<%06d>.bmp';
+					
+					if(Dynamsoft.navInfoSync.bMac) {
+						sourceType = Dynamsoft.DWT.EnumDWT_DeviceType.ICASCANNER;
+					} else {
+						sourceType = Dynamsoft.DWT.EnumDWT_DeviceType.SANESCANNER;
+					}
+
+					DWTObject.GetDevicesAsync(sourceType).then(function(devices){
                         for (var i = 0; i < devices.length; i++) { // Get how many sources are installed in the system
                             document.getElementById('source').options.add(new Option(devices[i].displayName, i)); // Add the sources in a drop-down list
                             deviceList.push(devices[i]);

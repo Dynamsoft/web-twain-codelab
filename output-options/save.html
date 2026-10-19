@@ -77,6 +77,16 @@
                 }).catch(function (exp) {
                     alert(exp.message);
                 });
+				
+				// from v19.0
+                DWTObject.Addon.PDF.SetReaderOptions({
+                    convertMode: Dynamsoft.DWT.EnumDWT_ConvertMode.CM_RENDERALL,
+                    renderOptions: {
+                        renderAnnotations: true,
+                        resolution: 200
+                    },
+                    preserveUnmodifiedOnSave: true
+                });
             }
         });
 
